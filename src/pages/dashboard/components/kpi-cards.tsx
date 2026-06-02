@@ -24,7 +24,7 @@ const KPIS: Kpi[] = [
     data: [12, 13, 11, 15, 17, 18, 17, 20, 22],
   },
   {
-    title: "Pending Service Jobs",
+    title: "Pending Service Requests",
     value: "38",
     trend: "↓ 5 completed today",
     tone: "teal",

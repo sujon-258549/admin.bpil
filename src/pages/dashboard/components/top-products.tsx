@@ -12,17 +12,17 @@ import { cn } from "@/lib/utils"
 interface Row {
   name: string
   category: string
-  jobs: number
+  tasks: number
   revenue: string
   trend: number
 }
 
 const ROWS: Row[] = [
-  { name: "General Maintenance", category: "Commercial", jobs: 112, revenue: "৳2,87,200", trend: 18 },
-  { name: "Wiring Installation", category: "Residential", jobs: 84, revenue: "৳1,49,000", trend: 12 },
-  { name: "AC Servicing", category: "Residential", jobs: 96, revenue: "৳1,17,600", trend: 9 },
-  { name: "Substation Repair", category: "Industrial", jobs: 14, revenue: "৳3,04,400", trend: -4 },
-  { name: "Circuit Troubleshooting", category: "Commercial", jobs: 42, revenue: "৳56,800", trend: 22 },
+  { name: "General Maintenance", category: "Commercial", tasks: 112, revenue: "৳2,87,200", trend: 18 },
+  { name: "Wiring Installation", category: "Residential", tasks: 84, revenue: "৳1,49,000", trend: 12 },
+  { name: "AC Servicing", category: "Residential", tasks: 96, revenue: "৳1,17,600", trend: 9 },
+  { name: "Substation Repair", category: "Industrial", tasks: 14, revenue: "৳3,04,400", trend: -4 },
+  { name: "Circuit Troubleshooting", category: "Commercial", tasks: 42, revenue: "৳56,800", trend: 22 },
 ]
 
 export function TopProducts() {
@@ -31,7 +31,7 @@ export function TopProducts() {
       <CardHeader>
         <CardTitle>Top Requested Services</CardTitle>
         <CardDescription>
-          Most frequent service jobs this month.
+          Most frequent services requested this month.
         </CardDescription>
       </CardHeader>
       <CardContent className="px-0">
@@ -41,7 +41,7 @@ export function TopProducts() {
               <tr>
                 <th className="px-4 py-2.5 text-left font-semibold">Service</th>
                 <th className="px-4 py-2.5 text-left font-semibold">Category</th>
-                <th className="px-4 py-2.5 text-right font-semibold">Jobs Completed</th>
+                <th className="px-4 py-2.5 text-right font-semibold">Services Completed</th>
                 <th className="px-4 py-2.5 text-right font-semibold">Revenue</th>
                 <th className="px-4 py-2.5 text-right font-semibold">Trend</th>
               </tr>
@@ -61,7 +61,7 @@ export function TopProducts() {
                     {r.category}
                   </td>
                   <td className="px-4 py-3 text-right tabular-nums">
-                    {r.jobs}
+                    {r.tasks}
                   </td>
                   <td className="px-4 py-3 text-right font-medium tabular-nums">
                     {r.revenue}
