@@ -45,14 +45,14 @@ const options: ApexOptions = {
 
 export function DepartmentDonut() {
   return (
-    <Card>
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle>Request Status Distribution</CardTitle>
         <CardDescription>
           Current breakdown of all active service requests.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1">
         <ReactApexChart
           options={options}
           series={series}

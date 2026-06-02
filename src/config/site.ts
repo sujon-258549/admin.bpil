@@ -1,7 +1,7 @@
 export const siteConfig = {
-  name: "BPIL Electrical Services",
+  name: "BPIL Admin",
   description: "Industry standard ERP & CRM dashboard",
-  url: "https://bpil-electrical.local",
+  url: "https://bpil-admin.local",
   author: "BPIL Team",
 } as const
 

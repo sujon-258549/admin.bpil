@@ -35,12 +35,12 @@ const STATUS_TONE: Record<Status, string> = {
 
 export function RecentOrders() {
   return (
-    <Card>
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle>Recent Service Requests</CardTitle>
         <CardDescription>Latest 5 service requests and maintenance tasks.</CardDescription>
       </CardHeader>
-      <CardContent className="px-0">
+      <CardContent className="px-0 flex-1">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="border-b border-border/70 bg-muted/40 text-[11px] uppercase tracking-wider text-muted-foreground">

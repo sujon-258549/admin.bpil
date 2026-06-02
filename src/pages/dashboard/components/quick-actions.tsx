@@ -57,12 +57,12 @@ const ACTIONS: QuickAction[] = [
 
 export function QuickActions() {
   return (
-    <Card>
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle>Quick Actions</CardTitle>
         <CardDescription>Common service tasks one click away.</CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-2">
+      <CardContent className="grid gap-2 flex-1">
         {ACTIONS.map((a) => {
           const Icon = a.icon
           return (

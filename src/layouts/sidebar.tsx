@@ -1,5 +1,5 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom"
-import { Building2, ChevronRight, LogOut } from "lucide-react"
+import { ShieldCheck, ChevronRight, LogOut } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -77,12 +77,12 @@ export default function AppSidebar() {
             <SidebarMenuButton asChild size="lg">
               <Link to={ROUTES.MODULES.DASHBOARD}>
                 <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
-                  <Building2 className="size-4" />
+                  <ShieldCheck className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{siteConfig.name}</span>
                   <span className="truncate text-xs text-muted-foreground">
-                    ERP & CRM
+                    Admin Portal
                   </span>
                 </div>
               </Link>

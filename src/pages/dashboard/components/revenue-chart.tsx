@@ -64,7 +64,7 @@ const series = [
 
 export function RevenueChart() {
   return (
-    <Card>
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -75,7 +75,7 @@ export function RevenueChart() {
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1">
         <ReactApexChart
           options={options}
           series={series}
