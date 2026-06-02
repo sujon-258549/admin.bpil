@@ -1,5 +1,5 @@
 export const env = {
-  API_URL: import.meta.env.VITE_API_URL ?? "http://localhost:4500/api/v1",
+  API_URL: import.meta.env.VITE_API_URL ?? "http://localhost:4502/api",
   APP_NAME: import.meta.env.VITE_APP_NAME ?? "Muster ERP CRM",
   APP_ENV: import.meta.env.MODE,
   IS_DEV: import.meta.env.DEV,
