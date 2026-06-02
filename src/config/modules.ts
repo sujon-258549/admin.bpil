@@ -4,17 +4,14 @@
 
 import {
   Bell,
-  Building2,
   FolderTree,
   Image,
   LayoutDashboard,
   Newspaper,
   Package,
-  Receipt,
   Settings,
   UsersRound,
   Users,
-  Wrench,
   type LucideIcon,
 } from "lucide-react";
 
@@ -25,14 +22,10 @@ export type ModuleKey =
   | "products"
   | "inventory"
   | "invoices"
-  | "branches"
   | "categories"
   | "blog"
   | "media"
   | "notifications"
-  | "subscriptions"
-  | "branchAdmins"
-  | "workTypes"
   | "workflow"
   | "settings";
 
@@ -102,25 +95,6 @@ export const MODULES: AppModule[] = [
     ],
   },
   {
-    key: "branches",
-    label: "Branches Management",
-    path: "/branches",
-    icon: Building2,
-    children: [
-      { key: "branches.list", label: "Branches", path: "/branches" },
-      {
-        key: "subbranches.list",
-        label: "Sub Branches",
-        path: "/branches/sub",
-      },
-      {
-        key: "branchAdmins",
-        label: "Branch Super Admin",
-        path: "/branches/admins",
-      },
-    ],
-  },
-  {
     key: "users",
     label: "Employee Management",
     path: "/employees",
@@ -151,30 +125,6 @@ export const MODULES: AppModule[] = [
     label: "Media Library",
     path: "/media",
     icon: Image,
-  },
-  {
-    key: "workTypes",
-    label: "Work Types",
-    path: "/work-types",
-    icon: Wrench,
-  },
-  {
-    key: "subscriptions",
-    label: "Subscriptions",
-    path: "/subscriptions",
-    icon: Receipt,
-    children: [
-      {
-        key: "subscriptions.list",
-        label: "All Subscriptions",
-        path: "/subscriptions",
-      },
-      {
-        key: "subscriptions.plans",
-        label: "Plans",
-        path: "/subscriptions/plans",
-      },
-    ],
   },
   {
     key: "notifications",

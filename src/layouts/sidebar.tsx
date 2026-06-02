@@ -76,7 +76,7 @@ export default function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton asChild size="lg">
               <Link to={ROUTES.MODULES.DASHBOARD}>
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
+                <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
                   <Building2 className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -121,7 +121,7 @@ export default function AppSidebar() {
                                     to={sub.path}
                                     className={({ isActive }) =>
                                       isActive
-                                        ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold"
+                                        ? "bg-accent text-accent-foreground font-semibold"
                                         : "font-medium"
                                     }
                                   >
@@ -145,7 +145,7 @@ export default function AppSidebar() {
                         end={mod.path === ROUTES.MODULES.DASHBOARD}
                         className={({ isActive }) =>
                           isActive
-                            ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold"
+                            ? "bg-accent text-accent-foreground font-semibold"
                             : ""
                         }
                       >

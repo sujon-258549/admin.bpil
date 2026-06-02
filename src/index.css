@@ -3,15 +3,69 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(222.2 84% 4.9%);
+
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(222.2 84% 4.9%);
+
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(222.2 84% 4.9%);
+
+  --primary: hsl(205 85% 40%);
+  --primary-foreground: hsl(0 0% 100%);
+
+  --secondary: hsl(32 94% 54%);
+  --secondary-foreground: hsl(0 0% 100%);
+
+  --muted: hsl(210 40% 96.1%);
+  --muted-foreground: hsl(215.4 16.3% 46.9%);
+
+  --accent: hsl(210 40% 96.1%);
+  --accent-foreground: hsl(222.2 47.4% 11.2%);
+
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: hsl(210 40% 98%);
+
+  --border: hsl(214.3 31.8% 91.4%);
+  --input: hsl(214.3 31.8% 91.4%);
+  --ring: hsl(205 85% 40%);
+
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: hsl(222.2 84% 4.9%);
+  --foreground: hsl(210 40% 98%);
+
+  --card: hsl(222.2 84% 4.9%);
+  --card-foreground: hsl(210 40% 98%);
+
+  --popover: hsl(222.2 84% 4.9%);
+  --popover-foreground: hsl(210 40% 98%);
+
+  --primary: hsl(205 85% 40%);
+  --primary-foreground: hsl(0 0% 100%);
+
+  --secondary: hsl(32 94% 54%);
+  --secondary-foreground: hsl(0 0% 100%);
+
+  --muted: hsl(217.2 32.6% 17.5%);
+  --muted-foreground: hsl(215 20.2% 65.1%);
+
+  --accent: hsl(217.2 32.6% 17.5%);
+  --accent-foreground: hsl(210 40% 98%);
+
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: hsl(210 40% 98%);
+
+  --border: hsl(217.2 32.6% 17.5%);
+  --input: hsl(217.2 32.6% 17.5%);
+  --ring: hsl(205 85% 40%);
+}
+
 @theme inline {
-  --font-sans: "Outfit", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
-  --animate-collapsible-down: collapsible-down 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-  --animate-collapsible-up: collapsible-up 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -27,170 +81,224 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-}
 
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  /* Primary = brand green (emerald-600 territory). */
-  --primary: oklch(0.55 0.16 145);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.55 0.16 145);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.55 0.16 145);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.55 0.16 145);
-}
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  /* On dark surfaces, primary lightens (emerald-400 territory) so text on
-     it still reads dark via --primary-foreground. */
-  --primary: oklch(0.75 0.17 145);
-  --primary-foreground: oklch(0.145 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.75 0.17 145);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.75 0.17 145);
-  --sidebar-primary-foreground: oklch(0.145 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.75 0.17 145);
-}
-
-@keyframes collapsible-down {
-  from {
-    height: 0;
-    opacity: 0;
-  }
-  to {
-    height: var(--radix-collapsible-content-height);
-    opacity: 1;
-  }
-}
-
-@keyframes collapsible-up {
-  from {
-    height: var(--radix-collapsible-content-height);
-    opacity: 1;
-  }
-  to {
-    height: 0;
-    opacity: 0;
-  }
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
   }
-  html,
+  html {
+    scroll-behavior: smooth;
+    /* Hide native scrollbars project-wide while keeping wheel/touch scroll. */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
   body {
-    @apply bg-background text-foreground antialiased;
-    font-family: var(--font-sans);
+    background-color: var(--background);
+    color: var(--foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
+
+  /* Restore the pointer cursor on interactive elements. Tailwind v4
+     resets every interactive element to `cursor: default`; we want the
+     classic pointer for any enabled button, link or role="button". */
   button:not(:disabled),
-  [role="button"]:not([aria-disabled="true"]) {
+  [role="button"]:not([aria-disabled="true"]),
+  a[href],
+  summary,
+  label[for],
+  select:not(:disabled) {
     cursor: pointer;
   }
 
-  /* Slim, theme-aware scrollbars (Firefox + WebKit). */
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
   }
-  *::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  *::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  *::-webkit-scrollbar-thumb {
-    background-color: var(--border);
-    border-radius: 9999px;
-  }
-  *::-webkit-scrollbar-thumb:hover {
-    background-color: var(--muted-foreground);
+
+  /* Respect users who explicitly prefer reduced motion. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-/* Dialog/modal content gets a slim scrollbar too. Defined outside @layer
-   base so it wins specificity against Radix's own styles. */
-[data-slot="dialog-content"] {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
+@utility app-container {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @media (min-width: 640px) {
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    padding-inline: 2rem;
+  }
 }
-[data-slot="dialog-content"]::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+
+/* Reusable keyframes for the services page motion language. */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
-[data-slot="dialog-content"]::-webkit-scrollbar-track {
-  background: transparent;
+
+@keyframes float-y-sm {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
-[data-slot="dialog-content"]::-webkit-scrollbar-thumb {
-  background-color: var(--border);
-  border-radius: 9999px;
+
+@keyframes drift {
+  0% { transform: translate3d(0, 0, 0); }
+  33% { transform: translate3d(20px, -15px, 0); }
+  66% { transform: translate3d(-15px, 10px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
-[data-slot="dialog-content"]::-webkit-scrollbar-thumb:hover {
-  background-color: var(--muted-foreground);
+
+@keyframes shimmer-x {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes gradient-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.85); opacity: 0.7; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes draw-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes ken-burns {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.12) translate(-1%, 1%); }
+}
+
+@utility animate-float {
+  animation: float-y 6s ease-in-out infinite;
+}
+@utility animate-float-slow {
+  animation: float-y 9s ease-in-out infinite;
+}
+@utility animate-float-sm {
+  animation: float-y-sm 4.5s ease-in-out infinite;
+}
+@utility animate-drift {
+  animation: drift 14s ease-in-out infinite;
+}
+@utility animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer-x 3.5s linear infinite;
+}
+@utility animate-gradient-pan {
+  background-size: 200% 200%;
+  animation: gradient-pan 6s ease-in-out infinite;
+}
+@utility animate-pulse-ring {
+  animation: pulse-ring 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@utility animate-draw-x {
+  transform-origin: left center;
+  animation: draw-x 1.2s ease-out 0.2s forwards;
+}
+@utility animate-ken-burns {
+  animation: ken-burns 18s ease-in-out infinite alternate;
+}
+
+/* AOS sets `transition-property: opacity, transform` on data-aos elements,
+   which prevents box-shadow / border-color / translate / scale / etc from
+   animating on hover. Tailwind v4 uses the standalone `translate` and `scale`
+   CSS properties (not `transform`), so they also need to be in the list.
+   Triple-selector specificity overrides AOS and restores full transition
+   support so card hover effects stay smooth. */
+[data-aos][data-aos][data-aos] {
+  transition-property: opacity, transform, translate, scale, rotate,
+    box-shadow, border-color, background-color, color, filter, backdrop-filter;
+}
+
+/* Until AOS.init() runs (deferred until after React hydration), keep
+   data-aos elements at full visibility. Without this, AOS's stylesheet
+   hides every fade/zoom element via `opacity: 0` during the brief window
+   between paint and init — causing a visible flash of blank content.
+   Once AOS marks an element with `.aos-init`, this rule no longer matches
+   and AOS takes over the visibility lifecycle. */
+[data-aos][data-aos][data-aos]:not(.aos-init) {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+
+/* Lightweight rich-text styles for HTML content stored in JSON (products, etc.). */
+@utility prose-product {
+  & p {
+    margin-block: 0.5em;
+  }
+  & p:first-child {
+    margin-top: 0;
+  }
+  & p:last-child {
+    margin-bottom: 0;
+  }
+  & strong {
+    font-weight: 600;
+    color: var(--foreground);
+  }
+  & em {
+    font-style: italic;
+  }
+  & ul {
+    margin-block: 0.75em;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  & ol {
+    margin-block: 0.75em;
+    padding-left: 1.25rem;
+    list-style: decimal;
+  }
+  & li {
+    margin-block: 0.25em;
+  }
+  & a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  & a:hover {
+    text-decoration: none;
+  }
 }

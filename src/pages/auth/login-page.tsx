@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import { AlertCircle, Mail, Loader2, ArrowRight } from "lucide-react"
+import { AlertCircle, Mail, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -76,110 +76,72 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="w-full space-y-10 animate-in fade-in slide-in-from-bottom-8 duration-700">
-      <header className="space-y-3">
-        <div className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-2 ring-1 ring-inset ring-primary/20">
-          <span className="relative flex h-2 w-2 mr-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-          </span>
-          Secure Login
-        </div>
-        <h1 className="text-4xl font-bold tracking-tight text-foreground">
-          Welcome back
-        </h1>
-        <p className="text-base text-muted-foreground leading-relaxed">
-          Enter your credentials to securely access your workspace and manage your business.
+    <div className="space-y-8">
+      <header className="space-y-2 text-center lg:text-left">
+        <h1 className="text-3xl font-semibold tracking-tight">Sign in</h1>
+        <p className="text-sm text-muted-foreground">
+          Enter your credentials to access your dashboard
         </p>
       </header>
 
-      <form onSubmit={onSubmit} className="space-y-6">
+      <form onSubmit={onSubmit} className="space-y-5">
         {errorMsg && (
-          <div className="flex items-start gap-3 rounded-2xl border border-destructive/20 bg-destructive/10 p-4 text-sm text-destructive animate-in fade-in slide-in-from-top-2">
-            <AlertCircle className="mt-0.5 size-5 shrink-0" />
-            <span className="leading-relaxed font-medium">{errorMsg}</span>
+          <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
+            <AlertCircle className="mt-0.5 size-4 shrink-0" />
+            <span className="leading-snug">{errorMsg}</span>
           </div>
         )}
 
-        <div className="space-y-5">
-          <div className="space-y-2.5">
-            <Label htmlFor="email" className="text-sm font-medium text-foreground">Email address</Label>
-            <div className="relative group">
-              <Mail className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
-              <Input
-                id="email"
-                type="email"
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@company.com"
-                className="pl-12 h-14 rounded-2xl bg-background/50 backdrop-blur-sm border-border hover:border-primary/50 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 text-base"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password" className="text-sm font-medium text-foreground">Password</Label>
-              <Link
-                to={ROUTES.AUTH.FORGOT_PASSWORD}
-                className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-              >
-                Forgot password?
-              </Link>
-            </div>
-            <div className="relative group">
-              <PasswordInput
-                id="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                className="h-14 rounded-2xl bg-background/50 backdrop-blur-sm border-border hover:border-primary/50 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 text-base"
-              />
-            </div>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <div className="relative">
+            <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              id="email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@company.com"
+              className="pl-9"
+              required
+            />
           </div>
         </div>
 
-        <label className="flex cursor-pointer items-center gap-3 text-sm text-muted-foreground select-none group w-max">
-          <div className="relative flex items-center justify-center">
-            <input
-              type="checkbox"
-              checked={remember}
-              onChange={(e) => setRemember(e.target.checked)}
-              className="peer size-5 cursor-pointer appearance-none rounded-md border-2 border-muted-foreground/30 bg-transparent transition-all checked:border-primary checked:bg-primary hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2 focus:ring-offset-background"
-            />
-            <svg
-              className="pointer-events-none absolute left-1/2 top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 text-primary-foreground opacity-0 transition-opacity peer-checked:opacity-100"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Password</Label>
+            <Link
+              to={ROUTES.AUTH.FORGOT_PASSWORD}
+              className="text-xs font-medium text-muted-foreground hover:text-foreground"
             >
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
+              Forgot password?
+            </Link>
           </div>
-          <span className="group-hover:text-foreground transition-colors font-medium">Remember me on this device</span>
+          <PasswordInput
+            id="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            required
+          />
+        </div>
+
+        <label className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground select-none">
+          <input
+            type="checkbox"
+            checked={remember}
+            onChange={(e) => setRemember(e.target.checked)}
+            className="size-4 rounded border-input accent-primary"
+          />
+          Remember me on this device
         </label>
 
-        <Button 
-          type="submit" 
-          className="w-full h-14 rounded-2xl text-base font-semibold shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-primary/30 hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 group" 
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <Loader2 className="size-5 animate-spin" />
-          ) : (
-            <>
-              Sign in to Dashboard
-              <ArrowRight className="ml-2 size-5 transition-transform group-hover:translate-x-1.5" />
-            </>
-          )}
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading && <Loader2 className="size-4 animate-spin" />}
+          {isLoading ? "Signing in..." : "Sign in"}
         </Button>
       </form>
     </div>

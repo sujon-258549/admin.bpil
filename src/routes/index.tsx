@@ -60,16 +60,10 @@ import ProductList from "@/pages/products/product-list-page"
 import InventoryPage from "@/pages/inventory/inventory-page"
 import InvoiceList from "@/pages/invoices/invoice-list-page"
 import SettingsPage from "@/pages/settings/settings-page"
-import MainBranchList from "@/pages/branches/MainBranchList"
-import SubBranchList from "@/pages/branches/SubBranchList"
-import BranchAdminList from "@/pages/branch-admins/BranchAdminList"
 import CategoryList from "@/pages/categories/CategoryList"
 import SubCategoryList from "@/pages/categories/SubCategoryList"
 import BlogList from "@/pages/blog/BlogList"
 import MediaLibrary from "@/pages/media/MediaLibrary"
-import WorkTypeList from "@/pages/work-types/WorkTypeList"
-import SubscriptionList from "@/pages/subscriptions/SubscriptionList"
-import PlanList from "@/pages/subscriptions/PlanList"
 import NotificationList from "@/pages/notifications/NotificationList"
 import WorkflowPage from "@/pages/workflow/WorkflowPage"
 
@@ -220,32 +214,6 @@ export const router = createBrowserRouter([
         ),
       },
 
-      // Branches
-      {
-        path: "branches",
-        element: (
-          <RequirePermission moduleKey="branches.list">
-            <MainBranchList />
-          </RequirePermission>
-        ),
-      },
-      {
-        path: "branches/sub",
-        element: (
-          <RequirePermission moduleKey="subbranches.list">
-            <SubBranchList />
-          </RequirePermission>
-        ),
-      },
-      {
-        path: "branches/admins",
-        element: (
-          <RequirePermission moduleKey="branchAdmins">
-            <BranchAdminList />
-          </RequirePermission>
-        ),
-      },
-
       // Categories
       {
         path: "categories",
@@ -280,34 +248,6 @@ export const router = createBrowserRouter([
         element: (
           <RequirePermission moduleKey="media">
             <MediaLibrary />
-          </RequirePermission>
-        ),
-      },
-
-      // Work Types
-      {
-        path: "work-types",
-        element: (
-          <RequirePermission moduleKey="workTypes">
-            <WorkTypeList />
-          </RequirePermission>
-        ),
-      },
-
-      // Subscriptions
-      {
-        path: "subscriptions",
-        element: (
-          <RequirePermission moduleKey="subscriptions.list">
-            <SubscriptionList />
-          </RequirePermission>
-        ),
-      },
-      {
-        path: "subscriptions/plans",
-        element: (
-          <RequirePermission moduleKey="subscriptions.plans">
-            <PlanList />
           </RequirePermission>
         ),
       },
