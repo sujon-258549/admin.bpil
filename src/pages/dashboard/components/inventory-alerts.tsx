@@ -1,4 +1,4 @@
-import { AlertTriangle, Package } from "lucide-react"
+import { AlertTriangle, Wrench } from "lucide-react"
 import {
   Card,
   CardContent,
@@ -16,10 +16,10 @@ interface Item {
 }
 
 const ITEMS: Item[] = [
-  { name: "Wireless Headset", sku: "WH-1842", stock: 4,  threshold: 20 },
-  { name: "Office Chair Pro", sku: "OC-2271", stock: 7,  threshold: 25 },
-  { name: "Smart Watch X2",   sku: "SW-0512", stock: 12, threshold: 30 },
-  { name: "Leather Wallet",   sku: "LW-9034", stock: 0,  threshold: 15 },
+  { name: "10mm Copper Wire", sku: "CW-10MM", stock: 4,  threshold: 20 },
+  { name: "Circuit Breaker 32A", sku: "CB-32A", stock: 7,  threshold: 25 },
+  { name: "Industrial Socket 16A",   sku: "IS-16A", stock: 12, threshold: 30 },
+  { name: "Insulation Tape",   sku: "IT-9034", stock: 0,  threshold: 15 },
 ]
 
 export function InventoryAlerts() {
@@ -27,9 +27,9 @@ export function InventoryAlerts() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <AlertTriangle className="size-4 text-amber-500" /> Inventory Alerts
+          <AlertTriangle className="size-4 text-amber-500" /> Equipment Alerts
         </CardTitle>
-        <CardDescription>Items running low — restock soon.</CardDescription>
+        <CardDescription>Parts running low — order soon.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-2.5">
         {ITEMS.map((it) => {
@@ -42,7 +42,7 @@ export function InventoryAlerts() {
             >
               <div className="flex items-center gap-3">
                 <div className="grid size-8 place-items-center rounded-md bg-amber-500/10 text-amber-600">
-                  <Package className="size-4" />
+                  <Wrench className="size-4" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-medium">{it.name}</div>

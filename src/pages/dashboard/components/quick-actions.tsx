@@ -28,14 +28,14 @@ const ACTIONS: QuickAction[] = [
   {
     label: "New Service Request",
     description: "Create a new service job",
-    to: ROUTES.DASHBOARD, // You can change this to actual service route later
+    to: ROUTES.MODULES.DASHBOARD, // You can change this to actual service route later
     icon: FilePlus,
     tone: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
   },
   {
     label: "Dispatch Technician",
     description: "Assign tech to pending job",
-    to: ROUTES.DASHBOARD,
+    to: ROUTES.MODULES.DASHBOARD,
     icon: Wrench,
     tone: "bg-sky-500/10 text-sky-600 dark:text-sky-400",
   },
@@ -49,7 +49,7 @@ const ACTIONS: QuickAction[] = [
   {
     label: "Create Invoice",
     description: "Bill a completed job",
-    to: ROUTES.DASHBOARD,
+    to: ROUTES.MODULES.DASHBOARD,
     icon: FileText,
     tone: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
   },
