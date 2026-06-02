@@ -45,9 +45,9 @@ export function WeeklySales() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Weekly Sales</CardTitle>
+        <CardTitle>Weekly Service Jobs</CardTitle>
         <CardDescription>
-          Daily sales comparison vs. previous week.
+          Daily completed jobs comparison vs. previous week.
         </CardDescription>
       </CardHeader>
       <CardContent>

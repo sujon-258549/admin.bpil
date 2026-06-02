@@ -9,19 +9,18 @@ import {
 } from "@/components/ui/card"
 
 const labels = [
-  "Engineering",
-  "Sales",
-  "Operations",
-  "Support",
-  "Marketing",
-  "Admin",
+  "Pending",
+  "In Progress",
+  "Completed",
+  "On Hold",
+  "Cancelled",
 ]
-const series = [38, 22, 18, 14, 9, 6]
+const series = [38, 22, 118, 14, 9]
 
 const options: ApexOptions = {
   chart: { type: "donut", fontFamily: "inherit" },
   labels,
-  colors: ["#10b981", "#0ea5e9", "#8b5cf6", "#f59e0b", "#ec4899", "#64748b"],
+  colors: ["#f59e0b", "#0ea5e9", "#10b981", "#8b5cf6", "#ec4899"],
   legend: { position: "bottom", fontSize: "12px" },
   dataLabels: { enabled: false },
   stroke: { width: 2, colors: ["#ffffff"] },
@@ -33,7 +32,7 @@ const options: ApexOptions = {
           show: true,
           total: {
             show: true,
-            label: "Total",
+            label: "Total Jobs",
             fontSize: "12px",
             color: "#6b7280",
           },
@@ -41,16 +40,16 @@ const options: ApexOptions = {
       },
     },
   },
-  tooltip: { theme: "light", y: { formatter: (v: number) => `${v} people` } },
+  tooltip: { theme: "light", y: { formatter: (v: number) => `${v} jobs` } },
 }
 
 export function DepartmentDonut() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Headcount by Department</CardTitle>
+        <CardTitle>Job Status Distribution</CardTitle>
         <CardDescription>
-          Distribution of active employees across departments.
+          Current breakdown of all active service jobs.
         </CardDescription>
       </CardHeader>
       <CardContent>
