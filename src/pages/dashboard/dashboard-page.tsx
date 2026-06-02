@@ -4,15 +4,8 @@ import {
   InventoryAlerts,
   KpiCards,
   QuickActions,
-  RecentActivities,
   RecentOrders,
   RevenueChart,
-  SatisfactionGauge,
-  SystemStatus,
-  TasksCard,
-  TopEmployees,
-  TopProducts,
-  UpcomingEvents,
   WeeklySales,
 } from "./components"
 

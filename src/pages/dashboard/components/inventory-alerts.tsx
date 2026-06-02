@@ -24,14 +24,14 @@ const ITEMS: Item[] = [
 
 export function InventoryAlerts() {
   return (
-    <Card>
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <AlertTriangle className="size-4 text-amber-500" /> Equipment Alerts
         </CardTitle>
         <CardDescription>Parts running low — order soon.</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-2.5">
+      <CardContent className="space-y-2.5 flex-1">
         {ITEMS.map((it) => {
           const pct = Math.min(100, (it.stock / it.threshold) * 100)
           const isOut = it.stock === 0

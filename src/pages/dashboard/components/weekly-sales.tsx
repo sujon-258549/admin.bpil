@@ -43,14 +43,14 @@ const series = [
 
 export function WeeklySales() {
   return (
-    <Card>
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle>Weekly Service Requests</CardTitle>
         <CardDescription>
           Daily completed requests comparison vs. previous week.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1">
         <ReactApexChart
           options={options}
           series={series}
