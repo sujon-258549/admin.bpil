@@ -10,32 +10,32 @@ interface Kpi {
 
 const KPIS: Kpi[] = [
   {
-    title: "Total Revenue",
+    title: "Total Service Revenue",
     value: "৳12,48,920",
     trend: "↑ 12.4% vs last month",
     tone: "violet",
     data: [10, 14, 11, 16, 12, 18, 22, 20, 24],
   },
   {
-    title: "Active Customers",
-    value: "1,284",
-    trend: "↑ 4.1% this week",
+    title: "Active Service Contracts",
+    value: "142",
+    trend: "↑ 4 new this week",
     tone: "sky",
     data: [12, 13, 11, 15, 17, 18, 17, 20, 22],
   },
   {
-    title: "Orders Today",
-    value: "324",
-    trend: "↑ 18 new",
+    title: "Pending Service Jobs",
+    value: "38",
+    trend: "↓ 5 completed today",
     tone: "teal",
-    data: [8, 11, 13, 10, 14, 16, 18, 17, 20],
+    data: [25, 28, 30, 26, 35, 38, 42, 39, 38],
   },
   {
-    title: "Pending Invoices",
-    value: "37",
-    trend: "↓ 5 cleared",
+    title: "Technicians on Field",
+    value: "24",
+    trend: "↑ 3 more than yesterday",
     tone: "rose",
-    data: [22, 19, 21, 17, 14, 12, 13, 11, 8],
+    data: [18, 19, 21, 20, 18, 22, 21, 20, 24],
   },
 ]
 

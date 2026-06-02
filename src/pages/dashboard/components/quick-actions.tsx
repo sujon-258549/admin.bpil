@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
 import {
   FilePlus,
-  PackagePlus,
-  ShieldCheck,
-  UserPlus,
+  Wrench,
+  Users,
+  FileText,
   type LucideIcon,
 } from "lucide-react"
 import {
@@ -26,31 +26,31 @@ interface QuickAction {
 
 const ACTIONS: QuickAction[] = [
   {
-    label: "Add Employee",
-    description: "Onboard a new team member",
-    to: ROUTES.EMPLOYEES.CREATE,
-    icon: UserPlus,
+    label: "New Service Request",
+    description: "Create a new service job",
+    to: ROUTES.DASHBOARD, // You can change this to actual service route later
+    icon: FilePlus,
     tone: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
   },
   {
-    label: "New Customer",
-    description: "Add to your CRM database",
-    to: ROUTES.MODULES.CUSTOMERS,
-    icon: FilePlus,
+    label: "Dispatch Technician",
+    description: "Assign tech to pending job",
+    to: ROUTES.DASHBOARD,
+    icon: Wrench,
     tone: "bg-sky-500/10 text-sky-600 dark:text-sky-400",
   },
   {
-    label: "Add Product",
-    description: "Add inventory item",
-    to: ROUTES.MODULES.PRODUCTS,
-    icon: PackagePlus,
+    label: "Add Customer",
+    description: "Onboard new client",
+    to: ROUTES.MODULES.CUSTOMERS,
+    icon: Users,
     tone: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
   },
   {
-    label: "Manage Roles",
-    description: "Update access permissions",
-    to: ROUTES.EMPLOYEES.ROLES,
-    icon: ShieldCheck,
+    label: "Create Invoice",
+    description: "Bill a completed job",
+    to: ROUTES.DASHBOARD,
+    icon: FileText,
     tone: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
   },
 ]
@@ -60,7 +60,7 @@ export function QuickActions() {
     <Card>
       <CardHeader>
         <CardTitle>Quick Actions</CardTitle>
-        <CardDescription>Common tasks one click away.</CardDescription>
+        <CardDescription>Common service tasks one click away.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-2">
         {ACTIONS.map((a) => {
