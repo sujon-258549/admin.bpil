@@ -28,7 +28,7 @@ import {
   type Column,
 } from "@/components/shared"
 import { useDebounce } from "@/hooks/use-debounce"
-import { useEmployee, useMainBranch } from "@/hooks/data-fetch"
+import { useEmployee } from "@/hooks/data-fetch"
 import { useCurrentUser } from "@/hooks/use-permission"
 import { ROUTES } from "@/config/paths"
 import { shortId } from "@/lib/format"
@@ -84,20 +84,8 @@ export default function EmployeeListPage() {
     limit: PAGE_SIZE,
   })
 
-  // Hide users who own a branch — they belong on the Branch Super Admin
-  // page, not the generic employee list.
-  const { mainBranches } = useMainBranch({ limit: 200 })
-  const branchOwnerIds = useMemo(() => {
-    const set = new Set<string>()
-    mainBranches.forEach((b) => {
-      if (b.ownerId) set.add(b.ownerId)
-    })
-    return set
-  }, [mainBranches])
-  const employees = useMemo(
-    () => allEmployees.filter((e) => !branchOwnerIds.has(e.id)),
-    [allEmployees, branchOwnerIds],
-  )
+  // Branch logic removed; simply use allEmployees
+  const employees = allEmployees
 
   const [pendingDelete, setPendingDelete] = useState<EmployeeRow | null>(null)
   const [pendingSoftDelete, setPendingSoftDelete] = useState<EmployeeRow | null>(

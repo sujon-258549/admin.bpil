@@ -104,12 +104,4 @@ export interface EmployeeRow extends User {
   branchName?: string | null
   roleId?: string | null
   roleName?: string | null
-  // Active subscription + plan for this user's branch (joined server-side).
-  subscriptionId?: string | null
-  subscriptionEndDate?: string | null
-  planId?: string | null
-  planName?: string | null
-  planPrice?: string | null
-  planCurrency?: string | null
-  planBillingCycle?: string | null
 }

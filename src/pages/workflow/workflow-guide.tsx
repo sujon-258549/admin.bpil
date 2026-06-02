@@ -3,7 +3,6 @@ import {
   ArrowRight,
   Building2,
   CheckCircle2,
-  CreditCard,
   KeyRound,
   LogIn,
   Sparkles,
@@ -70,7 +69,7 @@ const EN: Copy = {
     },
     branch: {
       title: "Company (= 1 Branch)",
-      desc: "Each customer company is represented as a Branch with its own subscription.",
+      desc: "Each customer company is represented as a Branch.",
     },
     admin: {
       title: "Company Super Admin",
@@ -85,7 +84,7 @@ const EN: Copy = {
   platformFlow: {
     heading: "Your job — Selling a new company",
     subtitle:
-      "When a new customer comes in, you do these 4 steps. After that, you hand over the keys.",
+      "When a new customer comes in, you do these 3 steps. After that, you hand over the keys.",
     steps: [
       {
         icon: Building2,
@@ -94,20 +93,14 @@ const EN: Copy = {
         path: "/branches",
       },
       {
-        icon: CreditCard,
-        title: "2. Create a Subscription",
-        desc: "Set the plan, start date, and expiry. When it expires, access is automatically restricted.",
-        path: "/subscriptions",
-      },
-      {
         icon: UserCog,
-        title: "3. Create the Company Super Admin",
+        title: "2. Create the Company Super Admin",
         desc: "One employee under that branch with a 'Company Admin' role and full permissions inside their branch.",
         path: "/employees/new",
       },
       {
         icon: LogIn,
-        title: "4. Hand over the login",
+        title: "3. Hand over the login",
         desc: "Give the credentials to the customer. From this point, the Company Super Admin runs the show.",
       },
     ],
@@ -161,7 +154,7 @@ const EN: Copy = {
     rows: [
       {
         who: "Platform Super Admin (you)",
-        sees: "Every branch, every subscription, every employee — across all customer companies.",
+        sees: "Every branch, every employee — across all customer companies.",
       },
       {
         who: "Company Super Admin",
@@ -179,7 +172,6 @@ const EN: Copy = {
     lines: [
       "Each company = its own Branch. Don't mix companies into one branch.",
       "Never give the Platform Super Admin role to a customer — they'd see every other client's data.",
-      "Subscription expiry is real — set it correctly or they get free lifetime access.",
       "The Company Super Admin handles their own permissions. You don't manage their employees day-to-day.",
     ],
   },
@@ -200,7 +192,7 @@ const BN: Copy = {
     },
     branch: {
       title: "কোম্পানি (= ১টা Branch)",
-      desc: "প্রতিটা customer কোম্পানিকে আপনি একটা Branch হিসেবে তৈরি করবেন। Branch-এর নিজস্ব subscription থাকবে।",
+      desc: "প্রতিটা customer কোম্পানিকে আপনি একটা Branch হিসেবে তৈরি করবেন।",
     },
     admin: {
       title: "Company Super Admin",
@@ -215,7 +207,7 @@ const BN: Copy = {
   platformFlow: {
     heading: "আপনার কাজ — নতুন কোম্পানি sell করা",
     subtitle:
-      "নতুন customer এলে আপনি এই ৪টা step করবেন। এর পরে চাবি customer-এর হাতে।",
+      "নতুন customer এলে আপনি এই ৩টা step করবেন। এর পরে চাবি customer-এর হাতে।",
     steps: [
       {
         icon: Building2,
@@ -224,20 +216,14 @@ const BN: Copy = {
         path: "/branches",
       },
       {
-        icon: CreditCard,
-        title: "২. Subscription তৈরি করুন",
-        desc: "Plan, শুরুর তারিখ এবং expiry set করুন। Expire হলে customer-এর access automatically বন্ধ হবে।",
-        path: "/subscriptions",
-      },
-      {
         icon: UserCog,
-        title: "৩. Company Super Admin তৈরি করুন",
+        title: "২. Company Super Admin তৈরি করুন",
         desc: "ওই branch-এর under-এ একজন employee — 'Company Admin' role এবং পুরো branch-এর জন্য full permission দিন।",
         path: "/employees/new",
       },
       {
         icon: LogIn,
-        title: "৪. Login handover করুন",
+        title: "৩. Login handover করুন",
         desc: "Credentials customer-কে দিয়ে দিন। এর পর থেকে Company Super Admin নিজেই সব handle করবে।",
       },
     ],
@@ -291,7 +277,7 @@ const BN: Copy = {
     rows: [
       {
         who: "Platform Super Admin (আপনি)",
-        sees: "সব Branch, সব Subscription, সব employee — সব customer-এর সব কিছু।",
+        sees: "সব Branch, সব employee — সব customer-এর সব কিছু।",
       },
       {
         who: "Company Super Admin",
@@ -309,7 +295,6 @@ const BN: Copy = {
     lines: [
       "প্রতিটা কোম্পানি = আলাদা Branch। এক branch-এ দুই কোম্পানি মেশাবেন না।",
       "Platform Super Admin role কোনো customer-কে দিবেন না — অন্য client-এর data দেখে ফেলবে।",
-      "Subscription expiry সঠিকভাবে set করুন — না হলে বিনামূল্যে চিরকাল ব্যবহার করবে।",
       "Company Super Admin নিজেই তার permission সামলাবে। আপনি প্রতিদিন তাদের employee manage করবেন না।",
     ],
   },

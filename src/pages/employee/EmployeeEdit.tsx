@@ -113,6 +113,7 @@ export default function EmployeeEditPage() {
   useEffect(() => {
     const u = userRes?.data as any
     if (!u) return
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setForm({
       name: u?.profile?.name ?? "",
       email: u?.email ?? "",

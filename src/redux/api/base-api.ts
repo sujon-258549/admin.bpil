@@ -131,8 +131,7 @@ export const baseApi = createApi({
     "Designation",
     "Permission",
     "MainBranch",
-    "Subscription",
-    "SubscriptionPlan",
+    "Blog",
   ],
   endpoints: () => ({}),
 })

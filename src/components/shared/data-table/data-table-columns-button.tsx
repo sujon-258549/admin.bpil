@@ -49,9 +49,11 @@ export function DataTableColumnsButton<T>({
   // toggle helpers can read them without forcing themselves into the
   // dependency list of any hook below.
   const columnsRef = useRef(columns)
-  columnsRef.current = columns
   const notifyRef = useRef(onVisibleColumnsChange)
-  notifyRef.current = onVisibleColumnsChange
+  useEffect(() => {
+    columnsRef.current = columns
+    notifyRef.current = onVisibleColumnsChange
+  }, [columns, onVisibleColumnsChange])
 
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
 
