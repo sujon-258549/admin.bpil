@@ -32,7 +32,7 @@ const options: ApexOptions = {
           show: true,
           total: {
             show: true,
-            label: "Total Jobs",
+            label: "Total Requests",
             fontSize: "12px",
             color: "#6b7280",
           },
@@ -40,16 +40,16 @@ const options: ApexOptions = {
       },
     },
   },
-  tooltip: { theme: "light", y: { formatter: (v: number) => `${v} jobs` } },
+  tooltip: { theme: "light", y: { formatter: (v: number) => `${v} requests` } },
 }
 
 export function DepartmentDonut() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Job Status Distribution</CardTitle>
+        <CardTitle>Request Status Distribution</CardTitle>
         <CardDescription>
-          Current breakdown of all active service jobs.
+          Current breakdown of all active service requests.
         </CardDescription>
       </CardHeader>
       <CardContent>

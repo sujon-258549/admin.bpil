@@ -26,47 +26,30 @@ export default function DashboardPage() {
 
       <KpiCards />
 
-      {/* Row 1: revenue chart (wide) + satisfaction gauge */}
+      {/* Row 1: revenue chart (wide) + job status donut */}
       <div className="grid gap-5 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <RevenueChart />
         </div>
-        <SatisfactionGauge />
-      </div>
-
-      {/* Row 2: weekly sales bar + department headcount donut */}
-      <div className="grid gap-5 lg:grid-cols-2">
-        <WeeklySales />
         <DepartmentDonut />
       </div>
 
-      {/* Row 3: recent orders (wide) + tasks */}
+      {/* Row 2: weekly service requests + equipment alerts */}
       <div className="grid gap-5 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <RecentOrders />
+          <WeeklySales />
         </div>
-        <TasksCard />
-      </div>
-
-      {/* Row 4: top products (wide) + recent activities */}
-      <div className="grid gap-5 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <TopProducts />
-        </div>
-        <RecentActivities />
-      </div>
-
-      {/* Row 5: top employees + upcoming events + quick actions */}
-      <div className="grid gap-5 lg:grid-cols-3">
-        <TopEmployees />
-        <UpcomingEvents />
-        <QuickActions />
-      </div>
-
-      {/* Row 6: inventory alerts + system status */}
-      <div className="grid gap-5 lg:grid-cols-2">
         <InventoryAlerts />
-        <SystemStatus />
+      </div>
+
+      {/* Row 3: recent service requests */}
+      <div className="grid gap-5">
+        <RecentOrders />
+      </div>
+
+      {/* Row 4: quick actions */}
+      <div className="grid gap-5 lg:grid-cols-1">
+        <QuickActions />
       </div>
     </div>
   )
