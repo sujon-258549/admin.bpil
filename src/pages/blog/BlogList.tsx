@@ -15,6 +15,8 @@ import {
   PageHeader,
   Text,
   type Column,
+
+  SEO,
 } from "@/components/shared"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useBlog } from "@/hooks/data-fetch"
@@ -141,7 +143,9 @@ export default function BlogListPage() {
   const [visibleColumns, setVisibleColumns] = useState<Column<Blog>[]>(columns)
 
   return (
-    <div className="space-y-6">
+    <>
+      <SEO title="Blog List" />
+      <div className="space-y-6">
       <PageHeader
         title="Blog Posts"
         description="Create, edit and publish blog posts for your audience."

@@ -27,7 +27,9 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
-import { FormField, PageHeader, Text } from "@/components/shared"
+import { FormField, PageHeader, Text ,
+  SEO,
+} from "@/components/shared"
 import {
   DepartmentFormModal,
   DesignationFormModal,
@@ -155,7 +157,9 @@ export default function EmployeeCreatePage() {
   }
 
   return (
-    <div className="space-y-6">
+    <>
+      <SEO title="Employee Create" />
+      <div className="space-y-6">
       <PageHeader
         title="Create Employee"
         description="Onboard a new team member with role, designation, department and contact details."

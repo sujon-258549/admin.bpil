@@ -1,9 +1,13 @@
 import { FolderTree } from "lucide-react"
-import { ModulePlaceholder } from "@/components/shared"
+import { ModulePlaceholder ,
+  SEO,
+} from "@/components/shared"
 
 export default function CategoryListPage() {
   return (
-    <ModulePlaceholder
+    <>
+      <SEO title="Category List" />
+      <ModulePlaceholder
       title="Categories"
       description="Group products and services into top-level categories."
       icon={FolderTree}

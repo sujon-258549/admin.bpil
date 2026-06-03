@@ -1,3 +1,4 @@
+import { SEO } from "@/components/shared"
 import {
   DashboardHeader,
   DepartmentDonut,
@@ -14,7 +15,9 @@ import {
 // component files own their own data + styles.
 export default function DashboardPage() {
   return (
-    <div className="space-y-5">
+    <>
+      <SEO title="Dashboard" />
+      <div className="space-y-5">
       <DashboardHeader />
 
       <KpiCards />

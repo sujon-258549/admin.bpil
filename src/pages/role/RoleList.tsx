@@ -15,6 +15,8 @@ import {
   PageHeader,
   Text,
   type Column,
+
+  SEO,
 } from "@/components/shared"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useRole } from "@/hooks/data-fetch"
@@ -165,7 +167,9 @@ export default function RoleListPage() {
     useState<Column<Role>[]>(columns)
 
   return (
-    <div className="space-y-6">
+    <>
+      <SEO title="Role List" />
+      <div className="space-y-6">
       <PageHeader
         title="Role List"
         description="Define access roles and assign per-module permissions to each."

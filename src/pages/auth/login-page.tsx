@@ -1,3 +1,4 @@
+import { SEO } from "@/components/shared"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
@@ -76,7 +77,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <>
+      <SEO title="Login" />
+      <div className="space-y-8">
       <header className="space-y-2 text-center lg:text-left">
         <h1 className="text-3xl font-semibold tracking-tight">Sign in</h1>
         <p className="text-sm text-muted-foreground">

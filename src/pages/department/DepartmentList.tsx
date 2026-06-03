@@ -15,6 +15,8 @@ import {
   PageHeader,
   Text,
   type Column,
+
+  SEO,
 } from "@/components/shared"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useDepartment } from "@/hooks/data-fetch"
@@ -144,7 +146,9 @@ export default function DepartmentListPage() {
     useState<Column<Department>[]>(columns)
 
   return (
-    <div className="space-y-6">
+    <>
+      <SEO title="Department List" />
+      <div className="space-y-6">
       <PageHeader
         title="Department List"
         description="Group employees by department for reporting and access scoping."

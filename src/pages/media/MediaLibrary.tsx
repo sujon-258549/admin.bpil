@@ -1,9 +1,13 @@
 import { Image } from "lucide-react"
-import { ModulePlaceholder } from "@/components/shared"
+import { ModulePlaceholder ,
+  SEO,
+} from "@/components/shared"
 
 export default function MediaLibraryPage() {
   return (
-    <ModulePlaceholder
+    <>
+      <SEO title="Media Library" />
+      <ModulePlaceholder
       title="Media Library"
       description="Upload, browse, and manage images and documents."
       icon={Image}

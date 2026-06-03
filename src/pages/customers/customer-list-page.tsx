@@ -1,10 +1,13 @@
+import { SEO } from "@/components/shared"
 import PageHeader from "@/components/common/page-header"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 
 export default function CustomerListPage() {
   return (
-    <div>
+    <>
+      <SEO title="Customer List" />
+      <div>
       <PageHeader
         title="Customers"
         description="Manage your CRM contacts"

@@ -26,6 +26,8 @@ import {
   UserAvatar,
   pickEmployeeTone,
   type Column,
+
+  SEO,
 } from "@/components/shared"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useEmployee } from "@/hooks/data-fetch"
@@ -287,7 +289,9 @@ export default function EmployeeListPage() {
         const isSelf = u.id === currentUserId
         const selfTitle = "You can't perform this action on your own account"
         return (
-          <div className="flex justify-end gap-1">
+    <>
+      <SEO title="Employee List" />
+      <div className="flex justify-end gap-1">
             <Can module="employees" action="update">
               <Button
                 size="icon-sm"
@@ -355,6 +359,7 @@ export default function EmployeeListPage() {
 
   return (
     <div className="space-y-6">
+      <SEO title="Employee List" />
       <PageHeader
         title="Employee List"
         description="Manage your workforce, their roles, departments and designations."

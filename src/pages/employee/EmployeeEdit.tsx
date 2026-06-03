@@ -25,7 +25,9 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
-import { FormField, PageHeader, Text } from "@/components/shared"
+import { FormField, PageHeader, Text ,
+  SEO,
+} from "@/components/shared"
 import { FormSkeleton } from "@/components/skeleton"
 import {
   DepartmentFormModal,
@@ -189,6 +191,8 @@ export default function EmployeeEditPage() {
 
   if (isFetching && !userRes) {
     return (
+    <>
+      <SEO title="Employee Edit" />
       <div className="space-y-5">
         <PageHeader title="Edit Employee" description="Loading employee details…" />
         <FormSkeleton fields={12} columns={2} />
@@ -198,6 +202,7 @@ export default function EmployeeEditPage() {
 
   return (
     <div className="space-y-6">
+      <SEO title="Employee Edit" />
       <PageHeader
         title="Edit Employee"
         description="Update personal, work, and organization details. Use the Roles page to manage permissions."

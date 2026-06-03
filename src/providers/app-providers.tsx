@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { HelmetProvider } from "react-helmet-async"
 import ErrorBoundary from "@/components/common/error-boundary"
 import { ReduxProvider } from "./redux-provider"
 import { ThemeProvider } from "./theme-provider"
@@ -12,17 +13,19 @@ interface AppProvidersProps {
 
 export function AppProviders({ children }: AppProvidersProps) {
   return (
-    <ErrorBoundary>
-      <ReduxProvider>
-        <ThemeProvider>
-          <AuthProvider>
-            <TooltipProvider>
-              {children}
-              <ToastProvider />
-            </TooltipProvider>
-          </AuthProvider>
-        </ThemeProvider>
-      </ReduxProvider>
-    </ErrorBoundary>
+    <HelmetProvider>
+      <ErrorBoundary>
+        <ReduxProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <TooltipProvider>
+                {children}
+                <ToastProvider />
+              </TooltipProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </ReduxProvider>
+      </ErrorBoundary>
+    </HelmetProvider>
   )
 }
