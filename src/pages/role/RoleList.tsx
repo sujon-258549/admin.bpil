@@ -16,7 +16,7 @@ import {
   Text,
   type Column,
 
-  SEO,
+  PageMeta,
 } from "@/components/shared"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useRole } from "@/hooks/data-fetch"
@@ -167,9 +167,8 @@ export default function RoleListPage() {
     useState<Column<Role>[]>(columns)
 
   return (
-    <>
-      <SEO title="Role List" />
-      <div className="space-y-6">
+        <div className="space-y-6">
+      <PageMeta title="Role List" description="Manage Role List in Muster ERP & CRM" />
       <PageHeader
         title="Role List"
         description="Define access roles and assign per-module permissions to each."

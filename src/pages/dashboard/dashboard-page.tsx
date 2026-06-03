@@ -1,4 +1,6 @@
-import { SEO } from "@/components/shared"
+import { 
+  PageMeta,
+} from "@/components/shared"
 import {
   DashboardHeader,
   DepartmentDonut,
@@ -15,9 +17,8 @@ import {
 // component files own their own data + styles.
 export default function DashboardPage() {
   return (
-    <>
-      <SEO title="Dashboard" />
-      <div className="space-y-5">
+        <div className="space-y-5">
+      <PageMeta title="Dashboard" description="Manage Dashboard in Muster ERP & CRM" />
       <DashboardHeader />
 
       <KpiCards />

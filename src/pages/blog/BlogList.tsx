@@ -16,7 +16,7 @@ import {
   Text,
   type Column,
 
-  SEO,
+  PageMeta,
 } from "@/components/shared"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useBlog } from "@/hooks/data-fetch"
@@ -143,9 +143,8 @@ export default function BlogListPage() {
   const [visibleColumns, setVisibleColumns] = useState<Column<Blog>[]>(columns)
 
   return (
-    <>
-      <SEO title="Blog List" />
-      <div className="space-y-6">
+        <div className="space-y-6">
+      <PageMeta title="Blog List" description="Manage Blog List in Muster ERP & CRM" />
       <PageHeader
         title="Blog Posts"
         description="Create, edit and publish blog posts for your audience."

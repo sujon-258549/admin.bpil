@@ -1,16 +1,18 @@
-import { Image } from "lucide-react"
+import { Image as ImageIcon } from "lucide-react"
 import { ModulePlaceholder ,
-  SEO,
+
+  PageMeta,
 } from "@/components/shared"
 
 export default function MediaLibraryPage() {
   return (
     <>
-      <SEO title="Media Library" />
+      <PageMeta title="Media Library" description="Manage Media Library in Muster ERP & CRM" />
       <ModulePlaceholder
-      title="Media Library"
-      description="Upload, browse, and manage images and documents."
-      icon={Image}
-    />
+        title="Media Library"
+        description="Manage all uploaded files and images."
+        icon={ImageIcon}
+      />
+    </>
   )
 }

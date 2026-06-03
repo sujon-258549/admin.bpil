@@ -1,16 +1,18 @@
-import { Wrench } from "lucide-react"
+import { Briefcase } from "lucide-react"
 import { ModulePlaceholder ,
-  SEO,
+
+  PageMeta,
 } from "@/components/shared"
 
 export default function WorkTypeListPage() {
   return (
     <>
-      <SEO title="Work Type List" />
+      <PageMeta title="Work Type List" description="Manage Work Type List in Muster ERP & CRM" />
       <ModulePlaceholder
-      title="Work Types"
-      description="Manage the types of work an employee or contractor can perform."
-      icon={Wrench}
-    />
+        title="Work Types"
+        description="Define standard types of work and shifts."
+        icon={Briefcase}
+      />
+    </>
   )
 }

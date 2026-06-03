@@ -26,7 +26,8 @@ import {
 } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { FormField, PageHeader, Text ,
-  SEO,
+
+  PageMeta,
 } from "@/components/shared"
 import { FormSkeleton } from "@/components/skeleton"
 import {
@@ -146,6 +147,10 @@ export default function EmployeeEditPage() {
       toast.error("Email is required")
       return
     }
+    if (!form.roleId) {
+      toast.error("Role is required")
+      return
+    }
 
     // `undefined` for blank fields lets the backend merge keep the existing
     // value instead of overwriting with an empty string.
@@ -191,9 +196,7 @@ export default function EmployeeEditPage() {
 
   if (isFetching && !userRes) {
     return (
-    <>
-      <SEO title="Employee Edit" />
-      <div className="space-y-5">
+        <div className="space-y-5">
         <PageHeader title="Edit Employee" description="Loading employee details…" />
         <FormSkeleton fields={12} columns={2} />
       </div>
@@ -202,8 +205,8 @@ export default function EmployeeEditPage() {
 
   return (
     <div className="space-y-6">
-      <SEO title="Employee Edit" />
-      <PageHeader
+      <PageMeta title="Employee Edit" description="Manage Employee Edit in Muster ERP & CRM" />
+<PageHeader
         title="Edit Employee"
         description="Update personal, work, and organization details. Use the Roles page to manage permissions."
         actions={
@@ -382,7 +385,7 @@ export default function EmployeeEditPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
-              <FormField label="Role">
+              <FormField label="Role" required>
                 <Combobox
                   value={form.roleId}
                   onChange={(value) => update("roleId", value)}
@@ -392,7 +395,9 @@ export default function EmployeeEditPage() {
                     label: r.role ?? "—",
                   }))}
                   onAddNew={() => setRoleModalOpen(true)}
-                  addNewLabel="Add new role"
+                  addNewLabel="Add new"
+                  onViewAll={() => window.open(ROUTES.EMPLOYEES.ROLES, "_blank")}
+                  viewAllLabel="All roles"
                 />
               </FormField>
               <FormField label="Department">
@@ -405,7 +410,9 @@ export default function EmployeeEditPage() {
                     label: d.name ?? "—",
                   }))}
                   onAddNew={() => setDeptModalOpen(true)}
-                  addNewLabel="Add new department"
+                  addNewLabel="Add new"
+                  onViewAll={() => window.open(ROUTES.EMPLOYEES.DEPARTMENTS, "_blank")}
+                  viewAllLabel="All departments"
                 />
               </FormField>
               <FormField label="Designation">
@@ -418,7 +425,9 @@ export default function EmployeeEditPage() {
                     label: d.name,
                   }))}
                   onAddNew={() => setDesigModalOpen(true)}
-                  addNewLabel="Add new designation"
+                  addNewLabel="Add new"
+                  onViewAll={() => window.open(ROUTES.EMPLOYEES.DESIGNATIONS, "_blank")}
+                  viewAllLabel="All designations"
                 />
               </FormField>
             </CardContent>

@@ -58,7 +58,7 @@ function Switch({
         </span>
         <span
           className={cn(
-            "pointer-events-none block size-4 rounded-full bg-background shadow-lg ring-0 transition-transform",
+            "pointer-events-none block size-4 rounded-full bg-background shadow-none ring-0 transition-transform",
             checked ? "translate-x-13" : "translate-x-0.5",
           )}
         />
@@ -84,7 +84,7 @@ function Switch({
     >
       <span
         className={cn(
-          "pointer-events-none block size-4 rounded-full bg-background shadow-lg ring-0 transition-transform",
+          "pointer-events-none block size-4 rounded-full bg-background shadow-none ring-0 transition-transform",
           checked ? "translate-x-4" : "translate-x-0",
         )}
       />

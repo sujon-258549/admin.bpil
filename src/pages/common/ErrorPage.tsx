@@ -2,7 +2,8 @@ import { useRouteError, Link } from "react-router-dom"
 import { AlertTriangle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { H2, Text ,
-  SEO,
+
+  PageMeta,
 } from "@/components/shared"
 import { ROUTES } from "@/config/paths"
 
@@ -41,9 +42,8 @@ export default function ErrorPage() {
   const { title, message } = readError(err)
 
   return (
-    <>
-      <SEO title="Error" />
-      <div className="grid min-h-screen place-items-center bg-muted/40 p-6 text-center">
+        <div className="grid min-h-screen place-items-center bg-muted/40 p-6 text-center">
+      <PageMeta title="Error" description="Manage Error in Muster ERP & CRM" />
       <div className="max-w-md space-y-4">
         <AlertTriangle className="mx-auto size-12 text-destructive/70" />
         <H2>{title}</H2>

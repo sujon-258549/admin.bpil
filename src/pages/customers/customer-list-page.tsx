@@ -1,13 +1,14 @@
-import { SEO } from "@/components/shared"
+import { 
+  PageMeta,
+} from "@/components/shared"
 import PageHeader from "@/components/common/page-header"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 
 export default function CustomerListPage() {
   return (
-    <>
-      <SEO title="Customer List" />
-      <div>
+        <div>
+      <PageMeta title="Customer List" description="Manage Customer List in Muster ERP & CRM" />
       <PageHeader
         title="Customers"
         description="Manage your CRM contacts"

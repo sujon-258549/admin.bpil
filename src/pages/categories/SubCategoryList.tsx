@@ -1,16 +1,18 @@
 import { FolderTree } from "lucide-react"
 import { ModulePlaceholder ,
-  SEO,
+
+  PageMeta,
 } from "@/components/shared"
 
 export default function SubCategoryListPage() {
   return (
     <>
-      <SEO title="Sub Category List" />
+      <PageMeta title="Sub Category List" description="Manage Sub Category List in Muster ERP & CRM" />
       <ModulePlaceholder
-      title="Sub Categories"
-      description="Nested categories that belong to a parent category."
-      icon={FolderTree}
-    />
+        title="Subcategories"
+        description="Nested categories for better organization."
+        icon={FolderTree}
+      />
+    </>
   )
 }

@@ -28,7 +28,8 @@ import {
 } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { FormField, PageHeader, Text ,
-  SEO,
+
+  PageMeta,
 } from "@/components/shared"
 import {
   DepartmentFormModal,
@@ -119,6 +120,10 @@ export default function EmployeeCreatePage() {
       toast.error("Email and password are required")
       return
     }
+    if (!form.roleId) {
+      toast.error("Role is required")
+      return
+    }
 
     try {
       await createEmployee({
@@ -157,9 +162,8 @@ export default function EmployeeCreatePage() {
   }
 
   return (
-    <>
-      <SEO title="Employee Create" />
-      <div className="space-y-6">
+        <div className="space-y-6">
+      <PageMeta title="Employee Create" description="Manage Employee Create in Muster ERP & CRM" />
       <PageHeader
         title="Create Employee"
         description="Onboard a new team member with role, designation, department and contact details."
@@ -364,7 +368,7 @@ export default function EmployeeCreatePage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
-              <FormField label="Role">
+              <FormField label="Role" required>
                 <Combobox
                   value={form.roleId}
                   onChange={(value) => update("roleId", value)}
@@ -374,7 +378,9 @@ export default function EmployeeCreatePage() {
                     label: r.role ?? "—",
                   }))}
                   onAddNew={() => setRoleModalOpen(true)}
-                  addNewLabel="Add new role"
+                  addNewLabel="Add new"
+                  onViewAll={() => window.open(ROUTES.EMPLOYEES.ROLES, "_blank")}
+                  viewAllLabel="All roles"
                 />
               </FormField>
               <FormField label="Department">
@@ -387,7 +393,9 @@ export default function EmployeeCreatePage() {
                     label: d.name ?? "—",
                   }))}
                   onAddNew={() => setDeptModalOpen(true)}
-                  addNewLabel="Add new department"
+                  addNewLabel="Add new"
+                  onViewAll={() => window.open(ROUTES.EMPLOYEES.DEPARTMENTS, "_blank")}
+                  viewAllLabel="All departments"
                 />
               </FormField>
               <FormField label="Designation">
@@ -400,7 +408,9 @@ export default function EmployeeCreatePage() {
                     label: d.name,
                   }))}
                   onAddNew={() => setDesigModalOpen(true)}
-                  addNewLabel="Add new designation"
+                  addNewLabel="Add new"
+                  onViewAll={() => window.open(ROUTES.EMPLOYEES.DESIGNATIONS, "_blank")}
+                  viewAllLabel="All designations"
                 />
               </FormField>
             </CardContent>

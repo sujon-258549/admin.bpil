@@ -20,6 +20,8 @@ export interface ComboboxProps {
   id?: string
   onAddNew?: () => void
   addNewLabel?: string
+  onViewAll?: () => void
+  viewAllLabel?: string
 }
 
 export function Combobox({
@@ -35,6 +37,8 @@ export function Combobox({
   id,
   onAddNew,
   addNewLabel = "Add new",
+  onViewAll,
+  viewAllLabel = "View all",
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const rootRef = React.useRef<HTMLDivElement>(null)
@@ -70,12 +74,12 @@ export function Combobox({
         aria-haspopup="listbox"
         aria-expanded={open}
         className={cn(
-          "group flex h-9 w-full items-center justify-between rounded-[6px] border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-[color,box-shadow] outline-none",
+          "group flex h-9 w-full items-center justify-between rounded-[6px] border border-input bg-transparent px-3 py-1 text-sm transition-[color,box-shadow] outline-none",
           "hover:border-ring/60",
-          "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
+          "focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20",
           "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
           "dark:bg-input/30",
-          open && "border-ring ring-[3px] ring-ring/50",
+          open && "border-primary ring-2 ring-primary/20",
         )}
       >
         <span
@@ -124,6 +128,15 @@ export function Combobox({
               : undefined
           }
           addNewLabel={addNewLabel}
+          onViewAll={
+            onViewAll
+              ? () => {
+                  setOpen(false)
+                  onViewAll()
+                }
+              : undefined
+          }
+          viewAllLabel={viewAllLabel}
         />
       )}
     </div>
@@ -141,6 +154,8 @@ function ComboboxPanel({
   onClose,
   onAddNew,
   addNewLabel,
+  onViewAll,
+  viewAllLabel,
 }: {
   options: ComboboxOption[]
   selectedValue?: string
@@ -150,6 +165,8 @@ function ComboboxPanel({
   onClose: () => void
   onAddNew?: () => void
   addNewLabel: string
+  onViewAll?: () => void
+  viewAllLabel: string
 }) {
   const [query, setQuery] = React.useState("")
   const [highlight, setHighlight] = React.useState(0)
@@ -254,17 +271,33 @@ function ComboboxPanel({
         )}
       </div>
 
-      {onAddNew && (
-        <button
-          type="button"
-          onMouseDown={(e) => {
-            e.preventDefault()
-            onAddNew()
-          }}
-          className="flex w-full items-center gap-2 border-t border-input px-3 py-2 text-sm text-primary transition-colors hover:bg-accent"
-        >
-          <Plus className="size-4" /> {addNewLabel}
-        </button>
+      {(onAddNew || onViewAll) && (
+        <div className="flex items-center gap-2 border-t border-input p-2">
+          {onAddNew && (
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault()
+                onAddNew()
+              }}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-md border border-primary px-3 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+            >
+              <Plus className="size-4" /> {addNewLabel}
+            </button>
+          )}
+          {onViewAll && (
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault()
+                onViewAll()
+              }}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-md border border-input px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            >
+              {viewAllLabel}
+            </button>
+          )}
+        </div>
       )}
     </div>
   )

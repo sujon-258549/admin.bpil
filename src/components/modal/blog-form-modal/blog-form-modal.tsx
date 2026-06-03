@@ -3,8 +3,8 @@ import { Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { TagInput } from "@/components/ui/tag-input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import {
   Dialog,
@@ -18,6 +18,7 @@ import { FormField, Text } from "@/components/shared"
 import { useBlog } from "@/hooks/data-fetch"
 import type { Blog } from "@/redux/features/blogs"
 import { getErrorMessage } from "@/lib/errors"
+import RichTextEditor from "@/components/ui/rich-text-editor"
 
 interface BlogFormModalProps {
   open: boolean
@@ -34,7 +35,7 @@ export function BlogFormModal({
 }: BlogFormModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-xl">
+      <DialogContent className="!w-[95vw] !max-w-[95vw] max-h-[95vh] p-0 flex flex-col overflow-hidden bg-background">
         <BlogForm
           key={initial?.id ?? "new"}
           initial={initial ?? null}
@@ -50,17 +51,17 @@ interface FormState {
   title: string
   content: string
   description: string
-  categories: string
+  categories: string[]
   isPublished: boolean
 }
 
 function makeInitial(initial: Blog | null): FormState {
-  if (!initial) return { title: "", content: "", description: "", categories: "", isPublished: false }
+  if (!initial) return { title: "", content: "", description: "", categories: [], isPublished: false }
   return {
     title: initial.title ?? "",
     content: initial.content ?? "",
     description: initial.description ?? "",
-    categories: initial.category?.join(", ") ?? "",
+    categories: initial.category ?? [],
     isPublished: initial.isPublished,
   }
 }
@@ -84,10 +85,7 @@ function BlogForm({
       toast.error("Title is required")
       return
     }
-    const formattedCategories = form.categories
-      .split(",")
-      .map((c) => c.trim())
-      .filter(Boolean)
+    const formattedCategories = form.categories.map(c => c.trim()).filter(Boolean)
 
     try {
       if (isEdit && initial) {
@@ -120,17 +118,17 @@ function BlogForm({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <DialogHeader>
-        <DialogTitle>
+    <form onSubmit={handleSubmit} className="flex flex-col h-full max-h-[95vh]">
+      <DialogHeader className="px-6 py-5 border-b bg-muted/10">
+        <DialogTitle className="text-2xl font-bold tracking-tight">
           {isEdit ? "Edit Blog Post" : "Create Blog Post"}
         </DialogTitle>
-        <DialogDescription>
-          Publish news and updates to your blog.
+        <DialogDescription className="text-base">
+          Publish news and updates to your audience. Make it rich and beautiful!
         </DialogDescription>
       </DialogHeader>
 
-      <div className="my-4 space-y-4">
+      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
         <FormField label="Title" required htmlFor="blog-title">
           <Input
             id="blog-title"
@@ -138,75 +136,86 @@ function BlogForm({
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
             placeholder="e.g. 10 Tips for Better Management"
+            className="h-11 transition-all focus:ring-2 focus:ring-primary/20"
           />
         </FormField>
+
         <FormField label="Categories" htmlFor="blog-categories">
-          <Input
+          <TagInput
             id="blog-categories"
             value={form.categories}
-            onChange={(e) =>
-              setForm({ ...form, categories: e.target.value })
+            onChange={(value) =>
+              setForm({ ...form, categories: value })
             }
-            placeholder="e.g. News, Update, Important (comma separated)"
+            suggestions={["News", "Update", "Important", "Management", "Technology", "Design", "Marketing", "Event"]}
+            placeholder="Type a category and press Enter..."
+            className="min-h-11 transition-all focus-within:ring-2 focus-within:ring-primary/20"
           />
         </FormField>
-        <FormField label="Description" htmlFor="blog-desc">
-          <Textarea
+
+        <FormField label="Short Description" htmlFor="blog-desc">
+          <Input
             id="blog-desc"
-            rows={2}
             value={form.description}
             onChange={(e) =>
               setForm({ ...form, description: e.target.value })
             }
-            placeholder="Short excerpt or description"
+            placeholder="A brief excerpt or description for blog lists and SEO..."
+            className="h-11 transition-all focus:ring-2 focus:ring-primary/20"
           />
         </FormField>
-        <FormField label="Content" htmlFor="blog-content">
-          <Textarea
-            id="blog-content"
-            rows={6}
-            value={form.content}
-            onChange={(e) =>
-              setForm({ ...form, content: e.target.value })
-            }
-            placeholder="Full blog content..."
-          />
-        </FormField>
-        <div className="flex items-center justify-between rounded-md border bg-muted/30 px-3 py-2">
+        <div className="pt-2">
+          <Label className="mb-2 block text-sm font-medium">Content</Label>
+          <div className="rounded-lg shadow-sm border overflow-hidden">
+            <RichTextEditor
+              id="blog-content"
+              name="content"
+              value={form.content}
+              onChange={(e) => setForm({ ...form, content: e.target.value })}
+              placeholder="Write your amazing blog post here..."
+              height={550}
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between rounded-xl border bg-gradient-to-r from-muted/30 to-muted/10 px-5 py-4 shadow-sm mt-4">
           <div>
-            <Label className="text-sm font-medium">Publish Now</Label>
-            <Text size="xs" tone="muted">
+            <Label className="text-base font-semibold text-foreground">Publish Now</Label>
+            <Text size="xs" tone="muted" className="mt-1">
               Make this post instantly visible on the public site.
             </Text>
           </div>
           <Switch
             checked={form.isPublished}
             onCheckedChange={(v) => setForm({ ...form, isPublished: v })}
+            className="data-[state=checked]:bg-primary"
           />
         </div>
       </div>
 
-      <DialogFooter>
+      <DialogFooter className="px-6 py-4 border-t bg-muted/10 mt-auto">
         <Button
           type="button"
           variant="outline"
           onClick={onClose}
           disabled={isLoading}
+          className="min-w-24"
         >
           Cancel
         </Button>
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" disabled={isLoading} className="min-w-24">
           {isLoading ? (
             <>
-              <Loader2 className="size-4 animate-spin" /> Saving…
+              <Loader2 className="mr-2 size-4 animate-spin" /> Saving...
             </>
           ) : isEdit ? (
-            "Update"
+            "Update Post"
           ) : (
-            "Create"
+            "Publish Post"
           )}
         </Button>
       </DialogFooter>
     </form>
   )
 }
+

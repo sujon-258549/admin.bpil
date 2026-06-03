@@ -1,16 +1,16 @@
-import { useMemo, useState } from "react"
-import { Link } from "react-router-dom"
-import { Ban, Plus, Trash2, UserMinus, Users as UsersIcon } from "lucide-react"
-import { FiEdit } from "react-icons/fi"
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { Ban, Plus, Trash2, UserMinus, Users as UsersIcon } from "lucide-react";
+import { FiEdit } from "react-icons/fi";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   Can,
   ConfirmDialog,
@@ -26,20 +26,19 @@ import {
   UserAvatar,
   pickEmployeeTone,
   type Column,
+  PageMeta,
+} from "@/components/shared";
+import { useDebounce } from "@/hooks/use-debounce";
+import { useEmployee } from "@/hooks/data-fetch";
+import { useCurrentUser } from "@/hooks/use-permission";
+import { ROUTES } from "@/config/paths";
+import { shortId } from "@/lib/format";
+import { getErrorMessage } from "@/lib/errors";
+import type { EmployeeRow } from "@/redux/features/users";
 
-  SEO,
-} from "@/components/shared"
-import { useDebounce } from "@/hooks/use-debounce"
-import { useEmployee } from "@/hooks/data-fetch"
-import { useCurrentUser } from "@/hooks/use-permission"
-import { ROUTES } from "@/config/paths"
-import { shortId } from "@/lib/format"
-import { getErrorMessage } from "@/lib/errors"
-import type { EmployeeRow } from "@/redux/features/users"
+const PAGE_SIZE = 10;
 
-const PAGE_SIZE = 10
-
-type SummaryFilter = "all" | "page" | "active" | "blocked"
+type SummaryFilter = "all" | "page" | "active" | "blocked";
 
 const SUMMARY_META: Record<
   SummaryFilter,
@@ -61,15 +60,17 @@ const SUMMARY_META: Record<
     title: "Blocked Employees",
     description: "Currently blocked from logging in.",
   },
-}
+};
 
 export default function EmployeeListPage() {
-  const [search, setSearch] = useState("")
-  const [page, setPage] = useState(1)
-  const debounced = useDebounce(search, 350)
-  const currentUser = useCurrentUser()
-  const currentUserId = currentUser?.id
-  const [summaryFilter, setSummaryFilter] = useState<SummaryFilter | null>(null)
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const debounced = useDebounce(search, 350);
+  const currentUser = useCurrentUser();
+  const currentUserId = currentUser?.id;
+  const [summaryFilter, setSummaryFilter] = useState<SummaryFilter | null>(
+    null,
+  );
 
   const {
     employees: allEmployees,
@@ -84,83 +85,82 @@ export default function EmployeeListPage() {
     searchTerm: debounced || undefined,
     page,
     limit: PAGE_SIZE,
-  })
+  });
 
   // Branch logic removed; simply use allEmployees
-  const employees = allEmployees
+  const employees = allEmployees;
 
-  const [pendingDelete, setPendingDelete] = useState<EmployeeRow | null>(null)
-  const [pendingSoftDelete, setPendingSoftDelete] = useState<EmployeeRow | null>(
-    null,
-  )
+  const [pendingDelete, setPendingDelete] = useState<EmployeeRow | null>(null);
+  const [pendingSoftDelete, setPendingSoftDelete] =
+    useState<EmployeeRow | null>(null);
 
-  const totalPages = meta?.totalPages ?? 1
-  const total = meta?.total ?? 0
+  const totalPages = meta?.totalPages ?? 1;
+  const total = meta?.total ?? 0;
 
   const summary = useMemo(() => {
-    const active = employees.filter((e) => e.isActive && !e.isBlocked).length
-    const blocked = employees.filter((e) => e.isBlocked).length
-    return { active, blocked, total: employees.length }
-  }, [employees])
+    const active = employees.filter((e) => e.isActive && !e.isBlocked).length;
+    const blocked = employees.filter((e) => e.isBlocked).length;
+    return { active, blocked, total: employees.length };
+  }, [employees]);
 
   const summaryEmployees = useMemo(() => {
-    if (!summaryFilter) return []
+    if (!summaryFilter) return [];
     switch (summaryFilter) {
       case "active":
-        return employees.filter((e) => e.isActive && !e.isBlocked)
+        return employees.filter((e) => e.isActive && !e.isBlocked);
       case "blocked":
-        return employees.filter((e) => e.isBlocked)
+        return employees.filter((e) => e.isBlocked);
       case "all":
       case "page":
       default:
-        return employees
+        return employees;
     }
-  }, [employees, summaryFilter])
+  }, [employees, summaryFilter]);
 
   const onBlock = async (id: string) => {
     if (id === currentUserId) {
-      toast.error("You can't block your own account")
-      return
+      toast.error("You can't block your own account");
+      return;
     }
     try {
-      await blockEmployee(id).unwrap()
-      toast.success("Block status updated")
+      await blockEmployee(id).unwrap();
+      toast.success("Block status updated");
     } catch (err) {
-      toast.error(getErrorMessage(err, "Failed to update block status"))
+      toast.error(getErrorMessage(err, "Failed to update block status"));
     }
-  }
+  };
 
   const confirmSoftDelete = async () => {
-    if (!pendingSoftDelete) return
+    if (!pendingSoftDelete) return;
     if (pendingSoftDelete.id === currentUserId) {
-      toast.error("You can't delete your own account")
-      setPendingSoftDelete(null)
-      return
+      toast.error("You can't delete your own account");
+      setPendingSoftDelete(null);
+      return;
     }
     try {
-      await softDeleteEmployee(pendingSoftDelete.id).unwrap()
-      toast.success("Employee soft-deleted")
-      setPendingSoftDelete(null)
+      await softDeleteEmployee(pendingSoftDelete.id).unwrap();
+      toast.success("Employee soft-deleted");
+      setPendingSoftDelete(null);
     } catch (err) {
-      toast.error(getErrorMessage(err, "Failed to soft-delete employee"))
+      toast.error(getErrorMessage(err, "Failed to soft-delete employee"));
     }
-  }
+  };
 
   const confirmHardDelete = async () => {
-    if (!pendingDelete) return
+    if (!pendingDelete) return;
     if (pendingDelete.id === currentUserId) {
-      toast.error("You can't delete your own account")
-      setPendingDelete(null)
-      return
+      toast.error("You can't delete your own account");
+      setPendingDelete(null);
+      return;
     }
     try {
-      await deleteEmployee(pendingDelete.id).unwrap()
-      toast.success("Employee deleted")
-      setPendingDelete(null)
+      await deleteEmployee(pendingDelete.id).unwrap();
+      toast.success("Employee deleted");
+      setPendingDelete(null);
     } catch (err) {
-      toast.error(getErrorMessage(err, "Failed to delete employee"))
+      toast.error(getErrorMessage(err, "Failed to delete employee"));
     }
-  }
+  };
 
   const columns: Column<EmployeeRow>[] = [
     {
@@ -286,12 +286,10 @@ export default function EmployeeListPage() {
       align: "right",
       fixed: "right",
       cell: (u) => {
-        const isSelf = u.id === currentUserId
-        const selfTitle = "You can't perform this action on your own account"
+        const isSelf = u.id === currentUserId;
+        const selfTitle = "You can't perform this action on your own account";
         return (
-    <>
-      <SEO title="Employee List" />
-      <div className="flex justify-end gap-1">
+          <div className="flex justify-end gap-1">
             <Can module="employees" action="update">
               <Button
                 size="icon-sm"
@@ -346,20 +344,23 @@ export default function EmployeeListPage() {
               </Button>
             </Can>
           </div>
-        )
+        );
       },
     },
-  ]
+  ];
 
   // The "Columns" dropdown in the toolbar owns its hidden-set internally;
   // we just track which columns it tells us are visible and forward them
   // to the table.
   const [visibleColumns, setVisibleColumns] =
-    useState<Column<EmployeeRow>[]>(columns)
+    useState<Column<EmployeeRow>[]>(columns);
 
   return (
     <div className="space-y-6">
-      <SEO title="Employee List" />
+      <PageMeta
+        title="Employee List"
+        description="Manage Employee List in Muster ERP & CRM"
+      />
       <PageHeader
         title="Employee List"
         description="Manage your workforce, their roles, departments and designations."
@@ -409,8 +410,8 @@ export default function EmployeeListPage() {
       <DataTableToolbar
         value={search}
         onChange={(v) => {
-          setPage(1)
-          setSearch(v)
+          setPage(1);
+          setSearch(v);
         }}
         placeholder="Search by name, email or mobile..."
         fetching={isFetching}
@@ -544,6 +545,5 @@ export default function EmployeeListPage() {
         onConfirm={confirmHardDelete}
       />
     </div>
-  )
+  );
 }
-

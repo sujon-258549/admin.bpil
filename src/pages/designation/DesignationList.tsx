@@ -18,7 +18,7 @@ import {
   Text,
   type Column,
 
-  SEO,
+  PageMeta,
 } from "@/components/shared"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useDesignation } from "@/hooks/data-fetch"
@@ -175,9 +175,8 @@ export default function DesignationListPage() {
     useState<Column<Designation>[]>(columns)
 
   return (
-    <>
-      <SEO title="Designation List" />
-      <div className="space-y-6">
+        <div className="space-y-6">
+      <PageMeta title="Designation List" description="Manage Designation List in Muster ERP & CRM" />
       <PageHeader
         title="Designation List"
         description="Job titles assigned to employees — e.g. Software Engineer, HR Manager."

@@ -1,16 +1,18 @@
 import { Bell } from "lucide-react"
 import { ModulePlaceholder ,
-  SEO,
+
+  PageMeta,
 } from "@/components/shared"
 
 export default function NotificationListPage() {
   return (
     <>
-      <SEO title="Notification List" />
+      <PageMeta title="Notification List" description="Manage Notification List in Muster ERP & CRM" />
       <ModulePlaceholder
-      title="Notifications"
-      description="System and user notifications history."
-      icon={Bell}
-    />
+        title="Notifications"
+        description="View and manage system alerts."
+        icon={Bell}
+      />
+    </>
   )
 }

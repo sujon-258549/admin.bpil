@@ -2,16 +2,16 @@ import { Link } from "react-router-dom"
 import { FileQuestion } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { H1, Text ,
-  SEO,
+
+  PageMeta,
 } from "@/components/shared"
 import { ROUTES } from "@/config/paths"
 
 // Rendered for any unmatched route (see ROUTES.NOT_FOUND).
 export default function NotFoundPage() {
   return (
-    <>
-      <SEO title="Not Found" />
-      <div className="grid min-h-screen place-items-center bg-muted/40 p-6 text-center">
+        <div className="grid min-h-screen place-items-center bg-muted/40 p-6 text-center">
+      <PageMeta title="Not Found" description="Manage Not Found in Muster ERP & CRM" />
       <div className="space-y-4">
         <FileQuestion className="mx-auto size-12 text-muted-foreground/60" />
         <H1 size="h1">404</H1>
