@@ -178,7 +178,7 @@ function BlogForm({
           </div>
         </div>
 
-        <div className="flex items-center justify-between rounded-xl border bg-gradient-to-r from-muted/30 to-muted/10 px-5 py-4 shadow-sm mt-4">
+        <div className="flex items-center justify-between rounded-md border bg-gradient-to-r from-muted/30 to-muted/10 px-5 py-4 mt-4">
           <div>
             <Label className="text-base font-semibold text-foreground">Publish Now</Label>
             <Text size="xs" tone="muted" className="mt-1">
