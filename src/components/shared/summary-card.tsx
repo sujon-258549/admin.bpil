@@ -54,7 +54,7 @@ export type SummaryCardTone = NonNullable<
 
 interface SummaryCardProps {
   title: string
-  value: string | number
+  value: React.ReactNode
   // Small caption line under the value, e.g. "03% This Week".
   trend?: string
   tone?: SummaryCardTone

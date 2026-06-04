@@ -1,8 +1,8 @@
-import { SummaryCard, type SummaryCardTone } from "@/components/shared"
+import { SummaryCard, type SummaryCardTone, TakaIcon } from "@/components/shared"
 
 interface Kpi {
   title: string
-  value: string | number
+  value: React.ReactNode
   trend?: string
   tone: SummaryCardTone
   data?: number[]
@@ -11,7 +11,12 @@ interface Kpi {
 const KPIS: Kpi[] = [
   {
     title: "Total Service Revenue",
-    value: "৳12,48,920",
+    value: (
+      <span className="flex items-center">
+        <TakaIcon className="size-6 mr-1" />
+        12,48,920
+      </span>
+    ),
     trend: "↑ 12.4% vs last month",
     tone: "violet",
     data: [10, 14, 11, 16, 12, 18, 22, 20, 24],
