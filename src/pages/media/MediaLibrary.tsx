@@ -27,7 +27,9 @@ export default function MediaLibraryPage() {
     useGetFolderById,
     deleteFolder,
   } = useFolder(
-    currentFolderId === "root" ? { parentId: "root", limit: 100 } : undefined
+    currentFolderId === "root" 
+      ? { parentId: "root", sortBy: "createdAt", sortOrder: "asc" } 
+      : undefined
   )
 
   // Fetch children if we are inside a folder
@@ -75,25 +77,38 @@ export default function MediaLibraryPage() {
       
       <div className="flex h-[calc(100vh-100px)] flex-col rounded-xl border bg-card shadow-sm">
         {/* Header / Breadcrumbs */}
-        <div className="flex items-center gap-2 border-b bg-muted/20 px-6 py-4">
-          {breadcrumbs.map((crumb, idx) => (
-            <div key={crumb.id} className="flex items-center text-sm">
-              <button
-                onClick={() => handleNavigateBreadcrumb(crumb.id, idx)}
-                className={`flex items-center hover:text-foreground transition-colors ${
-                  idx === breadcrumbs.length - 1
-                    ? "font-semibold text-foreground"
-                    : "text-muted-foreground"
-                }`}
-              >
-                {idx === 0 ? <Home className="mr-1 h-4 w-4" /> : null}
-                {crumb.name}
-              </button>
-              {idx < breadcrumbs.length - 1 && (
-                <ChevronRight className="mx-1 h-4 w-4 text-muted-foreground/50" />
-              )}
-            </div>
-          ))}
+        <div className="flex items-center justify-between border-b bg-muted/20 px-6 py-4">
+          <div className="flex items-center gap-2">
+            {breadcrumbs.map((crumb, idx) => (
+              <div key={crumb.id} className="flex items-center text-sm">
+                <button
+                  onClick={() => handleNavigateBreadcrumb(crumb.id, idx)}
+                  className={`flex items-center hover:text-foreground transition-colors ${
+                    idx === breadcrumbs.length - 1
+                      ? "font-semibold text-foreground"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {idx === 0 ? <Home className="mr-1 h-4 w-4" /> : null}
+                  {crumb.name}
+                </button>
+                {idx < breadcrumbs.length - 1 && (
+                  <ChevronRight className="mx-1 h-4 w-4 text-muted-foreground/50" />
+                )}
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={() => {
+              setFolderToEdit(null)
+              setIsFormOpen(true)
+            }}
+            className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          >
+            <Plus className="h-4 w-4" />
+            New Folder
+          </button>
         </div>
 
         {/* Main Content Area (Right-clickable) */}
@@ -109,7 +124,17 @@ export default function MediaLibraryPage() {
             <div className="flex h-full flex-col items-center justify-center text-muted-foreground">
               <FolderIcon className="mb-4 h-16 w-16 opacity-20" />
               <p>This folder is empty.</p>
-              <p className="text-sm">Right-click anywhere to create a new folder.</p>
+              <p className="mb-4 text-sm">Right-click anywhere or click the button below to create a new folder.</p>
+              <button
+                onClick={() => {
+                  setFolderToEdit(null)
+                  setIsFormOpen(true)
+                }}
+                className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+              >
+                <Plus className="h-4 w-4" />
+                Create New Folder
+              </button>
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">

@@ -9,7 +9,7 @@ export const foldersApi = baseApi.injectEndpoints({
       PaginatedResponse<Folder> & { data: { folders: Folder[]; images: any[] } },
       FolderListParams | void
     >({
-      query: (params) => ({ url: "/folders", params: params as Record<string, any> ?? undefined }),
+      query: (params) => ({ url: "/folder", params: (params as Record<string, any>) ?? undefined }),
       transformResponse: (raw: any) => ({
         ...toPaginated<Folder>(raw),
         data: raw.data, // Preserve the custom nested shape { folders, images }
@@ -27,7 +27,7 @@ export const foldersApi = baseApi.injectEndpoints({
     }),
 
     getFolder: builder.query<ApiResponse<Folder>, string>({
-      query: (id) => `/folders/${id}`,
+      query: (id) => `/folder/${id}`,
       providesTags: (_r, _e, id) => [
         { type: "Folder", id },
         { type: "Folder", id: "LIST" }
@@ -35,7 +35,7 @@ export const foldersApi = baseApi.injectEndpoints({
     }),
 
     createFolder: builder.mutation<ApiResponse<Folder>, FolderPayload>({
-      query: (body) => ({ url: "/folders", method: "POST", body }),
+      query: (body) => ({ url: "/folder", method: "POST", body }),
       invalidatesTags: [{ type: "Folder", id: "LIST" }],
     }),
 
@@ -44,7 +44,7 @@ export const foldersApi = baseApi.injectEndpoints({
       { id: string; data: Partial<FolderPayload> }
     >({
       query: ({ id, data }) => ({
-        url: `/folders/${id}`,
+        url: `/folder/${id}`,
         method: "PUT",
         body: data,
       }),
@@ -55,7 +55,7 @@ export const foldersApi = baseApi.injectEndpoints({
     }),
 
     deleteFolder: builder.mutation<ApiResponse<unknown>, string>({
-      query: (id) => ({ url: `/folders/${id}`, method: "DELETE" }),
+      query: (id) => ({ url: `/folder/${id}`, method: "DELETE" }),
       invalidatesTags: [{ type: "Folder", id: "LIST" }],
     }),
   }),
