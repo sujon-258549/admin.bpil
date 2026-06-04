@@ -74,9 +74,9 @@ function DialogContent({
             data-slot="dialog-close"
             // Solid, visible close pill — sits above scroll content so it
             // stays reachable even when the modal body overflows.
-            className="absolute right-3 top-3 z-10 grid size-8 place-items-center rounded-full border border-border bg-background text-muted-foreground shadow-sm transition-colors hover:bg-destructive/10 hover:text-destructive focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+            className="fixed right-0 top-0 z-[100] grid size-10 place-items-center rounded-bl-xl border-l border-b border-border bg-background text-muted-foreground shadow-sm transition-colors hover:bg-destructive hover:text-destructive-foreground hover:border-destructive focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
           >
-            <XIcon />
+            <XIcon className="h-5 w-5" />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
         )}

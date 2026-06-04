@@ -11,23 +11,19 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useFolder } from "@/hooks/data-fetch/use-folder"
-import type { Folder } from "@/redux/features/folders"
 
-interface FolderFormModalProps {
+interface ImageFormModalProps {
   isOpen: boolean
   onClose: () => void
-  initialData?: Folder | null
-  parentId?: string | null
+  initialData?: any | null
 }
 
-export function FolderFormModal({
+export function ImageFormModal({
   isOpen,
   onClose,
   initialData,
-  parentId,
-}: FolderFormModalProps) {
-  const isEditing = !!initialData
-  const { createFolder, updateFolder } = useFolder()
+}: ImageFormModalProps) {
+  const { updateImage } = useFolder()
   
   const [name, setName] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -35,7 +31,7 @@ export function FolderFormModal({
   
   // Track previous props to reset state when the modal opens or data changes
   const [prevIsOpen, setPrevIsOpen] = useState(false)
-  const [prevInitialData, setPrevInitialData] = useState<Folder | null | undefined>(undefined)
+  const [prevInitialData, setPrevInitialData] = useState<any | null | undefined>(undefined)
 
   if (isOpen !== prevIsOpen || initialData !== prevInitialData) {
     setPrevIsOpen(isOpen)
@@ -51,7 +47,7 @@ export function FolderFormModal({
     e.preventDefault()
     
     if (!name.trim()) {
-      setError("Folder name is required")
+      setError("Image name is required")
       return
     }
 
@@ -59,12 +55,9 @@ export function FolderFormModal({
     setError("")
 
     try {
-      if (isEditing) {
-        await updateFolder({ id: initialData.id, data: { name } }).unwrap()
-        toast.success("Folder renamed successfully")
-      } else {
-        await createFolder({ name, parentId }).unwrap()
-        toast.success("Folder created successfully")
+      if (initialData) {
+        await updateImage({ id: initialData.id, data: { name } }).unwrap()
+        toast.success("Image renamed successfully")
       }
       onClose()
     } catch (err: any) {
@@ -80,24 +73,22 @@ export function FolderFormModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{isEditing ? "Rename Folder" : "New Folder"}</DialogTitle>
+          <DialogTitle>Rename Image</DialogTitle>
           <DialogDescription>
-            {isEditing
-              ? "Change the name of your folder."
-              : "Enter a name for the new folder."}
+            Change the name of your image.
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={onSubmit} className="space-y-4 pt-2">
           <div className="space-y-1.5">
-            <Label htmlFor="folder-name" className="text-sm font-medium">
-              Folder Name <span className="text-destructive">*</span>
+            <Label htmlFor="image-name" className="text-sm font-medium">
+              Image Name <span className="text-destructive">*</span>
             </Label>
             <Input
-              id="folder-name"
+              id="image-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Invoices"
+              placeholder="e.g. profile-picture.jpg"
               autoFocus
             />
             {error && <p className="text-xs text-destructive">{error}</p>}
@@ -108,7 +99,7 @@ export function FolderFormModal({
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : isEditing ? "Rename" : "Create"}
+              {isSubmitting ? "Saving..." : "Rename"}
             </Button>
           </div>
         </form>

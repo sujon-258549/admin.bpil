@@ -5,7 +5,8 @@ export interface Blog {
   content?: string
   description?: string
   excerpt?: string
-  coverImage?: string
+  coverImageId?: string
+  thumbnailId?: string
   tags: string[]
   category?: string[]
   authorId?: string
@@ -22,7 +23,8 @@ export interface BlogPayload {
   content?: string
   description?: string
   excerpt?: string
-  coverImage?: string
+  coverImageId?: string
+  thumbnailId?: string
   tags?: string[]
   category?: string[]
   isPublished?: boolean

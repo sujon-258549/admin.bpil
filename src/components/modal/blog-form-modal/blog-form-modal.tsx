@@ -19,6 +19,7 @@ import { useBlog } from "@/hooks/data-fetch"
 import type { Blog } from "@/redux/features/blogs"
 import { getErrorMessage } from "@/lib/errors"
 import RichTextEditor from "@/components/ui/rich-text-editor"
+import { MediaPicker } from "@/components/shared"
 
 interface BlogFormModalProps {
   open: boolean
@@ -53,6 +54,8 @@ interface FormState {
   description: string
   categories: string[]
   isPublished: boolean
+  thumbnailId?: string
+  coverImageId?: string
 }
 
 function makeInitial(initial: Blog | null): FormState {
@@ -63,6 +66,8 @@ function makeInitial(initial: Blog | null): FormState {
     description: initial.description ?? "",
     categories: initial.category ?? [],
     isPublished: initial.isPublished,
+    thumbnailId: initial.thumbnailId,
+    coverImageId: initial.coverImageId,
   }
 }
 
@@ -96,6 +101,8 @@ function BlogForm({
             content: form.content.trim() || undefined,
             description: form.description.trim() || undefined,
             category: formattedCategories.length ? formattedCategories : undefined,
+            thumbnailId: form.thumbnailId,
+            coverImageId: form.coverImageId,
             isPublished: form.isPublished,
           },
         }).unwrap()
@@ -106,6 +113,8 @@ function BlogForm({
           content: form.content.trim() || undefined,
           description: form.description.trim() || undefined,
           category: formattedCategories.length ? formattedCategories : undefined,
+          thumbnailId: form.thumbnailId,
+          coverImageId: form.coverImageId,
           isPublished: form.isPublished,
         }).unwrap()
         toast.success("Blog created")
@@ -139,6 +148,28 @@ function BlogForm({
             className="h-11 transition-all focus:ring-2 focus:ring-primary/20"
           />
         </FormField>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <Label className="mb-2 block text-sm font-medium">
+              Thumbnail <span className="text-destructive">*</span>
+            </Label>
+            <MediaPicker
+              value={form.thumbnailId}
+              onChange={(id) => setForm({ ...form, thumbnailId: id as string })}
+              label="Upload Image"
+            />
+          </div>
+
+          <div>
+            <Label className="mb-2 block text-sm font-medium">Cover Image</Label>
+            <MediaPicker
+              value={form.coverImageId}
+              onChange={(id) => setForm({ ...form, coverImageId: id as string })}
+              label="Upload Cover"
+            />
+          </div>
+        </div>
 
         <FormField label="Categories" htmlFor="blog-categories">
           <TagInput

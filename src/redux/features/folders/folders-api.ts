@@ -58,6 +58,32 @@ export const foldersApi = baseApi.injectEndpoints({
       query: (id) => ({ url: `/folder/${id}`, method: "DELETE" }),
       invalidatesTags: [{ type: "Folder", id: "LIST" }],
     }),
+
+    uploadImage: builder.mutation<ApiResponse<any>, FormData>({
+      query: (body) => ({
+        url: "/folder/upload",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [{ type: "Folder", id: "LIST" }],
+    }),
+
+    updateImage: builder.mutation<
+      ApiResponse<any>,
+      { id: string; data: { name: string } }
+    >({
+      query: ({ id, data }) => ({
+        url: `/folder/image/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: [{ type: "Folder", id: "LIST" }],
+    }),
+
+    deleteImage: builder.mutation<ApiResponse<unknown>, string>({
+      query: (id) => ({ url: `/folder/image/${id}`, method: "DELETE" }),
+      invalidatesTags: [{ type: "Folder", id: "LIST" }],
+    }),
   }),
   overrideExisting: false,
 })
@@ -68,4 +94,7 @@ export const {
   useCreateFolderMutation,
   useUpdateFolderMutation,
   useDeleteFolderMutation,
+  useUploadImageMutation,
+  useUpdateImageMutation,
+  useDeleteImageMutation,
 } = foldersApi
