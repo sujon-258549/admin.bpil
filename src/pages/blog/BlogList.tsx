@@ -23,18 +23,23 @@ import { useBlog } from "@/hooks/data-fetch"
 import type { Blog } from "@/redux/features/blogs"
 import { getErrorMessage } from "@/lib/errors"
 import { BlogFormModal } from "@/components/modal"
+import { DataTablePagination } from "@/components/shared/data-table/data-table-pagination"
 
 export default function BlogListPage() {
   const [search, setSearch] = useState("")
   const debounced = useDebounce(search, 350)
 
+  const [page, setPage] = useState(1)
+  const [limit] = useState(10)
+
   const {
     blogs,
+    meta,
     isFetching,
     isLoading,
     deleteBlog,
     toggleBlogStatus,
-  } = useBlog({ searchTerm: debounced || undefined, limit: 100 })
+  } = useBlog({ searchTerm: debounced || undefined, page, limit })
 
   const [formOpen, setFormOpen] = useState(false)
   const [editing, setEditing] = useState<Blog | null>(null)
@@ -93,17 +98,29 @@ export default function BlogListPage() {
           )}
           <div className="min-w-0">
             <div className="truncate font-medium">{b.title || "Untitled"}</div>
-            <Text size="xs" tone="muted">
-              {b.author?.profile?.name || b.authorName || "Unknown Author"}
-              {(b.author?.email || b.author?.mobile) && (
-                <span className="ml-1 opacity-75">
-                  ({b.author.email || b.author.mobile})
-                </span>
-              )}
-            </Text>
           </div>
         </div>
       ),
+    },
+    {
+      key: "author",
+      header: "Author",
+      cell: (b) => {
+        const name = b.author?.profile?.name || b.authorName
+        const contact = b.author?.email || b.author?.mobile
+        return (
+          <div className="min-w-0">
+            <div className="truncate font-medium">
+              {name || contact || "Unknown Author"}
+            </div>
+            {name && contact && (
+              <Text size="xs" tone="muted">
+                {contact}
+              </Text>
+            )}
+          </div>
+        )
+      },
     },
     {
       key: "description",
@@ -207,6 +224,16 @@ export default function BlogListPage() {
                 </Button>
               </Can>
             }
+          />
+        }
+        footer={
+          <DataTablePagination
+            page={meta?.page ?? 1}
+            pageSize={meta?.perPage ?? 10}
+            total={meta?.total ?? 0}
+            showing={blogs.length}
+            totalPages={meta?.totalPages ?? Math.ceil((meta?.total ?? 0) / (meta?.perPage ?? 10))}
+            onPageChange={setPage}
           />
         }
       />

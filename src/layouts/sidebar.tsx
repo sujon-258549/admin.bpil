@@ -46,6 +46,10 @@ export default function AppSidebar() {
 
     const result: AppModule[] = []
     for (const mod of MODULES) {
+      if (mod.key === "profile") {
+        result.push(mod)
+        continue
+      }
       if (mod.children && mod.children.length > 0) {
         const visibleChildren: AppModuleChild[] = mod.children.filter((c) =>
           hasAction(user, c.key, "read"),

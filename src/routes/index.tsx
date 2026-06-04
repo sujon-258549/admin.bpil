@@ -68,6 +68,10 @@ import BlogList from "@/pages/blog/BlogList"
 import MediaLibrary from "@/pages/media/MediaLibrary"
 import NotificationList from "@/pages/notifications/NotificationList"
 import WorkflowPage from "@/pages/workflow/WorkflowPage"
+import YourProfile from "@/pages/profile/YourProfile"
+import UpdateProfile from "@/pages/profile/UpdateProfile"
+import ChangePassword from "@/pages/profile/ChangePassword"
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Router
@@ -291,6 +295,20 @@ export const router = createBrowserRouter([
             <WorkflowPage />
           </RequirePermission>
         ),
+      },
+
+      // Profile Management — accessible to all authenticated users
+      {
+        path: "profile",
+        element: <YourProfile />,
+      },
+      {
+        path: "profile/edit",
+        element: <UpdateProfile />,
+      },
+      {
+        path: "profile/password",
+        element: <ChangePassword />,
       },
 
       // 404 — any unmatched URL inside the protected tree.

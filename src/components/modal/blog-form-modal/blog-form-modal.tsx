@@ -36,7 +36,7 @@ export function BlogFormModal({
 }: BlogFormModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="!w-[95vw] !max-w-[95vw] max-h-[95vh] p-0 flex flex-col overflow-hidden bg-background">
+      <DialogContent className="!w-[98vw] !max-w-[1600px] h-[98vh] max-h-[98vh] p-0 flex flex-col overflow-hidden bg-background">
         <BlogForm
           key={initial?.id ?? "new"}
           initial={initial ?? null}
@@ -247,7 +247,7 @@ function BlogForm({
               value={form.content}
               onChange={(e) => setForm({ ...form, content: e.target.value })}
               placeholder="Write your amazing blog post here..."
-              height={550}
+              height={650}
             />
           </div>
         </div>

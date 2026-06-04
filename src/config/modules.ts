@@ -29,6 +29,7 @@ export type ModuleKey =
   | "notifications"
   | "workflow"
   | "logs"
+  | "profile"
   | "settings";
 
 export type ModuleGroup = "Overview" | "CRM" | "ERP" | "System";
@@ -142,6 +143,17 @@ export const MODULES: AppModule[] = [
     children: [
       { key: "logs.actions", label: "Action Logs", path: "/logs/actions" },
       { key: "logs.errors", label: "Error Logs", path: "/logs/errors" },
+    ],
+  },
+  {
+    key: "profile",
+    label: "Profile Management",
+    path: "/profile",
+    icon: Users,
+    children: [
+      { key: "profile.overview", label: "Your Profile", path: "/profile" },
+      { key: "profile.update", label: "Update Profile", path: "/profile/edit" },
+      { key: "profile.password", label: "Change Password", path: "/profile/password" },
     ],
   },
   {

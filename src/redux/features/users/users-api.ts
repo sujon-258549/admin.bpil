@@ -52,7 +52,7 @@ export const usersApi = baseApi.injectEndpoints({
       PaginatedResponse<EmployeeRow>,
       ListUsersParams | void
     >({
-      query: (params) => ({ url: "/users", params: params ?? undefined }),
+      query: (params) => ({ url: "/users", params: (params ?? undefined) as Record<string, any> }),
       transformResponse: (raw: any): PaginatedResponse<EmployeeRow> => {
         const flat = toPaginated<EmployeeRow>(raw)
         return { ...flat, data: (raw?.data ?? []).map(flattenEmployee) }
@@ -66,14 +66,14 @@ export const usersApi = baseApi.injectEndpoints({
           : [{ type: "User", id: "LIST" }],
     }),
 
-    getMyData: builder.query<ApiResponse<User>, void>({
+    getMyData: builder.query<ApiResponse<EmployeeRow>, void>({
       query: () => "/users/my-data",
-      transformResponse: (raw: unknown): ApiResponse<User> => {
+      transformResponse: (raw: unknown): ApiResponse<EmployeeRow> => {
         const r = raw as { success?: boolean; message?: string; data?: unknown }
         return {
           success: r?.success ?? true,
           message: r?.message ?? "",
-          data: normalizeUser(r?.data as Parameters<typeof normalizeUser>[0]),
+          data: flattenEmployee(r?.data),
         }
       },
       providesTags: [{ type: "User", id: "ME" }],

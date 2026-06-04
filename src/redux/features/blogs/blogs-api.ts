@@ -6,7 +6,7 @@ import type { Blog, BlogListParams, BlogPayload } from "./types"
 export const blogsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     listBlogs: builder.query<PaginatedResponse<Blog>, BlogListParams | void>({
-      query: (params) => ({ url: "/blog", params: params ?? undefined }),
+      query: (params) => ({ url: "/blog", params: params ? (params as Record<string, any>) : undefined }),
       transformResponse: (raw: any) => toPaginated<Blog>(raw),
       providesTags: (result) =>
         result
