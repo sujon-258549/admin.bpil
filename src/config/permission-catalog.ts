@@ -34,6 +34,9 @@ const ACTION_OVERRIDES: Record<string, readonly string[]> = {
   blog: [...CRUD, "publish"],
   // Workflow guide — read-only docs page, no other actions make sense.
   workflow: ["read"],
+  // Logs — read-only audit trail pages.
+  "logs.actions": ["read"],
+  "logs.errors": ["read"],
 }
 
 export interface PermissionCatalogItem {
