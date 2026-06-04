@@ -23,7 +23,6 @@ import { useBlog } from "@/hooks/data-fetch"
 import type { Blog } from "@/redux/features/blogs"
 import { getErrorMessage } from "@/lib/errors"
 import { BlogFormModal } from "@/components/modal"
-import { env } from "@/config/env"
 
 export default function BlogListPage() {
   const [search, setSearch] = useState("")
@@ -95,7 +94,12 @@ export default function BlogListPage() {
           <div className="min-w-0">
             <div className="truncate font-medium">{b.title || "Untitled"}</div>
             <Text size="xs" tone="muted">
-              {b.authorName || "Unknown Author"} {b.authorImage ? "" : ""}
+              {b.author?.profile?.name || b.authorName || "Unknown Author"}
+              {(b.author?.email || b.author?.mobile) && (
+                <span className="ml-1 opacity-75">
+                  ({b.author.email || b.author.mobile})
+                </span>
+              )}
             </Text>
           </div>
         </div>

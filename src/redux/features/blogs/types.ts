@@ -20,6 +20,14 @@ export interface Blog {
   tags: string[]
   category?: string[]
   authorId?: string
+  author?: {
+    id: string
+    email?: string
+    mobile?: string
+    profile?: {
+      name?: string
+    }
+  }
   authorName?: string
   authorImage?: string
   isPublished: boolean
