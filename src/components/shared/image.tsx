@@ -3,7 +3,7 @@ import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog"
-import { X } from "lucide-react"
+import { X, Eye } from "lucide-react"
 import { env } from "@/config/env"
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -28,12 +28,28 @@ export function Image({ preview = false, imageId, className, onClick, ...props }
 
   return (
     <>
-      <img
-        {...props}
-        src={finalSrc}
-        onClick={handleClick}
-        className={`${className || ""} ${preview ? "cursor-pointer" : ""}`}
-      />
+      {preview ? (
+        <div 
+          onClick={handleClick} 
+          className={`relative group cursor-pointer overflow-hidden ${className || ""}`}
+        >
+          <img
+            {...props}
+            src={finalSrc}
+            className={`w-full h-full ${className?.includes('object-') ? '' : 'object-cover'} ${className || ""}`}
+          />
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <Eye className="w-6 h-6 text-white/90 drop-shadow-md" />
+          </div>
+        </div>
+      ) : (
+        <img
+          {...props}
+          src={finalSrc}
+          onClick={handleClick}
+          className={className || ""}
+        />
+      )}
 
       {preview && (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
