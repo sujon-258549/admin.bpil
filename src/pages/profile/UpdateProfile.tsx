@@ -203,6 +203,16 @@ export default function UpdateProfile() {
                   type="date"
                   value={form.dob}
                   onChange={(e) => update("dob", e.target.value)}
+                  onClick={(e) => {
+                    try {
+                      if ("showPicker" in e.currentTarget) {
+                        e.currentTarget.showPicker()
+                      }
+                    } catch {
+                      // ignore
+                    }
+                  }}
+                  className="cursor-pointer"
                 />
               </FormField>
               

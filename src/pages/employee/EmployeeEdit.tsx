@@ -280,6 +280,16 @@ export default function EmployeeEditPage() {
                   type="date"
                   value={form.dob}
                   onChange={(e) => update("dob", e.target.value)}
+                  onClick={(e) => {
+                    try {
+                      if ("showPicker" in e.currentTarget) {
+                        e.currentTarget.showPicker()
+                      }
+                    } catch (err) {
+                      // ignore
+                    }
+                  }}
+                  className="cursor-pointer"
                 />
               </FormField>
               <FormField label="Blood Group">
