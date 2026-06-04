@@ -4,13 +4,17 @@ import {
   DialogContent,
 } from "@/components/ui/dialog"
 import { X } from "lucide-react"
+import { env } from "@/config/env"
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   preview?: boolean
+  imageId?: string
 }
 
-export function Image({ preview = false, className, onClick, ...props }: ImageProps) {
+export function Image({ preview = false, imageId, className, onClick, ...props }: ImageProps) {
   const [isOpen, setIsOpen] = useState(false)
+
+  const finalSrc = imageId ? `${env.API_URL}/folder/image/${imageId}` : props.src
 
   const handleClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     if (preview) {
@@ -26,6 +30,7 @@ export function Image({ preview = false, className, onClick, ...props }: ImagePr
     <>
       <img
         {...props}
+        src={finalSrc}
         onClick={handleClick}
         className={`${className || ""} ${preview ? "cursor-pointer" : ""}`}
       />
@@ -41,7 +46,8 @@ export function Image({ preview = false, className, onClick, ...props }: ImagePr
                 <X className="h-6 w-6" />
               </button>
               <img
-                src={props.src}
+                {...props}
+                src={finalSrc}
                 alt={props.alt || "Preview"}
                 className="max-w-full max-h-full object-contain rounded-md"
               />

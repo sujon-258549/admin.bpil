@@ -7,6 +7,16 @@ export interface Blog {
   excerpt?: string
   coverImageId?: string
   thumbnailId?: string
+  thumbnail?: {
+    id: string
+    url: string
+    name?: string
+  }
+  coverImage?: {
+    id: string
+    url: string
+    name?: string
+  }
   tags: string[]
   category?: string[]
   authorId?: string

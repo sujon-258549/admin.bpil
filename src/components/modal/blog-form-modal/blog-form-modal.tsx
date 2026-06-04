@@ -101,8 +101,8 @@ function BlogForm({
             content: form.content.trim() || undefined,
             description: form.description.trim() || undefined,
             category: formattedCategories.length ? formattedCategories : undefined,
-            thumbnailId: form.thumbnailId,
-            coverImageId: form.coverImageId,
+            thumbnailId: form.thumbnailId?.trim() || undefined,
+            coverImageId: form.coverImageId?.trim() || undefined,
             isPublished: form.isPublished,
           },
         }).unwrap()
@@ -115,8 +115,8 @@ function BlogForm({
           content: form.content.trim() || undefined,
           description: form.description.trim() || undefined,
           category: formattedCategories.length ? formattedCategories : undefined,
-          thumbnailId: form.thumbnailId,
-          coverImageId: form.coverImageId,
+          thumbnailId: form.thumbnailId?.trim() || undefined,
+          coverImageId: form.coverImageId?.trim() || undefined,
           isPublished: form.isPublished,
         }).unwrap()
         if (res?.success) {
@@ -161,7 +161,10 @@ function BlogForm({
             <MediaPicker
               value={form.thumbnailId}
               onChange={(id) => setForm({ ...form, thumbnailId: id as string })}
-              label="Upload Image"
+              label="Upload Thumbnail"
+              width="w-full"
+              height="h-48"
+              className="rounded-xl shadow-sm border-border/50"
             />
           </div>
 
@@ -171,6 +174,9 @@ function BlogForm({
               value={form.coverImageId}
               onChange={(id) => setForm({ ...form, coverImageId: id as string })}
               label="Upload Cover"
+              width="w-full"
+              height="h-48"
+              className="rounded-xl shadow-sm border-border/50"
             />
           </div>
         </div>

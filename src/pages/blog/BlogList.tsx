@@ -11,9 +11,9 @@ import {
   DataTableColumnsButton,
   DataTableToolbar,
   EmptyState,
-  IconBadge,
   PageHeader,
   Text,
+  Image,
   type Column,
 
   PageMeta,
@@ -22,8 +22,8 @@ import { useDebounce } from "@/hooks/use-debounce"
 import { useBlog } from "@/hooks/data-fetch"
 import type { Blog } from "@/redux/features/blogs"
 import { getErrorMessage } from "@/lib/errors"
-import { shortId } from "@/lib/format"
 import { BlogFormModal } from "@/components/modal"
+import { env } from "@/config/env"
 
 export default function BlogListPage() {
   const [search, setSearch] = useState("")
@@ -80,11 +80,22 @@ export default function BlogListPage() {
       header: "Title",
       cell: (b) => (
         <div className="flex items-center gap-3">
-          <IconBadge icon={Newspaper} />
+          {b.thumbnail ? (
+            <Image
+              imageId={b.thumbnail.id}
+              alt={b.title || "Thumbnail"}
+              className="h-10 w-10 shrink-0 rounded-md object-cover border border-border/50"
+              preview
+            />
+          ) : (
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground border border-border/50">
+              <Newspaper className="size-5" />
+            </div>
+          )}
           <div className="min-w-0">
             <div className="truncate font-medium">{b.title || "Untitled"}</div>
             <Text size="xs" tone="muted">
-              {shortId(b.id)}
+              {b.authorName || "Unknown Author"} {b.authorImage ? "" : ""}
             </Text>
           </div>
         </div>

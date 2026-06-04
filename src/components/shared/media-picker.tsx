@@ -2,7 +2,6 @@ import { useState } from "react"
 import { Upload, X } from "lucide-react"
 import { MediaUploadsModal } from "@/components/modal/media-uploads-modal"
 import { Image } from "@/components/shared/image"
-import { env } from "@/config/env"
 
 interface MediaPickerProps {
   value?: string | string[]
@@ -42,7 +41,7 @@ export function MediaPicker({
                 {value.map((id) => (
                   <Image 
                     key={id}
-                    src={`${env.API_URL}/folder/image/${id}`} 
+                    imageId={id}
                     alt="Selected" 
                     preview={false}
                     className="w-16 h-16 object-cover rounded-md"
@@ -51,7 +50,7 @@ export function MediaPicker({
               </div>
             ) : (
               <Image 
-                src={`${env.API_URL}/folder/image/${value as string}`} 
+                imageId={value as string}
                 alt={label} 
                 preview={false}
                 className="w-full h-full object-cover"
