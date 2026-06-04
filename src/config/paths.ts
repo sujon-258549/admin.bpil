@@ -30,5 +30,9 @@ export const ROUTES = {
     ROLES: "/employees/roles",
     DESIGNATIONS: "/employees/designations",
   },
+  LOGS: {
+    ACTIONS: "/logs/actions",
+    ERRORS: "/logs/errors",
+  },
   NOT_FOUND: "*",
 } as const

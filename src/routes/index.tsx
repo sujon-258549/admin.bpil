@@ -51,6 +51,8 @@ import EmployeeEdit from "@/pages/employee/EmployeeEdit"
 import DepartmentList from "@/pages/department/DepartmentList"
 import RoleList from "@/pages/role/RoleList"
 import DesignationList from "@/pages/designation/DesignationList"
+import ActionLogs from "@/pages/logs/ActionLogs"
+import ErrorLogs from "@/pages/logs/ErrorLogs"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CRM / ERP module placeholders
@@ -109,6 +111,24 @@ export const router = createBrowserRouter([
         element: (
           <RequirePermission moduleKey="dashboard">
             <Dashboard />
+          </RequirePermission>
+        ),
+      },
+      
+      // Logs
+      {
+        path: "logs/actions",
+        element: (
+          <RequirePermission moduleKey="dashboard">
+            <ActionLogs />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "logs/errors",
+        element: (
+          <RequirePermission moduleKey="dashboard">
+            <ErrorLogs />
           </RequirePermission>
         ),
       },

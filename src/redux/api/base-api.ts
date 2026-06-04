@@ -133,6 +133,8 @@ export const baseApi = createApi({
     "MainBranch",
     "Blog",
     "Folder",
+    "ActionLog",
+    "ErrorLog",
   ],
   endpoints: () => ({}),
 })

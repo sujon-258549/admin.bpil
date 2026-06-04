@@ -101,8 +101,8 @@ function BlogForm({
             content: form.content.trim() || undefined,
             description: form.description.trim() || undefined,
             category: formattedCategories.length ? formattedCategories : undefined,
-            thumbnailId: form.thumbnailId?.trim() || null,
-            coverImageId: form.coverImageId?.trim() || null,
+            thumbnailId: form.thumbnailId?.trim() || undefined,
+            coverImageId: form.coverImageId?.trim() || undefined,
             isPublished: form.isPublished,
           },
         }).unwrap()

@@ -12,6 +12,7 @@ import {
   Settings,
   UsersRound,
   Users,
+  Activity,
   type LucideIcon,
 } from "lucide-react";
 
@@ -27,6 +28,7 @@ export type ModuleKey =
   | "media"
   | "notifications"
   | "workflow"
+  | "logs"
   | "settings";
 
 export type ModuleGroup = "Overview" | "CRM" | "ERP" | "System";
@@ -131,6 +133,16 @@ export const MODULES: AppModule[] = [
     label: "Notifications",
     path: "/notifications",
     icon: Bell,
+  },
+  {
+    key: "logs",
+    label: "Logs",
+    path: "/logs",
+    icon: Activity,
+    children: [
+      { key: "logs.actions", label: "Action Logs", path: "/logs/actions" },
+      { key: "logs.errors", label: "Error Logs", path: "/logs/errors" },
+    ],
   },
   {
     key: "settings",
