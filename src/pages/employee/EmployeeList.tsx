@@ -123,9 +123,11 @@ export default function EmployeeListPage() {
       return;
     }
     try {
-      await blockEmployee(id).unwrap();
-      toast.success("Block status updated");
-    } catch (err) {
+      const res = await blockEmployee(id).unwrap();
+      if (res?.success) {
+        toast.success(res.message || "Block status updated");
+      }
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to update block status"));
     }
   };
@@ -138,10 +140,12 @@ export default function EmployeeListPage() {
       return;
     }
     try {
-      await softDeleteEmployee(pendingSoftDelete.id).unwrap();
-      toast.success("Employee soft-deleted");
+      const res = await softDeleteEmployee(pendingSoftDelete.id).unwrap();
+      if (res?.success) {
+        toast.success(res.message || "Employee soft-deleted");
+      }
       setPendingSoftDelete(null);
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to soft-delete employee"));
     }
   };
@@ -154,10 +158,12 @@ export default function EmployeeListPage() {
       return;
     }
     try {
-      await deleteEmployee(pendingDelete.id).unwrap();
-      toast.success("Employee deleted");
+      const res = await deleteEmployee(pendingDelete.id).unwrap();
+      if (res?.success) {
+        toast.success(res.message || "Employee deleted");
+      }
       setPendingDelete(null);
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to delete employee"));
     }
   };

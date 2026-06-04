@@ -126,7 +126,7 @@ export default function EmployeeCreatePage() {
     }
 
     try {
-      await createEmployee({
+      const res = await createEmployee({
         user: {
           email: form.email.trim(),
           password: form.password,
@@ -154,9 +154,11 @@ export default function EmployeeCreatePage() {
           workType: form.workType.trim() || undefined,
         },
       }).unwrap()
-      toast.success("Employee created successfully")
+      if (res?.success) {
+        toast.success(res.message || "Employee created successfully")
+      }
       navigate(ROUTES.EMPLOYEES.LIST)
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to create employee"))
     }
   }

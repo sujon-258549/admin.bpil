@@ -53,19 +53,24 @@ export default function DepartmentListPage() {
   const confirmDelete = async () => {
     if (!pendingDelete) return
     try {
-      await deleteDepartment(pendingDelete.id).unwrap()
-      toast.success("Department deleted")
+      const res = await deleteDepartment(pendingDelete.id).unwrap()
+      if (res?.success) {
+        toast.success(res.message || "Department deleted")
+      }
       setPendingDelete(null)
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to delete department"))
     }
   }
 
   const onToggle = async (id: string) => {
     try {
-      await toggleDepartmentStatus(id).unwrap()
-    } catch {
-      toast.error("Failed to update status")
+      const res = await toggleDepartmentStatus(id).unwrap()
+      if (res?.success) {
+        toast.success(res.message || "Status updated")
+      }
+    } catch (err: any) {
+      toast.error(getErrorMessage(err, "Failed to update status"))
     }
   }
 

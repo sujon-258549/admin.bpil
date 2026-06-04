@@ -53,19 +53,24 @@ export default function BlogListPage() {
   const confirmDelete = async () => {
     if (!pendingDelete) return
     try {
-      await deleteBlog(pendingDelete.id).unwrap()
-      toast.success("Blog deleted")
+      const res = await deleteBlog(pendingDelete.id).unwrap()
+      if (res?.success) {
+        toast.success(res.message || "Blog deleted")
+      }
       setPendingDelete(null)
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to delete blog"))
     }
   }
 
   const onToggle = async (id: string) => {
     try {
-      await toggleBlogStatus(id).unwrap()
-    } catch {
-      toast.error("Failed to update status")
+      const res = await toggleBlogStatus(id).unwrap()
+      if (res?.success) {
+        toast.success(res.message || "Status updated")
+      }
+    } catch (err: any) {
+      toast.error(getErrorMessage(err, "Failed to update status"))
     }
   }
 

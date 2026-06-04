@@ -60,19 +60,24 @@ export default function RoleListPage() {
   const confirmDelete = async () => {
     if (!pendingDelete) return
     try {
-      await deleteRole(pendingDelete.id).unwrap()
-      toast.success("Role deleted")
+      const res = await deleteRole(pendingDelete.id).unwrap()
+      if (res?.success) {
+        toast.success(res.message || "Role deleted")
+      }
       setPendingDelete(null)
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to delete role"))
     }
   }
 
   const onToggle = async (id: string) => {
     try {
-      await toggleRoleStatus(id).unwrap()
-    } catch {
-      toast.error("Failed to update status")
+      const res = await toggleRoleStatus(id).unwrap()
+      if (res?.success) {
+        toast.success(res.message || "Status updated")
+      }
+    } catch (err: any) {
+      toast.error(getErrorMessage(err, "Failed to update status"))
     }
   }
 

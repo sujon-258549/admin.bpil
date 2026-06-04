@@ -70,19 +70,24 @@ export default function DesignationListPage() {
   const confirmDelete = async () => {
     if (!pendingDelete) return
     try {
-      await deleteDesignation(pendingDelete.id).unwrap()
-      toast.success("Designation deleted")
+      const res = await deleteDesignation(pendingDelete.id).unwrap()
+      if (res?.success) {
+        toast.success(res.message || "Designation deleted")
+      }
       setPendingDelete(null)
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to delete designation"))
     }
   }
 
   const onToggle = async (id: string) => {
     try {
-      await toggleDesignationStatus(id).unwrap()
-    } catch {
-      toast.error("Failed to update status")
+      const res = await toggleDesignationStatus(id).unwrap()
+      if (res?.success) {
+        toast.success(res.message || "Status updated")
+      }
+    } catch (err: any) {
+      toast.error(getErrorMessage(err, "Failed to update status"))
     }
   }
 

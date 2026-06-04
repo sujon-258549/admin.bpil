@@ -157,7 +157,7 @@ export default function EmployeeEditPage() {
     const tu = (v: string) => (v.trim() ? v.trim() : undefined)
 
     try {
-      await updateEmployee({
+      const res = await updateEmployee({
         id,
         data: {
           user: {
@@ -187,9 +187,11 @@ export default function EmployeeEditPage() {
           },
         },
       }).unwrap()
-      toast.success("Employee updated successfully")
+      if (res?.success) {
+        toast.success(res.message || "Employee updated successfully")
+      }
       navigate(ROUTES.EMPLOYEES.LIST)
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to update employee"))
     }
   }
