@@ -101,8 +101,8 @@ function BlogForm({
             content: form.content.trim() || undefined,
             description: form.description.trim() || undefined,
             category: formattedCategories.length ? formattedCategories : undefined,
-            thumbnailId: form.thumbnailId?.trim() || undefined,
-            coverImageId: form.coverImageId?.trim() || undefined,
+            thumbnailId: form.thumbnailId?.trim() || null,
+            coverImageId: form.coverImageId?.trim() || null,
             isPublished: form.isPublished,
           },
         }).unwrap()
@@ -174,7 +174,7 @@ function BlogForm({
               value={form.coverImageId}
               onChange={(id) => setForm({ ...form, coverImageId: id as string })}
               label="Upload Cover"
-              width="w-full"
+              width="w-40"
               height="h-40"
               className="rounded-xl shadow-sm border-border/50"
             />
