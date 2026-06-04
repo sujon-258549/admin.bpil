@@ -34,6 +34,7 @@ const flattenEmployee = (raw: any): EmployeeRow => {
     branchName: raw?.branch?.name ?? null,
     roleId: raw?.roleId ?? raw?.role?.id ?? null,
     roleName: raw?.role?.role ?? null,
+    photoId: raw?.profile?.photoId ?? null,
   }
 }
 

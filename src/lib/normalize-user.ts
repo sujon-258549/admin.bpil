@@ -45,7 +45,10 @@ export function normalizeUser(raw: BackendUser | null | undefined): User {
     name: raw.profile?.name ?? raw.name ?? raw.email ?? "User",
     email: raw.email ?? "",
     avatar:
-      raw.profile?.profilePhoto ?? raw.profile?.photo ?? undefined,
+      (raw.profile?.profilePhoto as { url?: string })?.url ??
+      (typeof raw.profile?.profilePhoto === "string" ? raw.profile?.profilePhoto : undefined) ??
+      raw.profile?.photo ??
+      undefined,
     role: normalizeRole(raw.role),
     permissions: raw.permissions ?? [],
     forceReload: raw.forceReload ?? false,

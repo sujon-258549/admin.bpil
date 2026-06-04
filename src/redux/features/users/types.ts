@@ -56,6 +56,7 @@ export interface UpdateUserPayload {
     dob?: string
     bloodGroup?: string
     nid?: string
+    photoId?: string
   }
   address?: {
     division?: string
@@ -104,4 +105,5 @@ export interface EmployeeRow extends User {
   branchName?: string | null
   roleId?: string | null
   roleName?: string | null
+  photoId?: string | null
 }
