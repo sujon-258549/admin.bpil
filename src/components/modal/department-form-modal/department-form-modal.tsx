@@ -85,7 +85,7 @@ function DepartmentForm({
     }
     try {
       if (isEdit && initial) {
-        await updateDepartment({
+        const res = await updateDepartment({
           id: initial.id,
           data: {
             name: form.name.trim(),
@@ -93,18 +93,22 @@ function DepartmentForm({
             isActive: form.isActive,
           },
         }).unwrap()
-        toast.success("Department updated")
+        if (res?.success) {
+          toast.success(res.message || "Department updated")
+        }
       } else {
         const res = await createDepartment({
           name: form.name.trim(),
           description: form.description.trim() || undefined,
           isActive: form.isActive,
         }).unwrap()
-        toast.success("Department created")
+        if (res?.success) {
+          toast.success(res.message || "Department created")
+        }
         if (res?.data) onCreated?.(res.data)
       }
       onClose()
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to save department"))
     }
   }

@@ -82,7 +82,7 @@ function RoleForm({
     }
     try {
       if (isEdit && initial) {
-        await updateRole({
+        const res = await updateRole({
           id: initial.id,
           data: {
             role: form.role.trim(),
@@ -90,18 +90,22 @@ function RoleForm({
             isActive: form.isActive,
           },
         }).unwrap()
-        toast.success("Role updated")
+        if (res?.success) {
+          toast.success(res.message || "Role updated")
+        }
       } else {
         const res = await createRole({
           role: form.role.trim(),
           description: form.description.trim() || undefined,
           isActive: form.isActive,
         }).unwrap()
-        toast.success("Role created")
+        if (res?.success) {
+          toast.success(res.message || "Role created")
+        }
         if (res?.data) onCreated?.(res.data)
       }
       onClose()
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to save role"))
     }
   }

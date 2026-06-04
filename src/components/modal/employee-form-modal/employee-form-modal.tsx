@@ -210,7 +210,7 @@ function EmployeeForm({
 
     try {
       if (isEdit && initial) {
-        await updateEmployee({
+        const res = await updateEmployee({
           id: initial.id,
           data: {
             user: userSection,
@@ -219,9 +219,11 @@ function EmployeeForm({
             workInfo: workInfoSection,
           },
         }).unwrap()
-        toast.success("Employee updated")
+        if (res?.success) {
+          toast.success(res.message || "Employee updated")
+        }
       } else {
-        await createEmployee({
+        const res = await createEmployee({
           user: {
             ...userSection,
             email: form.email.trim(),
@@ -231,7 +233,9 @@ function EmployeeForm({
           address: addressSection,
           workInfo: workInfoSection,
         }).unwrap()
-        toast.success("Employee created")
+        if (res?.success) {
+          toast.success(res.message || "Employee created")
+        }
       }
       onClose()
     } catch (err) {

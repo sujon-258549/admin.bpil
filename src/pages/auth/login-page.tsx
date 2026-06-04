@@ -66,7 +66,11 @@ export default function LoginPage() {
       }
 
       dispatch(performLogin({ user, accessToken, refreshToken }))
-      toast.success(`Welcome back, ${user?.name ?? "user"}`)
+      if ((res as any)?.success) {
+        toast.success((res as any).message || `Welcome back, ${user?.name ?? "user"}`)
+      } else {
+        toast.success(`Welcome back, ${user?.name ?? "user"}`)
+      }
       // "/" hits SmartIndex which routes the user to their first accessible
       // module (or /access-denied if no permissions are granted).
       navigate(ROUTES.ROOT)

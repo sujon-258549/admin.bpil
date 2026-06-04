@@ -146,13 +146,15 @@ function RolePermissionEditor({
         module: item.key,
         permissions: Array.from(effectiveGrid[item.key] ?? []),
       }))
-      await replaceRolePermissions({
+      const res = await replaceRolePermissions({
         roleId: role.id,
         permissions: payload,
       }).unwrap()
-      toast.success("Permissions updated")
+      if (res?.success) {
+        toast.success(res.message || "Permissions updated")
+      }
       onClose()
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to save permissions"))
     } finally {
       setIsSaving(false)

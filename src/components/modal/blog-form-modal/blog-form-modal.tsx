@@ -94,7 +94,7 @@ function BlogForm({
 
     try {
       if (isEdit && initial) {
-        await updateBlog({
+        const res = await updateBlog({
           id: initial.id,
           data: {
             title: form.title.trim(),
@@ -106,7 +106,9 @@ function BlogForm({
             isPublished: form.isPublished,
           },
         }).unwrap()
-        toast.success("Blog updated")
+        if (res?.success) {
+          toast.success(res.message || "Blog updated")
+        }
       } else {
         const res = await createBlog({
           title: form.title.trim(),
@@ -117,11 +119,13 @@ function BlogForm({
           coverImageId: form.coverImageId,
           isPublished: form.isPublished,
         }).unwrap()
-        toast.success("Blog created")
+        if (res?.success) {
+          toast.success(res.message || "Blog created")
+        }
         if (res?.data) onCreated?.(res.data)
       }
       onClose()
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to save blog"))
     }
   }

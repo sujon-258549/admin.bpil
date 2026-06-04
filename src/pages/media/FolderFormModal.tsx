@@ -60,11 +60,15 @@ export function FolderFormModal({
 
     try {
       if (isEditing) {
-        await updateFolder({ id: initialData.id, data: { name } }).unwrap()
-        toast.success("Folder renamed successfully")
+        const res = await updateFolder({ id: initialData.id, data: { name } }).unwrap()
+        if (res?.success) {
+          toast.success(res.message || "Folder renamed successfully")
+        }
       } else {
-        await createFolder({ name, parentId }).unwrap()
-        toast.success("Folder created successfully")
+        const res = await createFolder({ name, parentId }).unwrap()
+        if (res?.success) {
+          toast.success(res.message || "Folder created successfully")
+        }
       }
       onClose()
     } catch (err: any) {

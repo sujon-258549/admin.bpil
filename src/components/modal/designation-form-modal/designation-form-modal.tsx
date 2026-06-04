@@ -82,7 +82,7 @@ function DesignationForm({
     }
     try {
       if (isEdit && initial) {
-        await updateDesignation({
+        const res = await updateDesignation({
           id: initial.id,
           data: {
             name: form.name.trim(),
@@ -90,18 +90,22 @@ function DesignationForm({
             isActive: form.isActive,
           },
         }).unwrap()
-        toast.success("Designation updated")
+        if (res?.success) {
+          toast.success(res.message || "Designation updated")
+        }
       } else {
         const res = await createDesignation({
           name: form.name.trim(),
           description: form.description.trim() || undefined,
           isActive: form.isActive,
         }).unwrap()
-        toast.success("Designation created")
+        if (res?.success) {
+          toast.success(res.message || "Designation created")
+        }
         if (res?.data) onCreated?.(res.data)
       }
       onClose()
-    } catch (err) {
+    } catch (err: any) {
       toast.error(getErrorMessage(err, "Failed to save designation"))
     }
   }

@@ -56,8 +56,10 @@ export function ImageFormModal({
 
     try {
       if (initialData) {
-        await updateImage({ id: initialData.id, data: { name } }).unwrap()
-        toast.success("Image renamed successfully")
+        const res = await updateImage({ id: initialData.id, data: { name } }).unwrap()
+        if (res?.success) {
+          toast.success(res.message || "Image renamed successfully")
+        }
       }
       onClose()
     } catch (err: any) {
