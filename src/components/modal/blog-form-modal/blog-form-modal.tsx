@@ -52,19 +52,23 @@ interface FormState {
   title: string
   content: string
   description: string
+  excerpt: string
   categories: string[]
+  tags: string[]
   isPublished: boolean
   thumbnailId?: string
   coverImageId?: string
 }
 
 function makeInitial(initial: Blog | null): FormState {
-  if (!initial) return { title: "", content: "", description: "", categories: [], isPublished: false }
+  if (!initial) return { title: "", content: "", description: "", excerpt: "", categories: [], tags: [], isPublished: false }
   return {
     title: initial.title ?? "",
     content: initial.content ?? "",
     description: initial.description ?? "",
+    excerpt: initial.excerpt ?? "",
     categories: initial.category ?? [],
+    tags: initial.tags ?? [],
     isPublished: initial.isPublished,
     thumbnailId: initial.thumbnailId,
     coverImageId: initial.coverImageId,
@@ -100,7 +104,9 @@ function BlogForm({
             title: form.title.trim(),
             content: form.content.trim() || undefined,
             description: form.description.trim() || undefined,
+            excerpt: form.excerpt.trim() || undefined,
             category: formattedCategories.length ? formattedCategories : undefined,
+            tags: form.tags.length ? form.tags : undefined,
             thumbnailId: form.thumbnailId?.trim() || undefined,
             coverImageId: form.coverImageId?.trim() || undefined,
             isPublished: form.isPublished,
@@ -114,7 +120,9 @@ function BlogForm({
           title: form.title.trim(),
           content: form.content.trim() || undefined,
           description: form.description.trim() || undefined,
+          excerpt: form.excerpt.trim() || undefined,
           category: formattedCategories.length ? formattedCategories : undefined,
+          tags: form.tags.length ? form.tags : undefined,
           thumbnailId: form.thumbnailId?.trim() || undefined,
           coverImageId: form.coverImageId?.trim() || undefined,
           isPublished: form.isPublished,
@@ -203,6 +211,31 @@ function BlogForm({
             }
             placeholder="A brief excerpt or description for blog lists and SEO..."
             className="h-11 transition-all focus:ring-2 focus:ring-primary/20"
+          />
+        </FormField>
+
+        <FormField label="Excerpt" htmlFor="blog-excerpt">
+          <Input
+            id="blog-excerpt"
+            value={form.excerpt}
+            onChange={(e) =>
+              setForm({ ...form, excerpt: e.target.value })
+            }
+            placeholder="A short snippet for social media..."
+            className="h-11 transition-all focus:ring-2 focus:ring-primary/20"
+          />
+        </FormField>
+
+        <FormField label="Tags" htmlFor="blog-tags">
+          <TagInput
+            id="blog-tags"
+            value={form.tags}
+            onChange={(value) =>
+              setForm({ ...form, tags: value })
+            }
+            suggestions={["Software", "Tech", "Business", "Lifestyle"]}
+            placeholder="Type a tag and press Enter..."
+            className="min-h-11 transition-all focus-within:ring-2 focus-within:ring-primary/20"
           />
         </FormField>
         <div className="pt-2">
