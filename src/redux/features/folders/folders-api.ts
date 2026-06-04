@@ -9,7 +9,7 @@ export const foldersApi = baseApi.injectEndpoints({
       PaginatedResponse<Folder> & { data: { folders: Folder[]; images: any[] } },
       FolderListParams | void
     >({
-      query: (params) => ({ url: "/folders", params: params ?? undefined }),
+      query: (params) => ({ url: "/folders", params: params as Record<string, any> ?? undefined }),
       transformResponse: (raw: any) => ({
         ...toPaginated<Folder>(raw),
         data: raw.data, // Preserve the custom nested shape { folders, images }
