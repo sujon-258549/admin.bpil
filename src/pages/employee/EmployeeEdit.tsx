@@ -286,7 +286,7 @@ export default function EmployeeEditPage() {
                         e.currentTarget.showPicker()
                       }
                     } catch (err) {
-                      // ignore
+                      console.log(err)
                     }
                   }}
                   className="cursor-pointer"
