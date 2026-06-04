@@ -7,6 +7,7 @@ import {
   useUploadImageMutation,
   useUpdateImageMutation,
   useDeleteImageMutation,
+  useGetImageDetailsQuery,
   type FolderListParams,
 } from "@/redux/features/folders"
 
@@ -42,5 +43,6 @@ export const useFolder = (params?: FolderListParams) => {
     updateImage,
     deleteImage,
     useGetFolderById: useGetFolderQuery,
+    useGetImageDetailsQuery,
   }
 }

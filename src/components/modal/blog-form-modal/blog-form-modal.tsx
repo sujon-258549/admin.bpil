@@ -162,8 +162,8 @@ function BlogForm({
               value={form.thumbnailId}
               onChange={(id) => setForm({ ...form, thumbnailId: id as string })}
               label="Upload Thumbnail"
-              width="w-full"
-              height="h-48"
+              width="w-40"
+              height="h-40"
               className="rounded-xl shadow-sm border-border/50"
             />
           </div>
@@ -175,7 +175,7 @@ function BlogForm({
               onChange={(id) => setForm({ ...form, coverImageId: id as string })}
               label="Upload Cover"
               width="w-full"
-              height="h-48"
+              height="h-40"
               className="rounded-xl shadow-sm border-border/50"
             />
           </div>

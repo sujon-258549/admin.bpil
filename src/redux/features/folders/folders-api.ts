@@ -59,6 +59,11 @@ export const foldersApi = baseApi.injectEndpoints({
       invalidatesTags: [{ type: "Folder", id: "LIST" }],
     }),
 
+    getImageDetails: builder.query<ApiResponse<any>, string>({
+      query: (id) => `/folder/image/${id}/details`,
+      providesTags: (_r, _e, id) => [{ type: "Folder", id }],
+    }),
+
     uploadImage: builder.mutation<ApiResponse<any>, FormData>({
       query: (body) => ({
         url: "/folder/upload",
@@ -97,4 +102,5 @@ export const {
   useUploadImageMutation,
   useUpdateImageMutation,
   useDeleteImageMutation,
+  useGetImageDetailsQuery,
 } = foldersApi
