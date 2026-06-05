@@ -420,8 +420,6 @@ export default function EmployeeCreatePage() {
                       value={form.photoId}
                       onChange={(id) => update("photoId", id as string)}
                       label="Upload Photo"
-                      width="w-full"
-                      height="h-44"
                       category="single"
                     />
                   </div>
@@ -436,8 +434,6 @@ export default function EmployeeCreatePage() {
                       value={form.nidPhotoIds}
                       onChange={(ids) => update("nidPhotoIds", ids as string[])}
                       label="Upload NID Images"
-                      width="w-full"
-                      height="h-44"
                       category="multi"
                     />
                   </div>

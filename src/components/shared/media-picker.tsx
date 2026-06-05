@@ -19,8 +19,8 @@ export function MediaPicker({
   value,
   onChange,
   label = "Upload Image",
-  width = "w-40",
-  height = "h-40",
+  width = "w-44",
+  height = "h-44",
   className = "",
   category = "single",
 }: MediaPickerProps) {

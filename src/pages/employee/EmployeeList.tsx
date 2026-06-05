@@ -19,6 +19,7 @@ import {
   DataTablePagination,
   DataTableToolbar,
   EmptyState,
+  Image,
   PageHeader,
   StatusBadge,
   SummaryCard,
@@ -175,7 +176,17 @@ export default function EmployeeListPage() {
       className: "whitespace-nowrap",
       cell: (u) => (
         <div className="flex items-center gap-3 whitespace-nowrap">
-          <UserAvatar name={u.name} src={u.avatar} />
+          {u.photoId ? (
+            <div className="size-9 shrink-0 overflow-hidden rounded-full border bg-muted">
+              <Image
+                imageId={u.photoId}
+                alt={u.name || "Employee"}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          ) : (
+            <UserAvatar name={u.name} src={u.avatar} />
+          )}
           <div className="min-w-0">
             <div className="truncate font-medium">{u.name || "—"}</div>
             <Text size="xs" tone="muted">

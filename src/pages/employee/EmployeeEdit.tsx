@@ -178,6 +178,10 @@ export default function EmployeeEditPage() {
     skip: !id,
   })
 
+  // Detect super-admin: role name contains "super" (case-insensitive)
+  const rawUser = userRes?.data as any
+  const isSuperAdmin = String(rawUser?.role?.role ?? "").toLowerCase().includes("super")
+
   useEffect(() => {
     const u = userRes?.data as any
     if (!u) return
@@ -429,8 +433,6 @@ export default function EmployeeEditPage() {
                       value={form.photoId}
                       onChange={(id) => update("photoId", id as string)}
                       label="Upload Photo"
-                      width="w-44"
-                      height="h-44"
                       category="single"
                     />
                   </div>
@@ -440,8 +442,6 @@ export default function EmployeeEditPage() {
                       value={form.nidPhotoIds}
                       onChange={(ids) => update("nidPhotoIds", ids as string[])}
                       label="Upload NID Images"
-                      width="w-44"
-                      height="h-44"
                       category="multi"
                     />
                   </div>
@@ -593,16 +593,33 @@ export default function EmployeeEditPage() {
             </CardHeader>
             <CardContent className="grid gap-4">
               <FormField label="Role" required>
-                <Combobox
-                  value={form.roleId}
-                  onChange={(value) => update("roleId", value)}
-                  placeholder="Select role"
-                  options={roles.map((r) => ({ value: r.id, label: r.role ?? "—" }))}
-                  onAddNew={() => setRoleModalOpen(true)}
-                  addNewLabel="Add new"
-                  onViewAll={() => window.open(ROUTES.EMPLOYEES.ROLES, "_blank")}
-                  viewAllLabel="All roles"
-                />
+                {isSuperAdmin ? (
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2.5 dark:border-amber-800 dark:bg-amber-950/30">
+                      <Shield className="size-4 shrink-0 text-amber-500" />
+                      <span className="text-sm font-medium text-amber-700 dark:text-amber-400">
+                        Super Admin
+                      </span>
+                      <span className="ml-auto rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-600 dark:bg-amber-900/50 dark:text-amber-400">
+                        Protected
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Super Admin role cannot be changed from this page.
+                    </p>
+                  </div>
+                ) : (
+                  <Combobox
+                    value={form.roleId}
+                    onChange={(value) => update("roleId", value)}
+                    placeholder="Select role"
+                    options={roles.map((r) => ({ value: r.id, label: r.role ?? "—" }))}
+                    onAddNew={() => setRoleModalOpen(true)}
+                    addNewLabel="Add new"
+                    onViewAll={() => window.open(ROUTES.EMPLOYEES.ROLES, "_blank")}
+                    viewAllLabel="All roles"
+                  />
+                )}
               </FormField>
               <FormField label="Department">
                 <Combobox
