@@ -18,6 +18,12 @@ const flattenEmployee = (raw: any): EmployeeRow => {
   const u = normalizeUser(raw)
   return {
     ...u,
+    // Always try to get the URL from the profilePhoto object
+    avatar:
+      (raw?.profile?.profilePhoto as { url?: string })?.url ??
+      (typeof raw?.profile?.profilePhoto === "string" ? raw?.profile?.profilePhoto : undefined) ??
+      raw?.profile?.photo ??
+      u.avatar,
     mobile: raw?.mobile ?? null,
     isActive: raw?.isActive ?? true,
     isBlocked: raw?.isBlocked ?? false,
@@ -28,13 +34,18 @@ const flattenEmployee = (raw: any): EmployeeRow => {
     bloodGroup: raw?.profile?.bloodGroup ?? null,
     dob: raw?.profile?.dob ?? null,
     nid: raw?.profile?.nid ?? null,
+    photoId: raw?.profile?.photoId ?? null,
     experience: raw?.workInfo?.experience ?? null,
     workType: raw?.workInfo?.workType ?? null,
     branchId: raw?.branchId ?? null,
     branchName: raw?.branch?.name ?? null,
     roleId: raw?.roleId ?? raw?.role?.id ?? null,
     roleName: raw?.role?.role ?? null,
-    photoId: raw?.profile?.photoId ?? null,
+    // Address fields
+    division: raw?.address?.division ?? null,
+    district: raw?.address?.district ?? null,
+    upazila: raw?.address?.upazila ?? null,
+    address: raw?.address?.address ?? null,
   }
 }
 

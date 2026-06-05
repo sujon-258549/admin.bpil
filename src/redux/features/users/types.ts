@@ -91,6 +91,7 @@ export interface ListUsersParams {
 export interface EmployeeRow extends User {
   mobile?: string | null
   isActive?: boolean
+  isVerified?: boolean
   isBlocked?: boolean
   isDeleted?: boolean
   departmentName?: string | null
@@ -106,4 +107,8 @@ export interface EmployeeRow extends User {
   roleId?: string | null
   roleName?: string | null
   photoId?: string | null
+  division?: string | null
+  district?: string | null
+  upazila?: string | null
+  address?: string | null
 }
