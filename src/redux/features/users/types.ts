@@ -13,13 +13,23 @@ export interface CreateEmployeePayload {
     designationId?: string
     branchId?: string
     isActive?: boolean
+    isVerified?: boolean
+    isBlocked?: boolean
+    isDeleted?: boolean
   }
   profile?: {
     name?: string
     gender?: "MALE" | "FEMALE" | "OTHER"
     dob?: string
+    age?: number
     bloodGroup?: string
     nid?: string
+    serialId?: string
+    photoId?: string
+    nidPhotoIds?: string[]
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    nidVerified?: boolean
   }
   address?: {
     division?: string
@@ -49,14 +59,23 @@ export interface UpdateUserPayload {
     designationId?: string
     branchId?: string
     isActive?: boolean
+    isVerified?: boolean
+    isBlocked?: boolean
+    isDeleted?: boolean
   }
   profile?: {
     name?: string
     gender?: "MALE" | "FEMALE" | "OTHER"
     dob?: string
+    age?: number
     bloodGroup?: string
     nid?: string
     photoId?: string
+    nidPhotoIds?: string[]
+    serialId?: string
+    emailVerified?: boolean
+    phoneVerified?: boolean
+    nidVerified?: boolean
   }
   address?: {
     division?: string

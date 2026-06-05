@@ -2,15 +2,19 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {
   ArrowLeft,
+  BadgeCheck,
   Briefcase,
   Building,
+  Clock,
   Eye,
   EyeOff,
+  IdCard,
   Loader2,
   Mail,
   MapPin,
   Phone,
   Save,
+  Shield,
   UserCircle2,
 } from "lucide-react"
 import { toast } from "sonner"
@@ -27,10 +31,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
-import { FormField, PageHeader, Text ,
-
-  PageMeta,
-} from "@/components/shared"
+import { FormField, PageHeader, Text, PageMeta, MediaPicker } from "@/components/shared"
 import {
   DepartmentFormModal,
   DesignationFormModal,
@@ -46,51 +47,43 @@ import { ROUTES } from "@/config/paths"
 import { getErrorMessage } from "@/lib/errors"
 
 interface FormState {
+  // Personal
   name: string
   email: string
   password: string
   mobile: string
   gender: string
   dob: string
+  age: string
   bloodGroup: string
   nid: string
-  roleId: string
-  departmentId: string
-  designationId: string
+  serialId: string
+  // Address
   division: string
   district: string
   upazila: string
   address: string
+  // Org
+  roleId: string
+  departmentId: string
+  designationId: string
+  // Work Info
   experience: string
   workType: string
   workStartTime: string
   workTimeLimit: string
   availableTime: string
+  // Images
+  photoId: string
+  nidPhotoIds: string[]
+  // Account flags
   isActive: boolean
-}
-
-const initialState: FormState = {
-  name: "",
-  email: "",
-  password: "",
-  mobile: "",
-  gender: "",
-  dob: "",
-  bloodGroup: "",
-  nid: "",
-  roleId: "",
-  departmentId: "",
-  designationId: "",
-  division: "",
-  district: "",
-  upazila: "",
-  address: "",
-  experience: "",
-  workType: "",
-  workStartTime: "",
-  workTimeLimit: "",
-  availableTime: "",
-  isActive: true,
+  isVerified: boolean
+  isBlocked: boolean
+  isDeleted: boolean
+  emailVerified: boolean
+  phoneVerified: boolean
+  nidVerified: boolean
 }
 
 const BLOOD_GROUPS = [
@@ -103,6 +96,84 @@ const BLOOD_GROUPS = [
   "O_POSITIVE",
   "O_NEGATIVE",
 ] as const
+
+const initialState: FormState = {
+  name: "",
+  email: "",
+  password: "",
+  mobile: "",
+  gender: "",
+  dob: "",
+  age: "",
+  bloodGroup: "",
+  nid: "",
+  serialId: "",
+  division: "",
+  district: "",
+  upazila: "",
+  address: "",
+  roleId: "",
+  departmentId: "",
+  designationId: "",
+  experience: "",
+  workType: "",
+  workStartTime: "",
+  workTimeLimit: "",
+  availableTime: "",
+  photoId: "",
+  nidPhotoIds: [],
+  isActive: true,
+  isVerified: false,
+  isBlocked: false,
+  isDeleted: false,
+  emailVerified: false,
+  phoneVerified: false,
+  nidVerified: false,
+}
+
+function SwitchRow({
+  id,
+  label,
+  description,
+  checked,
+  onCheckedChange,
+  color = "default",
+}: {
+  id: string
+  label: string
+  description: string
+  checked: boolean
+  onCheckedChange: (v: boolean) => void
+  color?: "default" | "success" | "warning" | "danger"
+}) {
+  const colorMap = {
+    default: "bg-muted/30",
+    success: checked
+      ? "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800"
+      : "bg-muted/30",
+    warning: checked
+      ? "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800"
+      : "bg-muted/30",
+    danger: checked
+      ? "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800"
+      : "bg-muted/30",
+  }
+  return (
+    <div
+      className={`flex items-center justify-between rounded-md border px-3 py-2.5 transition-colors ${colorMap[color]}`}
+    >
+      <div>
+        <Label htmlFor={id} className="cursor-pointer text-sm font-medium">
+          {label}
+        </Label>
+        <Text size="xs" tone="muted">
+          {description}
+        </Text>
+      </div>
+      <Switch id={id} checked={checked} onCheckedChange={onCheckedChange} />
+    </div>
+  )
+}
 
 export default function EmployeeCreatePage() {
   const navigate = useNavigate()
@@ -141,13 +212,23 @@ export default function EmployeeCreatePage() {
           departmentId: form.departmentId || undefined,
           designationId: form.designationId || undefined,
           isActive: form.isActive,
+          isVerified: form.isVerified,
+          isBlocked: form.isBlocked,
+          isDeleted: form.isDeleted,
         },
         profile: {
           name: form.name.trim() || undefined,
           gender: (form.gender as "MALE" | "FEMALE" | "OTHER") || undefined,
           dob: form.dob || undefined,
+          age: form.age ? Number(form.age) : undefined,
           bloodGroup: form.bloodGroup || undefined,
           nid: form.nid.trim() || undefined,
+          serialId: form.serialId.trim() || undefined,
+          photoId: form.photoId || undefined,
+          nidPhotoIds: form.nidPhotoIds.length > 0 ? form.nidPhotoIds : undefined,
+          emailVerified: form.emailVerified,
+          phoneVerified: form.phoneVerified,
+          nidVerified: form.nidVerified,
         },
         address: {
           division: form.division.trim() || undefined,
@@ -173,8 +254,11 @@ export default function EmployeeCreatePage() {
   }
 
   return (
-        <div className="space-y-6">
-      <PageMeta title="Employee Create" description="Manage Employee Create in Muster ERP & CRM" />
+    <div className="space-y-6">
+      <PageMeta
+        title="Employee Create"
+        description="Manage Employee Create in Muster ERP & CRM"
+      />
       <PageHeader
         title="Create Employee"
         description="Onboard a new team member with role, designation, department and contact details."
@@ -188,7 +272,10 @@ export default function EmployeeCreatePage() {
       />
 
       <form onSubmit={handleSubmit} className="grid gap-6 lg:grid-cols-3">
+        {/* ── Left column: main fields ── */}
         <div className="space-y-6 lg:col-span-2">
+
+          {/* Personal Info */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -272,6 +359,23 @@ export default function EmployeeCreatePage() {
                   type="date"
                   value={form.dob}
                   onChange={(e) => update("dob", e.target.value)}
+                  onClick={(e) => {
+                    try {
+                      if ("showPicker" in e.currentTarget)
+                        e.currentTarget.showPicker()
+                    } catch{}
+                  }}
+                  className="cursor-pointer"
+                />
+              </FormField>
+              <FormField label="Age">
+                <Input
+                  type="number"
+                  min={1}
+                  max={100}
+                  value={form.age}
+                  onChange={(e) => update("age", e.target.value)}
+                  placeholder="e.g. 28"
                 />
               </FormField>
               <FormField label="Blood Group">
@@ -288,16 +392,61 @@ export default function EmployeeCreatePage() {
                   }))}
                 />
               </FormField>
-              <FormField label="NID">
+              <FormField label="NID Number">
+                <div className="relative">
+                  <IdCard className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    className="pl-9"
+                    value={form.nid}
+                    onChange={(e) => update("nid", e.target.value)}
+                    placeholder="National ID number"
+                  />
+                </div>
+              </FormField>
+              <FormField label="Serial ID">
                 <Input
-                  value={form.nid}
-                  onChange={(e) => update("nid", e.target.value)}
-                  placeholder="National ID number"
+                  value={form.serialId}
+                  onChange={(e) => update("serialId", e.target.value)}
+                  placeholder="Employee serial / ref ID"
                 />
               </FormField>
+
+              {/* Images */}
+              <div className="sm:col-span-2">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Profile Photo</label>
+                    <MediaPicker
+                      value={form.photoId}
+                      onChange={(id) => update("photoId", id as string)}
+                      label="Upload Photo"
+                      width="w-full"
+                      height="h-44"
+                      category="single"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">
+                      NID Photos{" "}
+                      <span className="text-xs text-muted-foreground">
+                        (multiple)
+                      </span>
+                    </label>
+                    <MediaPicker
+                      value={form.nidPhotoIds}
+                      onChange={(ids) => update("nidPhotoIds", ids as string[])}
+                      label="Upload NID Images"
+                      width="w-full"
+                      height="h-44"
+                      category="multi"
+                    />
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
+          {/* Address */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -340,13 +489,14 @@ export default function EmployeeCreatePage() {
             </CardContent>
           </Card>
 
+          {/* Work Info */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Briefcase className="size-4 text-primary" /> Work Info
               </CardTitle>
               <CardDescription>
-                Optional — used by reports and rostering.
+                Used by reports, rostering and schedules.
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 sm:grid-cols-2">
@@ -365,12 +515,15 @@ export default function EmployeeCreatePage() {
                 />
               </FormField>
               <FormField label="Work Start Time">
-                <Input
-                  type="time"
-                  value={form.workStartTime}
-                  onChange={(e) => update("workStartTime", e.target.value)}
-                  className="cursor-pointer"
-                />
+                <div className="relative">
+                  <Clock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    type="time"
+                    className="cursor-pointer pl-9"
+                    value={form.workStartTime}
+                    onChange={(e) => update("workStartTime", e.target.value)}
+                  />
+                </div>
               </FormField>
               <FormField label="Work Time Limit">
                 <Input
@@ -383,14 +536,55 @@ export default function EmployeeCreatePage() {
                 <Input
                   value={form.availableTime}
                   onChange={(e) => update("availableTime", e.target.value)}
-                  placeholder="e.g. 9 AM - 6 PM"
+                  placeholder="e.g. 9 AM – 6 PM"
                 />
               </FormField>
             </CardContent>
           </Card>
+
+          {/* Verification flags */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BadgeCheck className="size-4 text-primary" /> Verification
+                Status
+              </CardTitle>
+              <CardDescription>
+                Mark what has been verified for this employee.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-3 sm:grid-cols-3">
+              <SwitchRow
+                id="emailVerified"
+                label="Email Verified"
+                description="Email confirmed"
+                checked={form.emailVerified}
+                onCheckedChange={(v) => update("emailVerified", v)}
+                color="success"
+              />
+              <SwitchRow
+                id="phoneVerified"
+                label="Phone Verified"
+                description="Mobile confirmed"
+                checked={form.phoneVerified}
+                onCheckedChange={(v) => update("phoneVerified", v)}
+                color="success"
+              />
+              <SwitchRow
+                id="nidVerified"
+                label="NID Verified"
+                description="National ID confirmed"
+                checked={form.nidVerified}
+                onCheckedChange={(v) => update("nidVerified", v)}
+                color="success"
+              />
+            </CardContent>
+          </Card>
         </div>
 
+        {/* ── Right column: org + flags ── */}
         <div className="space-y-6">
+          {/* Organization */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -412,7 +606,9 @@ export default function EmployeeCreatePage() {
                   }))}
                   onAddNew={() => setRoleModalOpen(true)}
                   addNewLabel="Add new"
-                  onViewAll={() => window.open(ROUTES.EMPLOYEES.ROLES, "_blank")}
+                  onViewAll={() =>
+                    window.open(ROUTES.EMPLOYEES.ROLES, "_blank")
+                  }
                   viewAllLabel="All roles"
                 />
               </FormField>
@@ -427,7 +623,9 @@ export default function EmployeeCreatePage() {
                   }))}
                   onAddNew={() => setDeptModalOpen(true)}
                   addNewLabel="Add new"
-                  onViewAll={() => window.open(ROUTES.EMPLOYEES.DEPARTMENTS, "_blank")}
+                  onViewAll={() =>
+                    window.open(ROUTES.EMPLOYEES.DEPARTMENTS, "_blank")
+                  }
                   viewAllLabel="All departments"
                 />
               </FormField>
@@ -442,36 +640,58 @@ export default function EmployeeCreatePage() {
                   }))}
                   onAddNew={() => setDesigModalOpen(true)}
                   addNewLabel="Add new"
-                  onViewAll={() => window.open(ROUTES.EMPLOYEES.DESIGNATIONS, "_blank")}
+                  onViewAll={() =>
+                    window.open(ROUTES.EMPLOYEES.DESIGNATIONS, "_blank")
+                  }
                   viewAllLabel="All designations"
                 />
               </FormField>
             </CardContent>
           </Card>
 
+          {/* Account Flags */}
           <Card>
             <CardHeader>
-              <CardTitle>Status</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="size-4 text-primary" /> Account Control
+              </CardTitle>
               <CardDescription>
-                Inactive employees can&apos;t log in.
+                Admin-only flags to control account access.
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between rounded-md border bg-muted/30 px-3 py-2">
-                <div>
-                  <Label htmlFor="isActive" className="text-sm font-medium">
-                    Active account
-                  </Label>
-                  <Text size="xs" tone="muted">
-                    Allow this employee to sign in.
-                  </Text>
-                </div>
-                <Switch
-                  id="isActive"
-                  checked={form.isActive}
-                  onCheckedChange={(v) => update("isActive", v)}
-                />
-              </div>
+            <CardContent className="grid gap-3">
+              <SwitchRow
+                id="isActive"
+                label="Active Account"
+                description="Allow this employee to sign in"
+                checked={form.isActive}
+                onCheckedChange={(v) => update("isActive", v)}
+                color="success"
+              />
+              <SwitchRow
+                id="isVerified"
+                label="Account Verified"
+                description="Account email is verified"
+                checked={form.isVerified}
+                onCheckedChange={(v) => update("isVerified", v)}
+                color="success"
+              />
+              <SwitchRow
+                id="isBlocked"
+                label="Blocked"
+                description="Prevent all login attempts"
+                checked={form.isBlocked}
+                onCheckedChange={(v) => update("isBlocked", v)}
+                color="danger"
+              />
+              <SwitchRow
+                id="isDeleted"
+                label="Soft Deleted"
+                description="Mark as deleted without removing data"
+                checked={form.isDeleted}
+                onCheckedChange={(v) => update("isDeleted", v)}
+                color="warning"
+              />
             </CardContent>
           </Card>
 
