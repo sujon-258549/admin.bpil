@@ -102,7 +102,7 @@ export const store = configureStore({
       },
     })
       .prepend(authCookieSync.middleware)
-      .concat(baseApi.middleware),
+      .concat(baseApi.middleware as any),
   devTools: import.meta.env.DEV,
 })
 

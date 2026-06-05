@@ -28,6 +28,7 @@ import {
   pickEmployeeTone,
   type Column,
   PageMeta,
+  DateRangeFilter,
 } from "@/components/shared";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useEmployee } from "@/hooks/data-fetch";
@@ -73,6 +74,8 @@ export default function EmployeeListPage() {
   const [summaryFilter, setSummaryFilter] = useState<SummaryFilter | null>(
     null,
   );
+  const [startDate, setStartDate] = useState<string | undefined>();
+  const [endDate, setEndDate] = useState<string | undefined>();
 
 
 
@@ -89,6 +92,8 @@ export default function EmployeeListPage() {
     searchTerm: debounced || undefined,
     page,
     limit: PAGE_SIZE,
+    startDate,
+    endDate,
   });
 
   // Branch logic removed; simply use allEmployees
@@ -464,11 +469,20 @@ export default function EmployeeListPage() {
         placeholder="Search by name, email or mobile..."
         fetching={isFetching}
         right={
-          <DataTableColumnsButton
-            tableName="employees"
-            columns={columns}
-            onVisibleColumnsChange={setVisibleColumns}
-          />
+          <div className="flex items-center gap-2">
+            <DateRangeFilter
+              onRangeChange={(start, end) => {
+                setStartDate(start);
+                setEndDate(end);
+                setPage(1);
+              }}
+            />
+            <DataTableColumnsButton
+              tableName="employees"
+              columns={columns}
+              onVisibleColumnsChange={setVisibleColumns}
+            />
+          </div>
         }
       />
 

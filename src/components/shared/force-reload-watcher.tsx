@@ -31,6 +31,7 @@ export function ForceReloadWatcher() {
   
   const soundEnabled = useAppSelector((state) => state.settings.soundEnabled)
   const notificationSound = useAppSelector((state) => state.settings.notificationSound)
+  const volume = useAppSelector((state) => state.settings.volume)
 
   useEffect(() => {
     if (!userId) return
@@ -50,6 +51,7 @@ export function ForceReloadWatcher() {
       
       if (soundEnabled && notificationSound) {
         const audio = new Audio(notificationSound)
+        audio.volume = volume ?? 1.0
         audio.play().catch((err) => {
           console.warn("Autoplay prevented for notification sound:", err)
         })
@@ -65,7 +67,7 @@ export function ForceReloadWatcher() {
       socket.off("new-notification", handleNotification)
       socket.disconnect()
     }
-  }, [userId, soundEnabled, notificationSound, dispatch])
+  }, [userId, soundEnabled, notificationSound, volume, dispatch])
 
   return null
 }

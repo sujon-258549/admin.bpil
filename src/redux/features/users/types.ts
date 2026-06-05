@@ -107,6 +107,8 @@ export interface ListUsersParams {
   limit?: number
   searchTerm?: string
   role?: UserRole
+  startDate?: string
+  endDate?: string
 }
 
 // Backend returns nested User shape — flatten to a row the table can render.
