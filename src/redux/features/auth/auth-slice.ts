@@ -1,6 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import type { User } from "@/types/user"
 import { baseApi } from "@/redux/api/base-api"
+import { authApi } from "@/redux/features/auth/auth-api"
 import type { AppDispatch } from "@/redux/store"
 
 export interface AuthState {
@@ -71,7 +72,12 @@ export const performLogin =
     dispatch(credentialsSet(payload))
   }
 
-export const performLogout = () => (dispatch: AppDispatch) => {
+export const performLogout = () => async (dispatch: AppDispatch) => {
+  try {
+    await dispatch(authApi.endpoints.logout.initiate()).unwrap();
+  } catch (error) {
+    console.error("Logout API failed, continuing with local logout", error);
+  }
   dispatch(loggedOut())
   // Drop every cached query so the next login (or guest view) starts clean.
   dispatch(baseApi.util.resetApiState())
