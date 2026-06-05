@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { io as socketIO, type Socket } from "socket.io-client"
 import { env } from "@/config/env"
 import { useCurrentUser } from "@/hooks/use-permission"
-import { useAppDispatch } from "@/redux/hooks"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { baseApi } from "@/redux/api/base-api"
 
 // Socket server lives at the API host root, not under /api/v1.
@@ -28,6 +28,9 @@ export function ForceReloadWatcher() {
   const user = useCurrentUser()
   const userId = user?.id
   const dispatch = useAppDispatch()
+  
+  const soundEnabled = useAppSelector((state) => state.settings.soundEnabled)
+  const notificationSound = useAppSelector((state) => state.settings.notificationSound)
 
   useEffect(() => {
     if (!userId) return
@@ -44,6 +47,13 @@ export function ForceReloadWatcher() {
 
     const handleNotification = () => {
       dispatch(baseApi.util.invalidateTags(["Notifications"]))
+      
+      if (soundEnabled && notificationSound) {
+        const audio = new Audio(notificationSound)
+        audio.play().catch((err) => {
+          console.warn("Autoplay prevented for notification sound:", err)
+        })
+      }
     }
 
     socket.on("notifications-refresh", handleNotification)
@@ -55,7 +65,7 @@ export function ForceReloadWatcher() {
       socket.off("new-notification", handleNotification)
       socket.disconnect()
     }
-  }, [userId])
+  }, [userId, soundEnabled, notificationSound, dispatch])
 
   return null
 }

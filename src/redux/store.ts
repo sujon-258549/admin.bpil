@@ -87,7 +87,7 @@ const persistConfig = {
   key: "muster-root",
   version: CURRENT_VERSION,
   storage,
-  whitelist: ["auth", "ui"],
+  whitelist: ["auth", "ui", "settings"],
   migrate: createMigrate(migrations, { debug: import.meta.env.DEV }),
 }
 

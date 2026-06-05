@@ -2,14 +2,26 @@ import {
   PageMeta,
 } from "@/components/shared"
 import PageHeader from "@/components/common/page-header"
+import { NotificationSettings } from "./NotificationSettings"
 
 export default function SettingsPage() {
   return (
-        <div>
+    <div className="space-y-6 max-w-5xl">
       <PageMeta title="Settings" description="Manage Settings in Muster ERP & CRM" />
       <PageHeader title="Settings" description="Workspace preferences and integrations" />
-      <div className="rounded-lg border bg-card p-6 text-sm text-muted-foreground">
-        Settings form goes here.
+      
+      <div className="grid gap-6">
+        <NotificationSettings />
+        
+        {/* Other settings can go here */}
+        <div className="rounded-xl border bg-card text-card-foreground shadow-sm">
+          <div className="px-6 py-4 border-b">
+            <h3 className="font-semibold">General Settings</h3>
+          </div>
+          <div className="p-6 text-sm text-muted-foreground">
+            More workspace settings will be available soon.
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -1,17 +1,38 @@
 import { useState } from "react"
-import { useGetNotificationsQuery, useMarkAllAsReadMutation, useMarkAsReadMutation } from "@/redux/features/notifications/notifications-api"
-import { PageMeta } from "@/components/shared"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { 
+  useGetNotificationsQuery, 
+  useMarkAllAsReadMutation, 
+  useMarkAsReadMutation 
+} from "@/redux/features/notifications/notifications-api"
+import { 
+  PageMeta, 
+  PageHeader, 
+  DataTable, 
+  EmptyState,
+  DateRangeFilter,
+  Text,
+  type Column
+} from "@/components/shared"
 import { Button } from "@/components/ui/button"
-import { Check, Loader2, Bell, MessageSquare, ShieldAlert, Settings } from "lucide-react"
+import { Check, Bell, MessageSquare, ShieldAlert, Settings } from "lucide-react"
+import { DataTablePagination } from "@/components/shared/data-table/data-table-pagination"
+import { Badge } from "@/components/ui/badge"
 
 export default function NotificationsPage() {
   const [page, setPage] = useState(1)
+  const [limit] = useState(20)
+  
+  // Date filter state
+  const [startDate, setStartDate] = useState<string | undefined>()
+  const [endDate, setEndDate] = useState<string | undefined>()
+
   const { data, isLoading, isFetching } = useGetNotificationsQuery({
     page,
-    limit: 50,
+    limit,
     sortBy: "createdAt",
-    sortOrder: "desc"
+    sortOrder: "desc",
+    ...(startDate ? { startDate } : {}),
+    ...(endDate ? { endDate } : {})
   })
 
   const [markAllAsRead] = useMarkAllAsReadMutation()
@@ -35,91 +56,120 @@ export default function NotificationsPage() {
     }
   }
 
+  const columns: Column<any>[] = [
+    {
+      key: "type",
+      header: "Alert",
+      cell: (n) => (
+        <div className="flex items-center gap-3">
+          <div className={`p-2 rounded-full ${!n.isRead ? 'bg-primary/10' : 'bg-muted/50'}`}>
+            {getIcon(n.type)}
+          </div>
+          <div className="min-w-0">
+            <div className={`truncate font-medium ${!n.isRead ? 'text-foreground' : 'text-muted-foreground'}`}>
+              {n.type || "SYSTEM ALERT"}
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "message",
+      header: "Message",
+      cell: (n) => (
+        <Text size="sm" className={`line-clamp-2 ${!n.isRead ? 'font-medium text-foreground' : 'text-muted-foreground'}`}>
+          {n.message}
+        </Text>
+      ),
+    },
+    {
+      key: "date",
+      header: "Date Received",
+      cell: (n) => (
+        <Text size="sm" tone="muted">
+          {new Date(n.createdAt).toLocaleString()}
+        </Text>
+      ),
+    },
+    {
+      key: "status",
+      header: "Status",
+      cell: (n) => (
+        n.isRead ? (
+          <Badge variant="outline" className="text-muted-foreground">Read</Badge>
+        ) : (
+          <Badge variant="default" className="bg-primary/20 text-primary hover:bg-primary/30 border-transparent">New</Badge>
+        )
+      ),
+    },
+    {
+      key: "actions",
+      header: "Actions",
+      align: "right",
+      cell: (n) => (
+        <div className="flex justify-end">
+          {!n.isRead && (
+            <Button 
+              size="sm" 
+              variant="ghost" 
+              onClick={() => handleMarkAsRead(n.id, n.isRead)}
+              className="text-primary hover:text-primary hover:bg-primary/10"
+            >
+              <Check className="h-4 w-4 mr-1" /> Mark Read
+            </Button>
+          )}
+        </div>
+      ),
+    },
+  ]
+
   return (
-    <>
+    <div className="space-y-6">
       <PageMeta title="Notifications | Admin Portal" description="All your notifications" />
       
-      <div className="flex flex-col gap-6 w-full max-w-5xl mx-auto py-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Notifications</h1>
-            <p className="text-muted-foreground mt-1">View and manage all your alerts and messages.</p>
-          </div>
+      <PageHeader
+        title="Notifications"
+        description="View and manage all your alerts and messages."
+        actions={
           <Button onClick={() => markAllAsRead().unwrap()} variant="outline">
             <Check className="mr-2 h-4 w-4" /> Mark all as read
           </Button>
-        </div>
+        }
+      />
 
-        <Card>
-          <CardHeader className="border-b bg-muted/40 py-4">
-            <CardTitle className="text-lg font-medium">Recent Activity</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            {isLoading ? (
-              <div className="flex justify-center p-8">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-              </div>
-            ) : notifications.length === 0 ? (
-              <div className="text-center py-16 text-muted-foreground">
-                <Bell className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                <h3 className="text-lg font-medium text-foreground">You're all caught up!</h3>
-                <p>No new notifications right now.</p>
-              </div>
-            ) : (
-              <div className="divide-y">
-                {notifications.map((notification: any) => (
-                  <div 
-                    key={notification.id}
-                    onClick={() => handleMarkAsRead(notification.id, notification.isRead)}
-                    className={`flex gap-4 p-4 hover:bg-muted/50 cursor-pointer transition-colors ${!notification.isRead ? 'bg-primary/5' : ''}`}
-                  >
-                    <div className="mt-1">
-                      {getIcon(notification.type)}
-                    </div>
-                    <div className="flex-1 space-y-1">
-                      <div className="flex items-center justify-between">
-                        <p className={`text-sm font-medium ${!notification.isRead ? 'text-foreground' : 'text-muted-foreground'}`}>
-                          {notification.type || "SYSTEM ALERT"}
-                        </p>
-                        <span className="text-xs text-muted-foreground">
-                          {new Date(notification.createdAt).toLocaleString()}
-                        </span>
-                      </div>
-                      <p className={`text-sm ${!notification.isRead ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
-                        {notification.message}
-                      </p>
-                    </div>
-                    {!notification.isRead && (
-                      <div className="flex items-center">
-                        <div className="h-2 w-2 rounded-full bg-primary" />
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {meta && meta.total > 50 && (
-          <div className="flex justify-center gap-2 mt-4">
-            <Button 
-              variant="outline" 
-              disabled={page === 1 || isFetching}
-              onClick={() => setPage(p => Math.max(1, p - 1))}
-            >
-              Previous
-            </Button>
-            <Button 
-              variant="outline"
-              disabled={page * 50 >= meta.total || isFetching}
-              onClick={() => setPage(p => p + 1)}
-            >
-              Next
-            </Button>
-          </div>
-        )}
+      <div className="flex items-center gap-3">
+        <DateRangeFilter 
+          onRangeChange={(start: string | undefined, end: string | undefined) => {
+            setStartDate(start);
+            setEndDate(end);
+            setPage(1); // Reset page on filter change
+          }} 
+        />
       </div>
-    </>
+
+      <DataTable<any>
+        data={notifications}
+        columns={columns}
+        isLoading={isLoading && notifications.length === 0}
+        isFetching={isFetching}
+        empty={
+          <EmptyState
+            icon={Bell}
+            title="You're all caught up!"
+            description={startDate || endDate ? "No notifications found for the selected date range." : "No new notifications right now."}
+          />
+        }
+        footer={
+          <DataTablePagination
+            page={meta?.page ?? 1}
+            pageSize={meta?.perPage ?? limit}
+            total={meta?.total ?? 0}
+            showing={notifications.length}
+            totalPages={meta?.totalPages ?? Math.ceil((meta?.total ?? 0) / limit)}
+            onPageChange={setPage}
+          />
+        }
+      />
+    </div>
   )
 }
