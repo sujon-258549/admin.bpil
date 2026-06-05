@@ -81,13 +81,10 @@ export default function UpdateProfile() {
         dob: user.dob ? String(user.dob).slice(0, 10) : "",
         nid: user.nid || "",
         photoId: user.photoId || "",
-        // Currently the EmployeeRow doesn't have division, district, upazila, address mapped
-        // but if the backend returns it we could map it. 
-        // For now we'll just leave it empty if the types don't exist, or we can cast to any if we know it's there.
-        division: (user as any)?.address?.division || "",
-        district: (user as any)?.address?.district || "",
-        upazila: (user as any)?.address?.upazila || "",
-        address: (user as any)?.address?.address || "",
+        division: user.division || "",
+        district: user.district || "",
+        upazila: user.upazila || "",
+        address: user.address || "",
         experience: user.experience || "",
         workType: user.workType || "",
       })
