@@ -4,7 +4,7 @@ import { PageHeader, PageMeta, FormField } from "@/components/shared"
 import { useGetMyDataQuery, useUpdateUserMutation } from "@/redux/features/users/users-api"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Select } from "@/components/ui/select"
+import { CustomSelect } from "@/components/ui/custom-select"
 import { Textarea } from "@/components/ui/textarea"
 import {
   Card,
@@ -17,7 +17,6 @@ import { Loader2, UserCircle2, MapPin, Briefcase, Save, Image as ImageIcon } fro
 import { getErrorMessage } from "@/lib/errors"
 import { Skeleton } from "@/components/ui/skeleton"
 import { MediaPicker } from "@/components/shared/media-picker"
-import { Combobox } from "@/components/ui/combobox"
 
 const BLOOD_GROUPS = [
   "A_POSITIVE",
@@ -196,15 +195,17 @@ export default function UpdateProfile() {
               </FormField>
 
               <FormField label="Gender">
-                <Select
+                <CustomSelect
                   value={form.gender}
-                  onChange={(v) => update("gender", v)}
-                  placeholder="Select Gender"
+                  onChange={(value) =>
+                    setForm((prev) => ({ ...prev, gender: value }))
+                  }
+                  placeholder="Select gender"
                 >
                   <option value="MALE">Male</option>
                   <option value="FEMALE">Female</option>
                   <option value="OTHER">Other</option>
-                </Select>
+                </CustomSelect>
               </FormField>
               
               <FormField label="Date of Birth">
@@ -226,18 +227,19 @@ export default function UpdateProfile() {
               </FormField>
               
               <FormField label="Blood Group">
-                <Combobox
+                <CustomSelect
                   value={form.bloodGroup}
-                  onChange={(value) => update("bloodGroup", value)}
+                  onChange={(value) =>
+                    setForm((prev) => ({ ...prev, bloodGroup: value }))
+                  }
                   placeholder="Select blood group"
-                  options={BLOOD_GROUPS.map((b) => ({
-                    value: b,
-                    label: b
-                      .replace("_", " ")
-                      .replace("POSITIVE", "+")
-                      .replace("NEGATIVE", "−"),
-                  }))}
-                />
+                >
+                  {BLOOD_GROUPS.map((bg) => (
+                    <option key={bg} value={bg}>
+                      {bg.replace("_", " ")}
+                    </option>
+                  ))}
+                </CustomSelect>
               </FormField>
               
               <FormField label="NID">

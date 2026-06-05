@@ -5,7 +5,6 @@ import {
   BadgeCheck,
   Briefcase,
   Building,
-  Clock,
   Eye,
   EyeOff,
   IdCard,
@@ -536,15 +535,12 @@ export default function EmployeeCreatePage() {
                 />
               </FormField>
               <FormField label="Work Start Time">
-                <div className="relative">
-                  <Clock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    type="time"
-                    className="cursor-pointer pl-9"
-                    value={form.workStartTime}
-                    onChange={(e) => update("workStartTime", e.target.value)}
-                  />
-                </div>
+                <Input
+                  type="time"
+                  className="cursor-pointer"
+                  value={form.workStartTime}
+                  onChange={(e) => update("workStartTime", e.target.value)}
+                />
               </FormField>
               <FormField label="Work Time Limit">
                 <Input

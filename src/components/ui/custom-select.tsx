@@ -19,7 +19,7 @@ interface SelectProps {
 // `Select` looks/works like the shared Combobox — searchable popover with
 // keyboard nav — but accepts the native `<option>` authoring shape so
 // callers don't have to maintain a separate options array.
-function Select({
+function CustomSelect({
   value,
   onChange,
   children,
@@ -65,4 +65,4 @@ function Select({
   )
 }
 
-export { Select }
+export { CustomSelect }

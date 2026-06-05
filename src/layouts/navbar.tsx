@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { performLogout, userUpdated } from "@/redux/features/auth/auth-slice"
 import { useGetMyDataQuery } from "@/redux/features/users/users-api"
 import ThemeSwitcher from "./theme-switcher"
+import { NotificationBell } from "@/components/common/NotificationBell"
 
 export default function Navbar() {
   const cachedUser = useAppSelector((s) => s.auth.user)
@@ -45,6 +46,7 @@ export default function Navbar() {
       )}
 
       <div className="ml-auto flex items-center gap-1">
+        <NotificationBell />
         <ThemeSwitcher />
 
         <DropdownMenu>

@@ -135,6 +135,8 @@ export const baseApi = createApi({
     "Folder",
     "ActionLog",
     "ErrorLog",
+    "Notifications",
+    "Contacts",
   ],
   endpoints: () => ({}),
 })

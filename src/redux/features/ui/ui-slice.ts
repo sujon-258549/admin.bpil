@@ -10,7 +10,7 @@ export interface UIState {
 }
 
 const initialState: UIState = {
-  theme: "light",
+  theme: "system",
   colorPreset: "neutral",
   sidebarOpen: true,
 }

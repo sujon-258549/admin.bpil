@@ -28,8 +28,10 @@ const ACTION_OVERRIDES: Record<string, readonly string[]> = {
   settings: ["read", "update"],
   // Media library — view + upload + delete (no in-place update).
   media: ["read", "create", "delete"],
-  // Notifications — view + delete (system creates them).
-  notifications: ["read", "delete"],
+  // Notifications — view + delete + create (for broadcasting).
+  notifications: ["read", "create", "delete"],
+  // Contacts — view + update status + delete
+  contacts: ["read", "update", "delete"],
   // Blog — full CRUD with optional publish action.
   blog: [...CRUD, "publish"],
   // Workflow guide — read-only docs page, no other actions make sense.

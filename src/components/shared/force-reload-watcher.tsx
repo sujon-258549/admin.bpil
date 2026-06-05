@@ -2,6 +2,8 @@ import { useEffect } from "react"
 import { io as socketIO, type Socket } from "socket.io-client"
 import { env } from "@/config/env"
 import { useCurrentUser } from "@/hooks/use-permission"
+import { useAppDispatch } from "@/redux/hooks"
+import { baseApi } from "@/redux/api/base-api"
 
 // Socket server lives at the API host root, not under /api/v1.
 // Strip any path off VITE_API_URL so the socket handshake hits the right
@@ -25,6 +27,7 @@ const SOCKET_URL = (() => {
 export function ForceReloadWatcher() {
   const user = useCurrentUser()
   const userId = user?.id
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (!userId) return
@@ -39,8 +42,17 @@ export function ForceReloadWatcher() {
       window.location.reload()
     })
 
+    const handleNotification = () => {
+      dispatch(baseApi.util.invalidateTags(["Notifications"]))
+    }
+
+    socket.on("notifications-refresh", handleNotification)
+    socket.on("new-notification", handleNotification)
+
     return () => {
       socket.off("force-reload")
+      socket.off("notifications-refresh", handleNotification)
+      socket.off("new-notification", handleNotification)
       socket.disconnect()
     }
   }, [userId])

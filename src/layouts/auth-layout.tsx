@@ -4,15 +4,12 @@ import { Zap, Wrench, ClipboardCheck } from "lucide-react"
 import { siteConfig } from "@/config/site"
 
 interface AuthLayoutProps {
-  // Optional — when used as a direct wrapper:
-  //   <AuthLayout><Login /></AuthLayout>
-  // If omitted, falls back to `<Outlet />` so the layout still works as a
-  // nested-route element.
   children?: ReactNode
+  variant?: "login" | "forgot-password"
 }
 
 // Two-column auth shell — professional brand panel on the left, original form on the right.
-export default function AuthLayout({ children }: AuthLayoutProps) {
+export default function AuthLayout({ children, variant = "login" }: AuthLayoutProps) {
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       {/* Left: Professional brand panel */}
@@ -37,31 +34,51 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         </div>
 
         <div className="relative z-10 mt-auto mb-12 space-y-8 max-w-lg">
-          <h1 className="text-4xl font-semibold leading-[1.15] tracking-tight text-white">
-            Powering your electrical services business.
-          </h1>
-          
-          <div className="space-y-5">
-            <div className="flex items-start gap-4">
-              <Wrench className="mt-1 size-5 shrink-0 text-primary" />
-              <div>
-                <h3 className="text-base font-medium text-white">Complete Service Management</h3>
-                <p className="mt-1 text-sm leading-relaxed text-zinc-400">
-                  Efficiently manage technicians, dispatch schedules, and track service requests in real-time.
+          {variant === "forgot-password" ? (
+            <div className="flex flex-col items-center text-center space-y-6">
+              <img 
+                src="https://illustrations.popsy.co/amber/key.svg" 
+                alt="Forgot Password Illustration" 
+                className="w-64 h-64 object-contain drop-shadow-2xl"
+              />
+              <div className="space-y-3">
+                <h1 className="text-4xl font-semibold tracking-tight text-white">
+                  Secure Account Recovery
+                </h1>
+                <p className="text-zinc-400 text-lg leading-relaxed">
+                  Lost your access? We've got you covered with a fast and secure way to reset your password and get back to managing your business.
                 </p>
               </div>
             </div>
-            
-            <div className="flex items-start gap-4">
-              <ClipboardCheck className="mt-1 size-5 shrink-0 text-primary" />
-              <div>
-                <h3 className="text-base font-medium text-white">Project & Inventory Tracking</h3>
-                <p className="mt-1 text-sm leading-relaxed text-zinc-400">
-                  Keep track of electrical components, equipment inventory, and ongoing project statuses seamlessly.
-                </p>
+          ) : (
+            <>
+              <h1 className="text-4xl font-semibold leading-[1.15] tracking-tight text-white">
+                Powering your electrical services business.
+              </h1>
+              
+              <div className="space-y-5">
+                <div className="flex items-start gap-4">
+                  <Wrench className="mt-1 size-5 shrink-0 text-primary" />
+                  <div>
+                    <h3 className="text-base font-medium text-white">Complete Service Management</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-zinc-400">
+                      Efficiently manage technicians, dispatch schedules, and track service requests in real-time.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <ClipboardCheck className="mt-1 size-5 shrink-0 text-primary" />
+                  <div>
+                    <h3 className="text-base font-medium text-white">Project & Inventory Tracking</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-zinc-400">
+                      Keep track of electrical components, equipment inventory, and ongoing project statuses seamlessly.
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
 
         <div className="relative z-10 flex items-center justify-between border-t border-white/10 pt-6">

@@ -42,7 +42,7 @@ const ACTIONS: QuickAction[] = [
   {
     label: "Add Customer",
     description: "Onboard new client",
-    to: ROUTES.MODULES.CUSTOMERS,
+    to: ROUTES.MODULES.DASHBOARD,
     icon: Users,
     tone: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
   },

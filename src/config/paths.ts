@@ -18,8 +18,6 @@ export const ROUTES = {
   MODULES: {
     DASHBOARD: mp("dashboard"),
     USERS: mp("users"),
-    CUSTOMERS: mp("customers"),
-    PRODUCTS: mp("products"),
     SETTINGS: mp("settings"),
   },
   EMPLOYEES: {

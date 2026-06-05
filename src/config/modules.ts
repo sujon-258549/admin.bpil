@@ -1,31 +1,25 @@
 // Single source of truth for every module in the app.
 // Each module's `key` doubles as its permission name — granting a user
 // the "customers" permission means they can access the customers module.
-
 import {
-  Bell,
-  FolderTree,
   Image,
   LayoutDashboard,
   Newspaper,
-  Package,
   Settings,
   UsersRound,
   Users,
   Activity,
+  MessageSquare,
   type LucideIcon,
 } from "lucide-react";
 
 export type ModuleKey =
   | "dashboard"
   | "users"
-  | "customers"
-  | "products"
-  | "inventory"
-  | "invoices"
-  | "categories"
   | "blog"
   | "media"
+  | "inquiries"
+  | "contacts"
   | "notifications"
   | "workflow"
   | "logs"
@@ -57,45 +51,6 @@ export const MODULES: AppModule[] = [
     label: "Dashboard",
     path: "/dashboard",
     icon: LayoutDashboard,
-  },
-  {
-    key: "customers",
-    label: "Customers",
-    path: "/customers",
-    icon: Users,
-    children: [
-      { key: "customers.list", label: "All Customers", path: "/customers" },
-      { key: "customers.new", label: "New Customer", path: "/customers/new" },
-      {
-        key: "customers.leads",
-        label: "Leads",
-        path: "/customers?status=lead",
-      },
-    ],
-  },
-  {
-    key: "products",
-    label: "Products",
-    path: "/products",
-    icon: Package,
-    children: [
-      { key: "products.list", label: "All Products", path: "/products" },
-      { key: "products.new", label: "New Product", path: "/products/new" },
-    ],
-  },
-  {
-    key: "categories",
-    label: "Categories",
-    path: "/categories",
-    icon: FolderTree,
-    children: [
-      { key: "categories.list", label: "Categories", path: "/categories" },
-      {
-        key: "subcategories.list",
-        label: "Sub Categories",
-        path: "/categories/sub",
-      },
-    ],
   },
   {
     key: "users",
@@ -130,10 +85,14 @@ export const MODULES: AppModule[] = [
     icon: Image,
   },
   {
-    key: "notifications",
-    label: "Notifications",
-    path: "/notifications",
-    icon: Bell,
+    key: "inquiries",
+    label: "Inquiries",
+    path: "/inquiries/contacts",
+    icon: MessageSquare,
+    children: [
+      { key: "contacts", label: "All Contacts", path: "/inquiries/contacts" },
+      { key: "notifications", label: "All Notifications", path: "/notifications" },
+    ],
   },
   {
     key: "logs",

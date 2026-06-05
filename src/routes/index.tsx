@@ -29,6 +29,7 @@ import DashboardLayout from "@/layouts/dashboard-layout"
 // Auth pages
 // ─────────────────────────────────────────────────────────────────────────────
 import Login from "@/pages/auth/login-page"
+import ForgotPassword from "@/pages/auth/forgot-password-page"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Common pages (404, error, loading)
@@ -68,7 +69,9 @@ import CategoryList from "@/pages/categories/CategoryList"
 import SubCategoryList from "@/pages/categories/SubCategoryList"
 import BlogList from "@/pages/blog/BlogList"
 import MediaLibrary from "@/pages/media/MediaLibrary"
-import NotificationList from "@/pages/notifications/NotificationList"
+import NotificationsPage from "@/pages/notifications/NotificationsPage"
+import SendNotificationPage from "@/pages/notifications/SendNotificationPage"
+import ContactList from "@/pages/contacts/ContactList"
 import WorkflowPage from "@/pages/workflow/WorkflowPage"
 import YourProfile from "@/pages/profile/YourProfile"
 import UpdateProfile from "@/pages/profile/UpdateProfile"
@@ -91,6 +94,17 @@ export const router = createBrowserRouter([
       <PublicRoute>
         <AuthLayout>
           <Login />
+        </AuthLayout>
+      </PublicRoute>
+    ),
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/forgot-password",
+    element: (
+      <PublicRoute>
+        <AuthLayout variant="forgot-password">
+          <ForgotPassword />
         </AuthLayout>
       </PublicRoute>
     ),
@@ -299,7 +313,25 @@ export const router = createBrowserRouter([
         path: "notifications",
         element: (
           <RequirePermission moduleKey="notifications">
-            <NotificationList />
+            <NotificationsPage />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "notifications/send",
+        element: (
+          <RequirePermission moduleKey="notifications">
+            <SendNotificationPage />
+          </RequirePermission>
+        ),
+      },
+      
+      // Inquiries (Contacts)
+      {
+        path: "inquiries/contacts",
+        element: (
+          <RequirePermission moduleKey="inquiries">
+            <ContactList />
           </RequirePermission>
         ),
       },
