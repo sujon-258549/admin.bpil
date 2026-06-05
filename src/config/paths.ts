@@ -27,6 +27,7 @@ export const ROUTES = {
     CREATE: "/employees/new",
     EDIT: (id: string) => `/employees/${id}/edit`,
     DETAILS: (id: string) => `/employees/${id}`,
+    SECURITY: (id: string) => `/employees/${id}/security`,
     DEPARTMENTS: "/employees/departments",
     ROLES: "/employees/roles",
     DESIGNATIONS: "/employees/designations",

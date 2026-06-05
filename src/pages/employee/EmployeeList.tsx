@@ -36,6 +36,7 @@ import { ROUTES } from "@/config/paths";
 import { shortId } from "@/lib/format";
 import { getErrorMessage } from "@/lib/errors";
 import type { EmployeeRow } from "@/redux/features/users";
+import { MonitorSmartphone } from "lucide-react";
 
 const PAGE_SIZE = 10;
 
@@ -72,6 +73,8 @@ export default function EmployeeListPage() {
   const [summaryFilter, setSummaryFilter] = useState<SummaryFilter | null>(
     null,
   );
+
+
 
   const {
     employees: allEmployees,
@@ -318,6 +321,20 @@ export default function EmployeeListPage() {
               >
                 <Link to={ROUTES.EMPLOYEES.DETAILS(u.id)}>
                   <Eye className="size-4" />
+                </Link>
+              </Button>
+            </Can>
+            <Can module="employees" action="read">
+              <Button
+                size="icon-sm"
+                variant="ghost"
+                asChild
+                aria-label="View security & sessions"
+                title="View security & sessions"
+                className="border border-gray-300 text-blue-500 hover:text-blue-600"
+              >
+                <Link to={ROUTES.EMPLOYEES.SECURITY(u.id)}>
+                  <MonitorSmartphone className="size-4" />
                 </Link>
               </Button>
             </Can>
@@ -575,6 +592,7 @@ export default function EmployeeListPage() {
         destructive
         onConfirm={confirmHardDelete}
       />
+
     </div>
   );
 }

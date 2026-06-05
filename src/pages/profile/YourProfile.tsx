@@ -113,7 +113,7 @@ export default function YourProfile() {
             <div className="size-24 rounded-full border-4 border-background bg-muted flex items-center justify-center -mt-12 mb-4 mx-auto shrink-0 overflow-hidden shadow-md">
               <Image
                 preview={true}
-                imageId={user.photoId}
+                imageId={user.photoId ?? undefined}
                 className="w-full h-full object-cover"
                 alt={user.name}
               />

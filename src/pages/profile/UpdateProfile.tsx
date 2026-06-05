@@ -324,7 +324,7 @@ export default function UpdateProfile() {
                   onClick={(e) => {
                     try {
                       if ("showPicker" in e.currentTarget) e.currentTarget.showPicker()
-                    } catch (_) {
+                    } catch {
                       /* ignore */
                     }
                   }}

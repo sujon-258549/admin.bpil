@@ -49,6 +49,8 @@ const flattenEmployee = (raw: any): EmployeeRow => {
     district: raw?.address?.district ?? null,
     upazila: raw?.address?.upazila ?? null,
     address: raw?.address?.address ?? null,
+    loginCount: raw?.loginCount ?? 0,
+    loginHistories: raw?.loginHistories ?? [],
   }
 }
 
@@ -153,6 +155,19 @@ export const usersApi = baseApi.injectEndpoints({
         { type: "User", id: "LIST" },
       ],
     }),
+
+    forceLogoutSession: builder.mutation<ApiResponse<null>, string>({
+      query: (historyId) => ({
+        url: `/users/sessions/${historyId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "User", id: "LIST" }, { type: "User" }],
+    }),
+
+    getLoginHistory: builder.query<ApiResponse<any[]>, string>({
+      query: (id) => ({ url: `/users/${id}/login-history` }),
+      providesTags: (_r, _e, id) => [{ type: "User", id }],
+    }),
   }),
   overrideExisting: false,
 })
@@ -168,4 +183,6 @@ export const {
   useDeleteUserMutation,
   useSoftDeleteUserMutation,
   useBlockUserMutation,
+  useForceLogoutSessionMutation,
+  useGetLoginHistoryQuery,
 } = usersApi
