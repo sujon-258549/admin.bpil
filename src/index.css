@@ -96,8 +96,8 @@
 
 /* Thin custom scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 2px;
+  height: 2px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -107,6 +107,26 @@
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(215 20% 65% / 0.6);
+}
+
+/* Explicit class for elements like the sidebar that might resist global rules */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(215 20% 65% / 0.4) transparent;
+}
+.thin-scrollbar::-webkit-scrollbar {
+  width: 1px;
+  height: 1px;
+}
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: hsl(215 20% 65% / 0.4);
+  border-radius: 9999px;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: hsl(215 20% 65% / 0.6);
 }
 
