@@ -185,15 +185,29 @@ export default function EmployeeEditPage() {
   useEffect(() => {
     const u = userRes?.data as any
     if (!u) return
+    let calcAge = u?.profile?.age ? String(u.profile.age) : ""
+    if (!calcAge && u?.profile?.dob) {
+      const dobDate = new Date(u.profile.dob)
+      if (!isNaN(dobDate.getTime())) {
+        const today = new Date()
+        let a = today.getFullYear() - dobDate.getFullYear()
+        const m = today.getMonth() - dobDate.getMonth()
+        if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+          a--
+        }
+        calcAge = String(Math.max(0, a))
+      }
+    }
+
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setForm({
-      name: u?.profile?.name ?? "",
-      email: u?.email ?? "",
-      mobile: u?.mobile ?? "",
-      gender: u?.profile?.gender ?? "",
+      name: u?.profile?.name || "",
+      email: u?.email || "",
+      mobile: u?.mobile || "",
+      gender: u?.profile?.gender || "",
       dob: u?.profile?.dob ? String(u.profile.dob).slice(0, 10) : "",
-      age: u?.profile?.age ? String(u.profile.age) : "",
-      bloodGroup: u?.profile?.bloodGroup ?? "",
+      age: calcAge,
+      bloodGroup: u?.profile?.bloodGroup || "",
       nid: u?.profile?.nid ?? "",
       serialId: u?.profile?.serialId ?? "",
       division: u?.address?.division ?? "",
@@ -377,10 +391,16 @@ export default function EmployeeEditPage() {
                     const newDob = e.target.value
                     update("dob", newDob)
                     if (newDob) {
-                      const ageDiffMs = Date.now() - new Date(newDob).getTime()
-                      const ageDate = new Date(ageDiffMs)
-                      const calculatedAge = Math.abs(ageDate.getUTCFullYear() - 1970)
-                      update("age", String(calculatedAge))
+                      const dobDate = new Date(newDob)
+                      if (!isNaN(dobDate.getTime())) {
+                        const today = new Date()
+                        let a = today.getFullYear() - dobDate.getFullYear()
+                        const m = today.getMonth() - dobDate.getMonth()
+                        if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+                          a--
+                        }
+                        update("age", String(Math.max(0, a)))
+                      }
                     } else {
                       update("age", "")
                     }
@@ -547,7 +567,7 @@ export default function EmployeeEditPage() {
                     onClick={(e) => {
                       try {
                         if ("showPicker" in e.currentTarget) e.currentTarget.showPicker()
-                      } catch (_) {
+                      } catch  {
                         /* ignore */
                       }
                     }}

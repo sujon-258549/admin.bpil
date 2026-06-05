@@ -362,10 +362,16 @@ export default function EmployeeCreatePage() {
                     const newDob = e.target.value
                     update("dob", newDob)
                     if (newDob) {
-                      const ageDiffMs = Date.now() - new Date(newDob).getTime()
-                      const ageDate = new Date(ageDiffMs)
-                      const calculatedAge = Math.abs(ageDate.getUTCFullYear() - 1970)
-                      update("age", String(calculatedAge))
+                      const dobDate = new Date(newDob)
+                      if (!isNaN(dobDate.getTime())) {
+                        const today = new Date()
+                        let a = today.getFullYear() - dobDate.getFullYear()
+                        const m = today.getMonth() - dobDate.getMonth()
+                        if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+                          a--
+                        }
+                        update("age", String(Math.max(0, a)))
+                      }
                     } else {
                       update("age", "")
                     }

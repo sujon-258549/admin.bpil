@@ -88,10 +88,25 @@ export default function EmployeeDetailsPage() {
   const profile    = u?.profile   ?? {}
   const address    = u?.address   ?? {}
   const workInfo   = u?.workInfo  ?? {}
-  const role       = u?.role
+  const role       = u?.role      ?? {}
   const dept       = u?.department
   const desig      = u?.designation
   const nidPhotos  = (profile?.nidPhotos ?? []) as any[]
+
+  let calculatedAge = profile?.age
+  if (!calculatedAge && profile?.dob) {
+    const dobDate = new Date(profile.dob)
+    if (!isNaN(dobDate.getTime())) {
+      const today = new Date()
+      let a = today.getFullYear() - dobDate.getFullYear()
+      const m = today.getMonth() - dobDate.getMonth()
+      if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+        a--
+      }
+      calculatedAge = Math.max(0, a)
+    }
+  }
+
   const isSuperAdmin = String(role?.role ?? "").toLowerCase().includes("super")
 
   const bloodLabel = (bg: string) =>
@@ -183,7 +198,7 @@ export default function EmployeeDetailsPage() {
             <Row label="Mobile" value={u?.mobile} />
             <Row label="Gender" value={profile?.gender ? profile.gender.charAt(0) + profile.gender.slice(1).toLowerCase() : undefined} />
             <Row label="Date of Birth" value={profile?.dob ? new Date(profile.dob).toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" }) : undefined} />
-            <Row label="Age" value={profile?.age ? `${profile.age} years` : undefined} />
+            <Row label="Age" value={calculatedAge ? `${calculatedAge} years` : undefined} />
             <Row label="Blood Group" value={profile?.bloodGroup ? (
               <span className="inline-flex items-center gap-1.5">
                 <Droplets className="size-3.5 text-red-500" />
