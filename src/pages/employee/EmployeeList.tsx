@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Ban, Plus, Trash2, UserMinus, Users as UsersIcon } from "lucide-react";
+import { Ban, Plus, Trash2, UserMinus, Users as UsersIcon, Eye } from "lucide-react";
 import { FiEdit } from "react-icons/fi";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -307,6 +307,20 @@ export default function EmployeeListPage() {
         const selfTitle = "You can't perform this action on your own account";
         return (
           <div className="flex justify-end gap-1">
+            <Can module="employees" action="read">
+              <Button
+                size="icon-sm"
+                variant="ghost"
+                asChild
+                aria-label="View employee details"
+                title="View employee details"
+                className="border border-gray-300"
+              >
+                <Link to={ROUTES.EMPLOYEES.DETAILS(u.id)}>
+                  <Eye className="size-4" />
+                </Link>
+              </Button>
+            </Can>
             <Can module="employees" action="update">
               <Button
                 size="icon-sm"

@@ -358,14 +358,24 @@ export default function EmployeeCreatePage() {
                 <Input
                   type="date"
                   value={form.dob}
-                  onChange={(e) => update("dob", e.target.value)}
+                  onChange={(e) => {
+                    const newDob = e.target.value
+                    update("dob", newDob)
+                    if (newDob) {
+                      const ageDiffMs = Date.now() - new Date(newDob).getTime()
+                      const ageDate = new Date(ageDiffMs)
+                      const calculatedAge = Math.abs(ageDate.getUTCFullYear() - 1970)
+                      update("age", String(calculatedAge))
+                    } else {
+                      update("age", "")
+                    }
+                  }}
                   onClick={(e) => {
                     try {
-                      if ("showPicker" in e.currentTarget)
-                        e.currentTarget.showPicker()
-                    } catch{}
+                      if ("showPicker" in e.currentTarget) e.currentTarget.showPicker()
+                    } catch { /* ignore */ }
                   }}
-                  className="cursor-pointer"
+                  className="cursor-pointer relative [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                 />
               </FormField>
               <FormField label="Age">
@@ -376,6 +386,8 @@ export default function EmployeeCreatePage() {
                   value={form.age}
                   onChange={(e) => update("age", e.target.value)}
                   placeholder="e.g. 28"
+                  readOnly
+                  className="bg-muted text-muted-foreground cursor-not-allowed"
                 />
               </FormField>
               <FormField label="Blood Group">
@@ -432,7 +444,14 @@ export default function EmployeeCreatePage() {
                     </label>
                     <MediaPicker
                       value={form.nidPhotoIds}
-                      onChange={(ids) => update("nidPhotoIds", ids as string[])}
+                      onChange={(ids) => {
+                        const newIds = ids as string[]
+                        if (newIds.length > 2) {
+                          toast.error("You can select a maximum of 2 NID photos.")
+                          return
+                        }
+                        update("nidPhotoIds", newIds)
+                      }}
                       label="Upload NID Images"
                       category="multi"
                     />

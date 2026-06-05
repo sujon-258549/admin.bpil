@@ -44,6 +44,9 @@ interface FormState {
   address: string
   experience: string
   workType: string
+  workStartTime: string
+  workTimeLimit: string
+  availableTime: string
 }
 
 const emptyState: FormState = {
@@ -60,6 +63,9 @@ const emptyState: FormState = {
   address: "",
   experience: "",
   workType: "",
+  workStartTime: "",
+  workTimeLimit: "",
+  availableTime: "",
 }
 
 export default function UpdateProfile() {
@@ -87,6 +93,9 @@ export default function UpdateProfile() {
         address: user.address || "",
         experience: user.experience || "",
         workType: user.workType || "",
+        workStartTime: user.workStartTime || "",
+        workTimeLimit: user.workTimeLimit || "",
+        availableTime: user.availableTime || "",
       })
     }
   }, [user])
@@ -124,6 +133,9 @@ export default function UpdateProfile() {
           workInfo: {
             experience: tu(form.experience),
             workType: tu(form.workType),
+            workStartTime: tu(form.workStartTime),
+            workTimeLimit: tu(form.workTimeLimit),
+            availableTime: tu(form.availableTime),
           },
         },
       }).unwrap()
@@ -302,6 +314,35 @@ export default function UpdateProfile() {
                   value={form.workType}
                   onChange={(e) => update("workType", e.target.value)}
                   placeholder="e.g. Full-time, On-site"
+                />
+              </FormField>
+              <FormField label="Work Start Time">
+                <Input
+                  type="time"
+                  value={form.workStartTime}
+                  onChange={(e) => update("workStartTime", e.target.value)}
+                  onClick={(e) => {
+                    try {
+                      if ("showPicker" in e.currentTarget) e.currentTarget.showPicker()
+                    } catch (_) {
+                      /* ignore */
+                    }
+                  }}
+                  className="cursor-pointer relative [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                />
+              </FormField>
+              <FormField label="Work Time Limit">
+                <Input
+                  value={form.workTimeLimit}
+                  onChange={(e) => update("workTimeLimit", e.target.value)}
+                  placeholder="e.g. 8 hours"
+                />
+              </FormField>
+              <FormField label="Available Time">
+                <Input
+                  value={form.availableTime}
+                  onChange={(e) => update("availableTime", e.target.value)}
+                  placeholder="e.g. 9 AM to 5 PM"
                 />
               </FormField>
             </CardContent>

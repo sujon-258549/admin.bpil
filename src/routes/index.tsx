@@ -48,6 +48,7 @@ import Dashboard from "@/pages/dashboard/dashboard-page"
 import EmployeeList from "@/pages/employee/EmployeeList"
 import EmployeeCreate from "@/pages/employee/EmployeeCreate"
 import EmployeeEdit from "@/pages/employee/EmployeeEdit"
+import EmployeeDetails from "@/pages/employee/EmployeeDetails"
 import DepartmentList from "@/pages/department/DepartmentList"
 import RoleList from "@/pages/role/RoleList"
 import DesignationList from "@/pages/designation/DesignationList"
@@ -164,6 +165,14 @@ export const router = createBrowserRouter([
         element: (
           <RequirePermission moduleKey="employees" action="update">
             <EmployeeEdit />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "employees/:id",
+        element: (
+          <RequirePermission moduleKey="employees">
+            <EmployeeDetails />
           </RequirePermission>
         ),
       },
