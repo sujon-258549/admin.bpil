@@ -136,4 +136,6 @@ export interface EmployeeRow extends User {
   district?: string | null
   upazila?: string | null
   address?: string | null
+  loginCount?: number
+  loginHistories?: any[]
 }
