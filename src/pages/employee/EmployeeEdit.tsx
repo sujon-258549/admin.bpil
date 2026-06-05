@@ -61,6 +61,9 @@ interface FormState {
   address: string
   experience: string
   workType: string
+  workStartTime: string
+  workTimeLimit: string
+  availableTime: string
   isActive: boolean
 }
 
@@ -92,6 +95,9 @@ const emptyState: FormState = {
   address: "",
   experience: "",
   workType: "",
+  workStartTime: "",
+  workTimeLimit: "",
+  availableTime: "",
   isActive: true,
 }
 
@@ -134,6 +140,9 @@ export default function EmployeeEditPage() {
       address: u?.address?.address ?? "",
       experience: u?.workInfo?.experience ?? "",
       workType: u?.workInfo?.workType ?? "",
+      workStartTime: u?.workInfo?.workStartTime ?? "",
+      workTimeLimit: u?.workInfo?.workTimeLimit ?? "",
+      availableTime: u?.workInfo?.availableTime ?? "",
       isActive: u?.isActive ?? true,
     })
   }, [userRes])
@@ -184,6 +193,9 @@ export default function EmployeeEditPage() {
           workInfo: {
             experience: tu(form.experience),
             workType: tu(form.workType),
+            workStartTime: tu(form.workStartTime),
+            workTimeLimit: tu(form.workTimeLimit),
+            availableTime: tu(form.availableTime),
           },
         },
       }).unwrap()
@@ -380,6 +392,28 @@ export default function EmployeeEditPage() {
                   value={form.workType}
                   onChange={(e) => update("workType", e.target.value)}
                   placeholder="e.g. Full-time, On-site"
+                />
+              </FormField>
+              <FormField label="Work Start Time">
+                <Input
+                  type="time"
+                  value={form.workStartTime}
+                  onChange={(e) => update("workStartTime", e.target.value)}
+                  className="cursor-pointer"
+                />
+              </FormField>
+              <FormField label="Work Time Limit">
+                <Input
+                  value={form.workTimeLimit}
+                  onChange={(e) => update("workTimeLimit", e.target.value)}
+                  placeholder="e.g. 8 hours"
+                />
+              </FormField>
+              <FormField label="Available Time">
+                <Input
+                  value={form.availableTime}
+                  onChange={(e) => update("availableTime", e.target.value)}
+                  placeholder="e.g. 9 AM - 6 PM"
                 />
               </FormField>
             </CardContent>

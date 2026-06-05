@@ -63,6 +63,9 @@ interface FormState {
   address: string
   experience: string
   workType: string
+  workStartTime: string
+  workTimeLimit: string
+  availableTime: string
   isActive: boolean
 }
 
@@ -84,6 +87,9 @@ const initialState: FormState = {
   address: "",
   experience: "",
   workType: "",
+  workStartTime: "",
+  workTimeLimit: "",
+  availableTime: "",
   isActive: true,
 }
 
@@ -152,6 +158,9 @@ export default function EmployeeCreatePage() {
         workInfo: {
           experience: form.experience.trim() || undefined,
           workType: form.workType.trim() || undefined,
+          workStartTime: form.workStartTime.trim() || undefined,
+          workTimeLimit: form.workTimeLimit.trim() || undefined,
+          availableTime: form.availableTime.trim() || undefined,
         },
       }).unwrap()
       if (res?.success) {
@@ -353,6 +362,28 @@ export default function EmployeeCreatePage() {
                   value={form.workType}
                   onChange={(e) => update("workType", e.target.value)}
                   placeholder="e.g. Full-time, On-site"
+                />
+              </FormField>
+              <FormField label="Work Start Time">
+                <Input
+                  type="time"
+                  value={form.workStartTime}
+                  onChange={(e) => update("workStartTime", e.target.value)}
+                  className="cursor-pointer"
+                />
+              </FormField>
+              <FormField label="Work Time Limit">
+                <Input
+                  value={form.workTimeLimit}
+                  onChange={(e) => update("workTimeLimit", e.target.value)}
+                  placeholder="e.g. 8 hours"
+                />
+              </FormField>
+              <FormField label="Available Time">
+                <Input
+                  value={form.availableTime}
+                  onChange={(e) => update("availableTime", e.target.value)}
+                  placeholder="e.g. 9 AM - 6 PM"
                 />
               </FormField>
             </CardContent>

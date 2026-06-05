@@ -67,6 +67,9 @@ export interface UpdateUserPayload {
   workInfo?: {
     experience?: string
     workType?: string
+    workStartTime?: string
+    workTimeLimit?: string
+    availableTime?: string
   }
 }
 
@@ -102,6 +105,9 @@ export interface EmployeeRow extends User {
   nid?: string | null
   experience?: string | null
   workType?: string | null
+  workStartTime?: string | null
+  workTimeLimit?: string | null
+  availableTime?: string | null
   branchId?: string | null
   branchName?: string | null
   roleId?: string | null
