@@ -233,7 +233,7 @@ export default function MediaLibraryPage() {
                 >
                   <div className="flex h-16 w-16 items-center justify-center rounded-md bg-muted text-muted-foreground overflow-hidden">
                     <Image 
-                      src={img.url} 
+                      imageId={img.id} 
                       alt={img.name} 
                       preview={true}
                       className="h-full w-full object-cover" 

@@ -122,7 +122,7 @@ export const MODULES: AppModule[] = [
     icon: Settings,
     children: [
       { key: "settings", label: "General", path: "/settings" },
-      { key: "settings.notifications", label: "Notification Settings", path: "/settings" },
+      { key: "settings.notifications", label: "Notification Settings", path: "/settings/notifications" },
       { key: "workflow", label: "Workflow Guide", path: "/workflow" },
     ],
   },

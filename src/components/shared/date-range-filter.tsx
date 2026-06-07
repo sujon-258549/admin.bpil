@@ -96,22 +96,22 @@ export function DateRangeFilter({ onRangeChange, className }: DateRangeFilterPro
 
   return (
     <div className={`flex flex-wrap items-center gap-2 ${className || ""}`}>
-      <div className="relative w-44">
-        <div className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none z-10 flex items-center justify-center">
+      <div className="flex items-center gap-2 w-48">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border bg-transparent text-muted-foreground">
           <CalendarIcon className="h-4 w-4" />
         </div>
-        <CustomSelect
-          value={selectedOption}
-          onChange={(v: string) => {
-            setSelectedOption(v as DateRangeOption)
-            if (v !== "CUSTOM") {
-              setCustomStart("")
-              setCustomEnd("")
-            }
-          }}
-          placeholder="Select Date"
-          className="pl-9"
-        >
+        <div className="flex-1">
+          <CustomSelect
+            value={selectedOption}
+            onChange={(v: string) => {
+              setSelectedOption(v as DateRangeOption)
+              if (v !== "CUSTOM") {
+                setCustomStart("")
+                setCustomEnd("")
+              }
+            }}
+            placeholder="Select Date"
+          >
           <option value="">All Time</option>
           <option value="TODAY">Today</option>
           <option value="YESTERDAY">Yesterday</option>
@@ -123,6 +123,7 @@ export function DateRangeFilter({ onRangeChange, className }: DateRangeFilterPro
           <option value="LAST_YEAR">Last Year</option>
           <option value="CUSTOM">Custom</option>
         </CustomSelect>
+        </div>
       </div>
 
       {selectedOption === "CUSTOM" && (

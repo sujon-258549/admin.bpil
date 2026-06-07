@@ -65,6 +65,8 @@ import ProductList from "@/pages/products/product-list-page"
 import InventoryPage from "@/pages/inventory/inventory-page"
 import InvoiceList from "@/pages/invoices/invoice-list-page"
 import SettingsPage from "@/pages/settings/settings-page"
+import NotificationSettingsPage from "@/pages/settings/NotificationSettingsPage"
+import WorkflowPage from "@/pages/workflow/WorkflowPage"
 import CategoryList from "@/pages/categories/CategoryList"
 import SubCategoryList from "@/pages/categories/SubCategoryList"
 import BlogList from "@/pages/blog/BlogList"
@@ -72,7 +74,6 @@ import MediaLibrary from "@/pages/media/MediaLibrary"
 import NotificationsPage from "@/pages/notifications/NotificationsPage"
 import SendNotificationPage from "@/pages/notifications/SendNotificationPage"
 import ContactList from "@/pages/contacts/ContactList"
-import WorkflowPage from "@/pages/workflow/WorkflowPage"
 import YourProfile from "@/pages/profile/YourProfile"
 import UpdateProfile from "@/pages/profile/UpdateProfile"
 import ChangePassword from "@/pages/profile/ChangePassword"
@@ -269,6 +270,22 @@ export const router = createBrowserRouter([
           </RequirePermission>
         ),
       },
+      {
+        path: "settings/notifications",
+        element: (
+          <RequirePermission moduleKey="settings">
+            <NotificationSettingsPage />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "workflow",
+        element: (
+          <RequirePermission moduleKey="workflow">
+            <WorkflowPage />
+          </RequirePermission>
+        ),
+      },
 
       // Categories
       {
@@ -338,14 +355,7 @@ export const router = createBrowserRouter([
 
       // Workflow Guide — Platform Super Admin playbook. Only super-admins
       // (or anyone explicitly granted `workflow.read`) can see it.
-      {
-        path: "workflow",
-        element: (
-          <RequirePermission moduleKey="workflow">
-            <WorkflowPage />
-          </RequirePermission>
-        ),
-      },
+      // (Moved to SettingsPage)
 
       // Profile Management — accessible to all authenticated users
       {

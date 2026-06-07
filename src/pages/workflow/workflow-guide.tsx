@@ -8,6 +8,9 @@ import {
   Sparkles,
   UserCog,
   Users,
+  Newspaper,
+  MessageSquare,
+  Activity,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -55,96 +58,94 @@ type Copy = {
 }
 
 const EN: Copy = {
-  pageTitle: "Workflow Guide",
-  pageSubtitle:
-    "How the platform is sold, set up, and operated — from Platform Super Admin to Company employees.",
+  pageTitle: "System Workflow Guide",
+  pageSubtitle: "How the platform is structured, set up, and operated.",
   langEnglish: "English",
   langBangla: "বাংলা",
 
   hierarchy: {
     heading: "The Hierarchy",
     platform: {
-      title: "Platform Super Admin",
-      desc: "You — the owner of Muster ERP. Sees and controls every company on the platform.",
+      title: "Super Admin",
+      desc: "Full access to the entire system. Can configure roles, employees, and settings.",
     },
     branch: {
-      title: "Company (= 1 Branch)",
-      desc: "Each customer company is represented as a Branch.",
+      title: "Department",
+      desc: "Organizes employees into logical groups (e.g., Content, Sales, HR).",
     },
     admin: {
-      title: "Company Super Admin",
-      desc: "One admin user you create under the branch. Full access — but only within their own branch.",
+      title: "Managers",
+      desc: "Users with elevated roles to oversee specific modules like Blogs or Inquiries.",
     },
     employees: {
-      title: "Company Employees",
-      desc: "Created and managed by the Company Super Admin. Access depends on the role assigned.",
+      title: "Employees",
+      desc: "Standard users with access limited by their assigned Role.",
     },
   },
 
   platformFlow: {
-    heading: "Your job — Selling a new company",
-    subtitle:
-      "When a new customer comes in, you do these 3 steps. After that, you hand over the keys.",
+    heading: "Initial Setup Workflow",
+    subtitle: "Steps to configure the system before adding employees.",
     steps: [
       {
         icon: Building2,
-        title: "1. Create a Branch",
-        desc: "The company itself is created as a Branch (main office). Optionally add sub-branches later.",
-        path: "/branches",
+        title: "1. Departments",
+        desc: "Create logical groupings for your team (e.g., Sales, Marketing).",
+        path: "/employees/departments",
       },
       {
-        icon: UserCog,
-        title: "2. Create the Company Super Admin",
-        desc: "One employee under that branch with a 'Company Admin' role and full permissions inside their branch.",
-        path: "/employees/new",
+        icon: Sparkles,
+        title: "2. Designations",
+        desc: "Add job titles for your employees (e.g., Executive, Manager).",
+        path: "/employees/designations",
       },
       {
-        icon: LogIn,
-        title: "3. Hand over the login",
-        desc: "Give the credentials to the customer. From this point, the Company Super Admin runs the show.",
+        icon: KeyRound,
+        title: "3. Roles & Permissions",
+        desc: "Define roles and decide exactly what each role can see and do.",
+        path: "/employees/roles",
       },
     ],
   },
 
   branchFlow: {
-    heading: "Their job — After handover",
-    subtitle:
-      "Once handed over, the Company Super Admin builds their own org chart and starts operations. You no longer touch their data day-to-day.",
+    heading: "Employee & Operations",
+    subtitle: "Adding the team and running daily tasks.",
     steps: [
       {
-        icon: LogIn,
-        title: "1. Login",
-        desc: "Logs in with the credentials you gave. Lands on Dashboard.",
-        path: "/login",
-      },
-      {
-        icon: Building2,
-        title: "2. Departments",
-        desc: "Creates departments — Sales, HR, Accounts, IT, etc.",
-        path: "/employees/departments",
-      },
-      {
-        icon: Sparkles,
-        title: "3. Designations",
-        desc: "Adds job titles — Manager, Officer, Executive, etc.",
-        path: "/employees/designations",
-      },
-      {
-        icon: KeyRound,
-        title: "4. Roles + Permissions",
-        desc: "Defines roles and decides exactly what each role can see and do across modules.",
-        path: "/employees/roles",
-      },
-      {
         icon: Users,
-        title: "5. Employees",
-        desc: "Adds team members and assigns them a branch, department, designation, and role.",
+        title: "1. Add Employees",
+        desc: "Create employee accounts and assign them to roles and departments.",
         path: "/employees",
       },
       {
+        icon: Newspaper,
+        title: "2. Content Management",
+        desc: "Write and publish blog posts, and manage the media library.",
+        path: "/blog",
+      },
+      {
+        icon: MessageSquare,
+        title: "3. Inquiries",
+        desc: "Handle incoming customer inquiries and contacts.",
+        path: "/inquiries/contacts",
+      },
+      {
+        icon: Activity,
+        title: "4. Audit Logs",
+        desc: "Track system activities and errors for security and debugging.",
+        path: "/logs",
+      },
+      {
+        icon: LogIn,
+        title: "5. Employee Login",
+        desc: "Employees log in and perform only their allowed tasks.",
+        path: "/login",
+      },
+      {
         icon: CheckCircle2,
-        title: "6. Operations",
-        desc: "From here on — Categories, Products, Inventory, Customers, Invoices. Daily business runs.",
+        title: "6. Daily Operations",
+        desc: "The system is now fully operational and ready for daily use.",
       },
     ],
   },
@@ -153,16 +154,16 @@ const EN: Copy = {
     heading: "Who sees what",
     rows: [
       {
-        who: "Platform Super Admin (you)",
-        sees: "Every branch, every employee — across all customer companies.",
+        who: "Super Admin",
+        sees: "Every module, every setting, and all data across the platform.",
       },
       {
-        who: "Company Super Admin",
-        sees: "Only their own branch — employees, customers, products, invoices belonging to that branch.",
+        who: "Department Managers",
+        sees: "Modules relevant to their department (e.g., Marketing sees Blogs).",
       },
       {
-        who: "Company Employee",
-        sees: "Only the modules and actions allowed by their assigned role.",
+        who: "Employees",
+        sees: "Only the specific modules and actions allowed by their Role.",
       },
     ],
   },
@@ -170,104 +171,102 @@ const EN: Copy = {
   tip: {
     title: "Things you should not forget",
     lines: [
-      "Each company = its own Branch. Don't mix companies into one branch.",
-      "Never give the Platform Super Admin role to a customer — they'd see every other client's data.",
-      "The Company Super Admin handles their own permissions. You don't manage their employees day-to-day.",
+      "Always set up Departments, Designations, and Roles before adding Employees.",
+      "Be careful when assigning the 'Super Admin' role to any user.",
+      "Use the Action Logs to audit who made changes in the system.",
     ],
   },
 }
 
 const BN: Copy = {
-  pageTitle: "ওয়ার্কফ্লো গাইড",
-  pageSubtitle:
-    "প্ল্যাটফর্ম কীভাবে বিক্রি হয়, setup হয়, এবং চলে — Platform Super Admin থেকে শুরু করে কোম্পানির কর্মচারী পর্যন্ত।",
+  pageTitle: "সিস্টেম ওয়ার্কফ্লো গাইড",
+  pageSubtitle: "প্ল্যাটফর্মটি কীভাবে সাজানো, সেটআপ এবং পরিচালিত হয়।",
   langEnglish: "English",
   langBangla: "বাংলা",
 
   hierarchy: {
     heading: "হায়ারার্কি (কে কোথায়)",
     platform: {
-      title: "Platform Super Admin",
-      desc: "আপনি — Muster ERP-এর মালিক। সব কোম্পানি এবং সব data আপনার নিয়ন্ত্রণে।",
+      title: "Super Admin",
+      desc: "সিস্টেমের সম্পূর্ণ অ্যাক্সেস। Role, Employee এবং Settings কনফিগার করতে পারেন।",
     },
     branch: {
-      title: "কোম্পানি (= ১টা Branch)",
-      desc: "প্রতিটা customer কোম্পানিকে আপনি একটা Branch হিসেবে তৈরি করবেন।",
+      title: "Department",
+      desc: "কর্মচারীদের কাজের ভিত্তিতে আলাদা করা (যেমন: Content, Sales, HR)।",
     },
     admin: {
-      title: "Company Super Admin",
-      desc: "ওই Branch-এর নিচে একজন admin user — আপনি create করে দিবেন। তার নিজের branch-এর ভেতরে full access থাকবে।",
+      title: "Managers",
+      desc: "Blog বা Inquiries এর মতো নির্দিষ্ট মডিউল পরিচালনা করার জন্য বিশেষ Role।",
     },
     employees: {
-      title: "কোম্পানির কর্মচারী",
-      desc: "Company Super Admin নিজেই তাদের create ও manage করবে। Role অনুযায়ী access পাবে।",
+      title: "Employees",
+      desc: "সাধারণ ব্যবহারকারী, যাদের অ্যাক্সেস Role এর উপর নির্ভর করে।",
     },
   },
 
   platformFlow: {
-    heading: "আপনার কাজ — নতুন কোম্পানি sell করা",
-    subtitle:
-      "নতুন customer এলে আপনি এই ৩টা step করবেন। এর পরে চাবি customer-এর হাতে।",
+    heading: "প্রাথমিক সেটআপ",
+    subtitle: "কর্মচারী যুক্ত করার আগে সিস্টেম কনফিগার করার ধাপসমূহ।",
     steps: [
       {
         icon: Building2,
-        title: "১. Branch তৈরি করুন",
-        desc: "কোম্পানির নামে একটা Branch (main office) create করুন। দরকার হলে পরে sub-branch add করতে পারবেন।",
-        path: "/branches",
+        title: "১. Departments",
+        desc: "আপনার টিমের জন্য বিভাগ তৈরি করুন (যেমন: Sales, Marketing)।",
+        path: "/employees/departments",
       },
       {
-        icon: UserCog,
-        title: "২. Company Super Admin তৈরি করুন",
-        desc: "ওই branch-এর under-এ একজন employee — 'Company Admin' role এবং পুরো branch-এর জন্য full permission দিন।",
-        path: "/employees/new",
+        icon: Sparkles,
+        title: "২. Designations",
+        desc: "কর্মচারীদের পদবি যুক্ত করুন (যেমন: Executive, Manager)।",
+        path: "/employees/designations",
       },
       {
-        icon: LogIn,
-        title: "৩. Login handover করুন",
-        desc: "Credentials customer-কে দিয়ে দিন। এর পর থেকে Company Super Admin নিজেই সব handle করবে।",
+        icon: KeyRound,
+        title: "৩. Roles & Permissions",
+        desc: "Role তৈরি করুন এবং ঠিক করুন কে কী দেখতে ও করতে পারবে।",
+        path: "/employees/roles",
       },
     ],
   },
 
   branchFlow: {
-    heading: "তাদের কাজ — Handover-এর পর",
-    subtitle:
-      "Handover-এর পর Company Super Admin নিজে নিজের org chart বানাবে এবং operation শুরু করবে। আপনি প্রতিদিন তাদের data-তে হাত দিবেন না।",
+    heading: "কর্মচারী এবং দৈনন্দিন কাজ",
+    subtitle: "টিম যুক্ত করা এবং অপারেশন শুরু করা।",
     steps: [
       {
-        icon: LogIn,
-        title: "১. Login",
-        desc: "আপনার দেওয়া credentials দিয়ে login করবে। Dashboard দেখাবে।",
-        path: "/login",
-      },
-      {
-        icon: Building2,
-        title: "২. Departments",
-        desc: "Department create করবে — Sales, HR, Accounts, IT ইত্যাদি।",
-        path: "/employees/departments",
-      },
-      {
-        icon: Sparkles,
-        title: "৩. Designations",
-        desc: "Job title set করবে — Manager, Officer, Executive ইত্যাদি।",
-        path: "/employees/designations",
-      },
-      {
-        icon: KeyRound,
-        title: "৪. Roles + Permissions",
-        desc: "Role তৈরি করে ঠিক করবে — কোন role কোন module-এ কী করতে পারবে।",
-        path: "/employees/roles",
-      },
-      {
         icon: Users,
-        title: "৫. Employees",
-        desc: "Team member add করবে এবং branch / department / designation / role assign করবে।",
+        title: "১. Add Employees",
+        desc: "কর্মচারী অ্যাকাউন্ট তৈরি করুন এবং তাদের Role ও Department নির্ধারণ করুন।",
         path: "/employees",
       },
       {
+        icon: Newspaper,
+        title: "২. Content Management",
+        desc: "ব্লগ পোস্ট লিখুন এবং মিডিয়া লাইব্রেরি পরিচালনা করুন।",
+        path: "/blog",
+      },
+      {
+        icon: MessageSquare,
+        title: "৩. Inquiries",
+        desc: "গ্রাহকদের জিজ্ঞাসা এবং যোগাযোগ পরিচালনা করুন।",
+        path: "/inquiries/contacts",
+      },
+      {
+        icon: Activity,
+        title: "৪. Audit Logs",
+        desc: "সিস্টেমের অ্যাক্টিভিটি এবং এরর ট্র্যাক করুন।",
+        path: "/logs",
+      },
+      {
+        icon: LogIn,
+        title: "৫. Employee Login",
+        desc: "কর্মচারীরা লগইন করে শুধুমাত্র তাদের অনুমোদিত কাজগুলো করবে।",
+        path: "/login",
+      },
+      {
         icon: CheckCircle2,
-        title: "৬. Operations",
-        desc: "এখান থেকে — Categories, Products, Inventory, Customers, Invoices। দৈনিক ব্যবসা চলবে।",
+        title: "৬. Daily Operations",
+        desc: "সিস্টেম এখন পুরোপুরি প্রস্তুত এবং দৈনন্দিন কাজ চলবে।",
       },
     ],
   },
@@ -276,16 +275,16 @@ const BN: Copy = {
     heading: "কে কী দেখবে",
     rows: [
       {
-        who: "Platform Super Admin (আপনি)",
-        sees: "সব Branch, সব employee — সব customer-এর সব কিছু।",
+        who: "Super Admin",
+        sees: "সিস্টেমের সব মডিউল, সেটিংস এবং সব ডেটা।",
       },
       {
-        who: "Company Super Admin",
-        sees: "শুধু নিজের Branch — তার নিজের employees, customers, products, invoices।",
+        who: "Department Managers",
+        sees: "শুধু তাদের বিভাগের সাথে সম্পর্কিত মডিউল (যেমন: Marketing দেখবে Blog)।",
       },
       {
-        who: "কোম্পানির Employee",
-        sees: "তার Role-এ যেসব module এবং action allow করা হয়েছে শুধু সেগুলো।",
+        who: "Employees",
+        sees: "শুধুমাত্র তাদের Role-এ অনুমোদিত মডিউল এবং অ্যাকশনগুলো।",
       },
     ],
   },
@@ -293,9 +292,9 @@ const BN: Copy = {
   tip: {
     title: "যা ভুলবেন না",
     lines: [
-      "প্রতিটা কোম্পানি = আলাদা Branch। এক branch-এ দুই কোম্পানি মেশাবেন না।",
-      "Platform Super Admin role কোনো customer-কে দিবেন না — অন্য client-এর data দেখে ফেলবে।",
-      "Company Super Admin নিজেই তার permission সামলাবে। আপনি প্রতিদিন তাদের employee manage করবেন না।",
+      "কর্মচারী যুক্ত করার আগে সর্বদা Department, Designation এবং Role সেটআপ করুন।",
+      "কাউকে 'Super Admin' পারমিশন দেওয়ার আগে সতর্ক থাকুন।",
+      "সিস্টেমে কে কী পরিবর্তন করেছে তা দেখতে Action Logs ব্যবহার করুন।",
     ],
   },
 }

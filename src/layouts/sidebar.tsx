@@ -70,7 +70,7 @@ export default function AppSidebar() {
 
   const handleLogout = () => {
     dispatch(performLogout())
-    navigate(ROUTES.AUTH.LOGIN, { replace: true })
+    navigate(ROUTES.AUTH.LOGIN, { replace: true, state: { from: location } })
   }
 
   return (

@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
 import { LogOut, User as UserIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -17,8 +18,11 @@ import { performLogout, userUpdated } from "@/redux/features/auth/auth-slice"
 import { useGetMyDataQuery } from "@/redux/features/users/users-api"
 import ThemeSwitcher from "./theme-switcher"
 import { NotificationBell } from "@/components/common/NotificationBell"
+import { ROUTES } from "@/config/paths"
 
 export default function Navbar() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const cachedUser = useAppSelector((s) => s.auth.user)
   const dispatch = useAppDispatch()
 
@@ -70,7 +74,10 @@ export default function Navbar() {
             <DropdownMenuItem>
               <UserIcon className="size-4" /> Profile
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => dispatch(performLogout())}>
+            <DropdownMenuItem onClick={() => {
+              dispatch(performLogout())
+              navigate(ROUTES.AUTH.LOGIN, { replace: true, state: { from: location } })
+            }}>
               <LogOut className="size-4" /> Logout
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -2,7 +2,7 @@ import {
   PageMeta,
 } from "@/components/shared"
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { toast } from "sonner"
 import { AlertCircle, Mail, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -32,6 +32,7 @@ const extractErrorMessage = (err: unknown): string => {
 
 export default function LoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const dispatch = useAppDispatch()
   const [login, { isLoading }] = useLoginMutation()
   const [email, setEmail] = useState("")
@@ -71,9 +72,9 @@ export default function LoginPage() {
       } else {
         toast.success(`Welcome back, ${user?.name ?? "user"}`)
       }
-      // "/" hits SmartIndex which routes the user to their first accessible
-      // module (or /access-denied if no permissions are granted).
-      navigate(ROUTES.ROOT)
+      // Navigate back to where they were, or default to ROOT
+      const from = location.state?.from?.pathname || ROUTES.ROOT
+      navigate(from, { replace: true })
     } catch (err) {
       const msg = extractErrorMessage(err)
       setErrorMsg(msg)

@@ -100,7 +100,7 @@ export default function EmployeeSecurity() {
   };
 
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div className="space-y-6">
       <PageMeta title={`Security: ${user.name}`} />
       
       <div className="flex items-center justify-between">
