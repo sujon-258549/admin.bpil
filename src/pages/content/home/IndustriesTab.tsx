@@ -8,7 +8,7 @@ import { Plus, Pencil, Trash2, Save, Loader2, Image as ImageIcon } from "lucide-
 import { Image, DataTable, type Column, EmptyState, Text, ConfirmDialog } from "@/components/shared"
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
-import { IndustryFormModal, type IndustryCardData } from "./IndustryFormModal"
+import { IndustryFormModal, type IndustryCardData } from "@/components/modal/home/IndustryFormModal"
 
 interface StatItem {
   value: string

@@ -4,49 +4,51 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Plus, Pencil, Trash2, Save, Loader2, ListChecks } from "lucide-react"
-import { DataTable, type Column, EmptyState, Text, ConfirmDialog } from "@/components/shared"
+import { Plus, Pencil, Trash2, Save, Loader2, Image as ImageIcon } from "lucide-react"
+import { Image, DataTable, type Column, EmptyState, Text, ConfirmDialog } from "@/components/shared"
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
-import { WhyChooseFormModal, type WhyChooseCardData } from "@/components/modal/home/WhyChooseFormModal"
+import { GalleryFormModal, type GalleryItemData } from "@/components/modal/home/GalleryFormModal"
 
-export interface WhyChooseSectionContent {
+export interface GallerySectionContent {
   intro: {
     eyebrow: string
     titlePart1: string
     titleHighlight: string
-    titlePart2: string
     description: string
+    buttonText: string
+    buttonLink: string
   }
-  items: WhyChooseCardData[]
+  items: GalleryItemData[]
 }
 
-const defaultContent: WhyChooseSectionContent = {
+const defaultContent: GallerySectionContent = {
   intro: {
-    eyebrow: "Why Choose Us",
-    titlePart1: "Why Choose",
-    titleHighlight: "Bangladesh Power Innovation",
-    titlePart2: "?",
-    description: "Six commitments that show up on every project — each backed by a decade of field engineering, real customer wins and a quality system that doesn't bend."
+    eyebrow: "Project Gallery",
+    titlePart1: "Our Work In",
+    titleHighlight: "The Field",
+    description: "Recent installations, commissioning and field engineering delivered across Bangladesh.",
+    buttonText: "Full Gallery",
+    buttonLink: "/gallery"
   },
   items: []
 }
 
-export function WhyChooseTab() {
+export function GalleryTab() {
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("home")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
-  const [form, setForm] = useState<WhyChooseSectionContent>(defaultContent)
+  const [form, setForm] = useState<GallerySectionContent>(defaultContent)
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editingCard, setEditingCard] = useState<WhyChooseCardData | null>(null)
+  const [editingCard, setEditingCard] = useState<GalleryItemData | null>(null)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (contentMap?.["home-why-choose"]?.value) {
-        setForm({ ...defaultContent, ...contentMap["home-why-choose"].value })
+      if (contentMap?.["home-gallery"]?.value) {
+        setForm({ ...defaultContent, ...contentMap["home-gallery"].value })
       }
     }, 0)
     return () => clearTimeout(timer)
@@ -55,51 +57,45 @@ export function WhyChooseTab() {
   const handleSaveIntro = async () => {
     try {
       await upsert({
-        key: "home-why-choose",
+        key: "home-gallery",
         group: "home",
         type: "json",
-        name: "Home Why Choose Us Section",
-        description: "Content and cards for the Why Choose Us section on the home page",
+        name: "Home Project Gallery Section",
+        description: "Content and images for the Project Gallery section on the home page",
         value: form,
         isActive: true,
       }).unwrap()
-      toast.success("Why Choose Us intro updated successfully")
+      toast.success("Gallery intro updated successfully")
     } catch {
       toast.error("Failed to update intro text")
     }
   }
 
-  const saveFullState = async (newState: WhyChooseSectionContent) => {
+  const saveFullState = async (newState: GallerySectionContent) => {
     try {
       await upsert({
-        key: "home-why-choose",
+        key: "home-gallery",
         group: "home",
         type: "json",
-        name: "Home Why Choose Us Section",
-        description: "Content and cards for the Why Choose Us section on the home page",
+        name: "Home Project Gallery Section",
+        description: "Content and images for the Project Gallery section on the home page",
         value: newState,
         isActive: true,
       }).unwrap()
-      toast.success("Section updated successfully")
+      toast.success("Gallery updated successfully")
     } catch {
-      toast.error("Failed to update section")
+      toast.error("Failed to update gallery")
     }
   }
 
   // --- Cards Handlers ---
 
   const handleAddCard = () => {
-    if (form.items.length >= 6) {
-      toast.warning("Maximum Limit Reached", {
-        description: "You can only add up to 6 reason cards. Adding more will break the design layout on the frontend website."
-      })
-      return
-    }
     setEditingCard(null)
     setIsModalOpen(true)
   }
 
-  const handleEditCard = (card: WhyChooseCardData) => {
+  const handleEditCard = (card: GalleryItemData) => {
     setEditingCard(card)
     setIsModalOpen(true)
   }
@@ -117,7 +113,7 @@ export function WhyChooseTab() {
     setPendingDeleteId(null)
   }
 
-  const handleFormSubmit = async (cardData: WhyChooseCardData) => {
+  const handleFormSubmit = async (cardData: GalleryItemData) => {
     let newItems = [...form.items]
     if (editingCard) {
       newItems = newItems.map(i => i.id === cardData.id ? cardData : i)
@@ -130,26 +126,30 @@ export function WhyChooseTab() {
     await saveFullState(newState)
   }
 
-  const columns: Column<WhyChooseCardData>[] = [
+  const columns: Column<GalleryItemData>[] = [
     {
-      key: "title",
-      header: "Reason / Title",
+      key: "image",
+      header: "Image",
       cell: (d) => (
-        <div className="min-w-0 max-w-[300px]">
-          <div className="truncate font-medium">{d.title || "Untitled"}</div>
-          <Text size="xs" tone="muted" className="truncate mt-0.5">
-            {d.description}
-          </Text>
+        <div className="relative h-14 w-14 rounded-md overflow-hidden bg-muted flex items-center justify-center border">
+          {d.imageId ? (
+            <Image preview imageId={d.imageId} alt={d.alt} className="w-full h-full object-cover" />
+          ) : (
+            <span className="text-[10px] text-muted-foreground">None</span>
+          )}
         </div>
       ),
     },
     {
-      key: "icon",
-      header: "Icon Name",
+      key: "details",
+      header: "Category & Alt",
       cell: (d) => (
-        <Text size="xs" tone="muted" className="truncate font-mono">
-          {d.icon || "—"}
-        </Text>
+        <div className="min-w-0 max-w-[300px]">
+          <div className="truncate font-medium">{d.category || "Untitled"}</div>
+          <Text size="xs" tone="muted" className="truncate mt-0.5">
+            {d.alt}
+          </Text>
+        </div>
       ),
     },
     {
@@ -186,9 +186,9 @@ export function WhyChooseTab() {
       <div className="mb-10">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-lg font-medium">Why Choose Us Section</h2>
+            <h2 className="text-lg font-medium">Project Gallery Section</h2>
             <p className="text-sm text-muted-foreground">
-              Manage the intro text and the list of reason cards.
+              Manage the intro text and the image grid.
             </p>
           </div>
           <Button onClick={handleSaveIntro} disabled={isSaving}>
@@ -205,17 +205,17 @@ export function WhyChooseTab() {
             <Input 
               value={form.intro.eyebrow} 
               onChange={e => setForm({ ...form, intro: { ...form.intro, eyebrow: e.target.value } })} 
-              placeholder="e.g. Why Choose Us"
+              placeholder="e.g. Project Gallery"
             />
           </div>
           
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Title (Part 1)</Label>
               <Input 
                 value={form.intro.titlePart1} 
                 onChange={e => setForm({ ...form, intro: { ...form.intro, titlePart1: e.target.value } })} 
-                placeholder="e.g. Why Choose"
+                placeholder="e.g. Our Work In"
               />
             </div>
             <div className="space-y-2">
@@ -223,15 +223,7 @@ export function WhyChooseTab() {
               <Input 
                 value={form.intro.titleHighlight} 
                 onChange={e => setForm({ ...form, intro: { ...form.intro, titleHighlight: e.target.value } })} 
-                placeholder="e.g. Bangladesh Power Innovation"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Title (Part 2)</Label>
-              <Input 
-                value={form.intro.titlePart2} 
-                onChange={e => setForm({ ...form, intro: { ...form.intro, titlePart2: e.target.value } })} 
-                placeholder="e.g. ?"
+                placeholder="e.g. The Field"
               />
             </div>
           </div>
@@ -244,29 +236,49 @@ export function WhyChooseTab() {
               className="min-h-[80px]"
             />
           </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Button Text</Label>
+              <Input 
+                value={form.intro.buttonText} 
+                onChange={e => setForm({ ...form, intro: { ...form.intro, buttonText: e.target.value } })} 
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Button Link</Label>
+              <Input 
+                value={form.intro.buttonLink} 
+                onChange={e => setForm({ ...form, intro: { ...form.intro, buttonLink: e.target.value } })} 
+              />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Cards Table */}
       <div className="border-t pt-8 mt-8">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-md">Reason Cards</h3>
+          <div>
+            <h3 className="font-semibold text-md">Gallery Images</h3>
+            <p className="text-xs text-muted-foreground mt-1">These will appear in a grid format on the website.</p>
+          </div>
           <Button onClick={handleAddCard}>
-            <Plus className="h-4 w-4 mr-2" /> Add Reason
+            <Plus className="h-4 w-4 mr-2" /> Add Image
           </Button>
         </div>
         
-        <DataTable<WhyChooseCardData>
+        <DataTable<GalleryItemData>
           data={form.items}
           columns={columns}
           isLoading={false}
           empty={
             <EmptyState
-              icon={ListChecks}
-              title="No reasons added yet."
+              icon={ImageIcon}
+              title="No images added yet."
               action={
                 <Button size="sm" onClick={handleAddCard}>
-                  <Plus className="size-4 mr-2" /> Add your first reason
+                  <Plus className="size-4 mr-2" /> Add your first image
                 </Button>
               }
             />
@@ -274,7 +286,7 @@ export function WhyChooseTab() {
         />
       </div>
 
-      <WhyChooseFormModal 
+      <GalleryFormModal 
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         initialData={editingCard}
@@ -284,8 +296,8 @@ export function WhyChooseTab() {
       <ConfirmDialog
         open={Boolean(pendingDeleteId)}
         onOpenChange={(v) => !v && setPendingDeleteId(null)}
-        title="Delete Reason Card?"
-        description="This will permanently remove this reason from the list. This action cannot be undone."
+        title="Delete Image?"
+        description="This will permanently remove this image from the gallery. This action cannot be undone."
         confirmLabel="Delete"
         destructive
         onConfirm={confirmDelete}

@@ -116,12 +116,11 @@ export function IndustryFormModal({ open, onOpenChange, initialData, onSubmit }:
                   value={form.imageId}
                   onChange={(val) => setForm({ ...form, imageId: val as string })}
                   width="w-full"
-                  height="h-64"
+                  height="h-[200px]"
                   label="Select Image"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Square/portrait orientation recommended (e.g., 4:5 or 1:1). 
-                  The first item in the list will be treated as the large hero image.
+                <p className="text-[11px] text-muted-foreground mt-1">
+                  <strong>Recommended size: 800x1000 pixels (4:5 vertical ratio).</strong> The first image is used as the large feature, while the rest are displayed smaller.
                 </p>
               </div>
             </div>

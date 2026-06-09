@@ -8,7 +8,7 @@ import { Plus, Pencil, Trash2, Save, Loader2, PlaySquare } from "lucide-react"
 import { Image, DataTable, type Column, EmptyState, Text, ConfirmDialog } from "@/components/shared"
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
-import { ServicesVideoFormModal, type VideoServiceData } from "./ServicesVideoFormModal"
+import { ServicesVideoFormModal, type VideoServiceData } from "@/components/modal/home/ServicesVideoFormModal"
 
 export interface ServicesVideoSectionContent {
   intro: {

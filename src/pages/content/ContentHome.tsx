@@ -8,10 +8,22 @@ import { IndustriesTab } from "./home/IndustriesTab"
 import { WhyChooseTab } from "./home/WhyChooseTab"
 import { ComprehensiveTab } from "./home/ComprehensiveTab"
 import { ServicesVideoTab } from "./home/ServicesVideoTab"
+import { GalleryTab } from "./home/GalleryTab"
+import { FaqTab } from "./home/FaqTab"
+import { ContactTab } from "./home/ContactTab"
+import { CtaTab } from "./home/CtaTab"
 // Force re-evaluation of imports
+import { useSearchParams } from "react-router-dom"
 
 export default function ContentHome() {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [searchParams, setSearchParams] = useSearchParams()
+  
+  const activeTab = searchParams.get("tab") || "hero-slider"
+
+  const handleTabChange = (value: string) => {
+    setSearchParams({ tab: value })
+  }
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -31,7 +43,6 @@ export default function ContentHome() {
     { id: "comprehensive", label: "Comprehensive Services" },
     { id: "services-video", label: "Services Video" },
     { id: "gallery", label: "Gallery" },
-    { id: "blog", label: "Blog" },
     { id: "contact", label: "Contact" },
     { id: "faq", label: "FAQ" },
     { id: "cta", label: "CTA" },
@@ -42,7 +53,7 @@ export default function ContentHome() {
       <h1 className="text-2xl font-semibold mb-4">Home Content Management</h1>
       <p className="text-muted-foreground mb-6">Manage all dynamic sections for the Home page.</p>
 
-      <Tabs defaultValue="hero-slider" className="w-full">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
         <div className="relative flex items-center w-full mb-2">
           <button
             onClick={() => scroll("left")}
@@ -88,6 +99,14 @@ export default function ContentHome() {
               <ComprehensiveTab />
             ) : section.id === "services-video" ? (
               <ServicesVideoTab />
+            ) : section.id === "gallery" ? (
+              <GalleryTab />
+            ) : section.id === "faq" ? (
+              <FaqTab />
+            ) : section.id === "contact" ? (
+              <ContactTab />
+            ) : section.id === "cta" ? (
+              <CtaTab />
             ) : (
               <div className="rounded-lg border bg-card text-card-foreground p-6">
                 <h2 className="text-lg font-medium mb-4">{section.label}</h2>

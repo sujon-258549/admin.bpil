@@ -4,49 +4,47 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Plus, Pencil, Trash2, Save, Loader2, ListChecks } from "lucide-react"
+import { Plus, Pencil, Trash2, Save, Loader2, HelpCircle } from "lucide-react"
 import { DataTable, type Column, EmptyState, Text, ConfirmDialog } from "@/components/shared"
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
-import { WhyChooseFormModal, type WhyChooseCardData } from "@/components/modal/home/WhyChooseFormModal"
+import { FaqFormModal, type FaqItemData } from "@/components/modal/home/FaqFormModal"
 
-export interface WhyChooseSectionContent {
+export interface FaqSectionContent {
   intro: {
     eyebrow: string
     titlePart1: string
     titleHighlight: string
-    titlePart2: string
     description: string
   }
-  items: WhyChooseCardData[]
+  items: FaqItemData[]
 }
 
-const defaultContent: WhyChooseSectionContent = {
+const defaultContent: FaqSectionContent = {
   intro: {
-    eyebrow: "Why Choose Us",
-    titlePart1: "Why Choose",
-    titleHighlight: "Bangladesh Power Innovation",
-    titlePart2: "?",
-    description: "Six commitments that show up on every project — each backed by a decade of field engineering, real customer wins and a quality system that doesn't bend."
+    eyebrow: "FAQ",
+    titlePart1: "Got Questions?",
+    titleHighlight: "We Have Answers.",
+    description: "Everything you wanted to know about BPIL — our products, installation process, brands, support and how to get a quote.",
   },
   items: []
 }
 
-export function WhyChooseTab() {
+export function FaqTab() {
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("home")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
-  const [form, setForm] = useState<WhyChooseSectionContent>(defaultContent)
+  const [form, setForm] = useState<FaqSectionContent>(defaultContent)
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editingCard, setEditingCard] = useState<WhyChooseCardData | null>(null)
+  const [editingCard, setEditingCard] = useState<FaqItemData | null>(null)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (contentMap?.["home-why-choose"]?.value) {
-        setForm({ ...defaultContent, ...contentMap["home-why-choose"].value })
+      if (contentMap?.["home-faq"]?.value) {
+        setForm({ ...defaultContent, ...contentMap["home-faq"].value })
       }
     }, 0)
     return () => clearTimeout(timer)
@@ -55,51 +53,45 @@ export function WhyChooseTab() {
   const handleSaveIntro = async () => {
     try {
       await upsert({
-        key: "home-why-choose",
+        key: "home-faq",
         group: "home",
         type: "json",
-        name: "Home Why Choose Us Section",
-        description: "Content and cards for the Why Choose Us section on the home page",
+        name: "Home FAQ Section",
+        description: "Content and list of Frequently Asked Questions on the home page",
         value: form,
         isActive: true,
       }).unwrap()
-      toast.success("Why Choose Us intro updated successfully")
+      toast.success("FAQ intro updated successfully")
     } catch {
       toast.error("Failed to update intro text")
     }
   }
 
-  const saveFullState = async (newState: WhyChooseSectionContent) => {
+  const saveFullState = async (newState: FaqSectionContent) => {
     try {
       await upsert({
-        key: "home-why-choose",
+        key: "home-faq",
         group: "home",
         type: "json",
-        name: "Home Why Choose Us Section",
-        description: "Content and cards for the Why Choose Us section on the home page",
+        name: "Home FAQ Section",
+        description: "Content and list of Frequently Asked Questions on the home page",
         value: newState,
         isActive: true,
       }).unwrap()
-      toast.success("Section updated successfully")
+      toast.success("FAQ updated successfully")
     } catch {
-      toast.error("Failed to update section")
+      toast.error("Failed to update FAQ")
     }
   }
 
   // --- Cards Handlers ---
 
   const handleAddCard = () => {
-    if (form.items.length >= 6) {
-      toast.warning("Maximum Limit Reached", {
-        description: "You can only add up to 6 reason cards. Adding more will break the design layout on the frontend website."
-      })
-      return
-    }
     setEditingCard(null)
     setIsModalOpen(true)
   }
 
-  const handleEditCard = (card: WhyChooseCardData) => {
+  const handleEditCard = (card: FaqItemData) => {
     setEditingCard(card)
     setIsModalOpen(true)
   }
@@ -117,7 +109,7 @@ export function WhyChooseTab() {
     setPendingDeleteId(null)
   }
 
-  const handleFormSubmit = async (cardData: WhyChooseCardData) => {
+  const handleFormSubmit = async (cardData: FaqItemData) => {
     let newItems = [...form.items]
     if (editingCard) {
       newItems = newItems.map(i => i.id === cardData.id ? cardData : i)
@@ -130,26 +122,17 @@ export function WhyChooseTab() {
     await saveFullState(newState)
   }
 
-  const columns: Column<WhyChooseCardData>[] = [
+  const columns: Column<FaqItemData>[] = [
     {
-      key: "title",
-      header: "Reason / Title",
+      key: "details",
+      header: "Question & Answer",
       cell: (d) => (
-        <div className="min-w-0 max-w-[300px]">
-          <div className="truncate font-medium">{d.title || "Untitled"}</div>
+        <div className="min-w-0 max-w-[500px]">
+          <div className="truncate font-medium">{d.question || "Untitled"}</div>
           <Text size="xs" tone="muted" className="truncate mt-0.5">
-            {d.description}
+            {d.answer}
           </Text>
         </div>
-      ),
-    },
-    {
-      key: "icon",
-      header: "Icon Name",
-      cell: (d) => (
-        <Text size="xs" tone="muted" className="truncate font-mono">
-          {d.icon || "—"}
-        </Text>
       ),
     },
     {
@@ -183,12 +166,12 @@ export function WhyChooseTab() {
     <div className="rounded-lg border bg-card text-card-foreground p-6">
       
       {/* Intro Form */}
-      <div className="mb-10">
+      <div className="mb-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-lg font-medium">Why Choose Us Section</h2>
+            <h2 className="text-lg font-medium">FAQ Section</h2>
             <p className="text-sm text-muted-foreground">
-              Manage the intro text and the list of reason cards.
+              Manage the intro text and the list of frequently asked questions.
             </p>
           </div>
           <Button onClick={handleSaveIntro} disabled={isSaving}>
@@ -205,17 +188,17 @@ export function WhyChooseTab() {
             <Input 
               value={form.intro.eyebrow} 
               onChange={e => setForm({ ...form, intro: { ...form.intro, eyebrow: e.target.value } })} 
-              placeholder="e.g. Why Choose Us"
+              placeholder="e.g. FAQ"
             />
           </div>
           
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Title (Part 1)</Label>
               <Input 
                 value={form.intro.titlePart1} 
                 onChange={e => setForm({ ...form, intro: { ...form.intro, titlePart1: e.target.value } })} 
-                placeholder="e.g. Why Choose"
+                placeholder="e.g. Got Questions?"
               />
             </div>
             <div className="space-y-2">
@@ -223,15 +206,7 @@ export function WhyChooseTab() {
               <Input 
                 value={form.intro.titleHighlight} 
                 onChange={e => setForm({ ...form, intro: { ...form.intro, titleHighlight: e.target.value } })} 
-                placeholder="e.g. Bangladesh Power Innovation"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Title (Part 2)</Label>
-              <Input 
-                value={form.intro.titlePart2} 
-                onChange={e => setForm({ ...form, intro: { ...form.intro, titlePart2: e.target.value } })} 
-                placeholder="e.g. ?"
+                placeholder="e.g. We Have Answers."
               />
             </div>
           </div>
@@ -248,25 +223,27 @@ export function WhyChooseTab() {
       </div>
 
       {/* Cards Table */}
-      <div className="border-t pt-8 mt-8">
+      <div className="border-t pt-4 -mt-2">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-md">Reason Cards</h3>
+          <div>
+            <h3 className="font-semibold text-md">FAQ List</h3>
+          </div>
           <Button onClick={handleAddCard}>
-            <Plus className="h-4 w-4 mr-2" /> Add Reason
+            <Plus className="h-4 w-4 mr-2" /> Add FAQ
           </Button>
         </div>
         
-        <DataTable<WhyChooseCardData>
+        <DataTable<FaqItemData>
           data={form.items}
           columns={columns}
           isLoading={false}
           empty={
             <EmptyState
-              icon={ListChecks}
-              title="No reasons added yet."
+              icon={HelpCircle}
+              title="No FAQs added yet."
               action={
                 <Button size="sm" onClick={handleAddCard}>
-                  <Plus className="size-4 mr-2" /> Add your first reason
+                  <Plus className="size-4 mr-2" /> Add your first FAQ
                 </Button>
               }
             />
@@ -274,7 +251,7 @@ export function WhyChooseTab() {
         />
       </div>
 
-      <WhyChooseFormModal 
+      <FaqFormModal 
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         initialData={editingCard}
@@ -284,8 +261,8 @@ export function WhyChooseTab() {
       <ConfirmDialog
         open={Boolean(pendingDeleteId)}
         onOpenChange={(v) => !v && setPendingDeleteId(null)}
-        title="Delete Reason Card?"
-        description="This will permanently remove this reason from the list. This action cannot be undone."
+        title="Delete FAQ?"
+        description="This will permanently remove this question from the FAQ list. This action cannot be undone."
         confirmLabel="Delete"
         destructive
         onConfirm={confirmDelete}

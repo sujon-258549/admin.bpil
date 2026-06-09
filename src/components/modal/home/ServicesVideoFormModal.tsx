@@ -150,8 +150,8 @@ export function ServicesVideoFormModal({ open, onOpenChange, initialData, onSubm
                   height="h-[250px]"
                   label="Select Thumbnail"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Displays before the video starts playing. The first video in the list uses a large cover, the next two use square covers.
+                <p className="text-[11px] text-muted-foreground mt-1">
+                  <strong>Recommended size: 1080x1080 (Square) or 1920x1080 (16:9).</strong> Displays before the video starts playing. The first video in the list uses a large cover, the next two use square covers.
                 </p>
               </div>
 

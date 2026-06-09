@@ -8,7 +8,7 @@ import { Plus, Pencil, Trash2, Save, Loader2, Image as ImageIcon } from "lucide-
 import { DataTable, type Column, EmptyState, Text, ConfirmDialog, MediaPicker } from "@/components/shared"
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
-import { ComprehensiveFormModal, type ComprehensiveServiceData } from "./ComprehensiveFormModal"
+import { ComprehensiveFormModal, type ComprehensiveServiceData } from "@/components/modal/home/ComprehensiveFormModal"
 
 export interface ComprehensiveSectionContent {
   intro: {
@@ -252,6 +252,9 @@ export function ComprehensiveTab() {
                 height="h-64"
                 label="Select Large Image"
               />
+              <p className="text-[11px] text-muted-foreground mt-1">
+                <strong>Recommended size: 1000x1250 pixels (4:5 vertical ratio).</strong> Displays large on the left side of the section.
+              </p>
             </div>
 
             <div className="space-y-4 bg-muted/20 p-4 rounded-lg border">

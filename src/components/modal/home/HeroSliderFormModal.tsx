@@ -81,12 +81,15 @@ export function HeroSliderFormModal({ open, onOpenChange, initialData, onSubmit 
               <Label>Background Image</Label>
               <MediaPicker
                 value={form.imageId}
-                onChange={(id) => setForm({ ...form, imageId: id as string })}
-                label="Upload Image"
+                onChange={(val) => setForm({ ...form, imageId: val as string })}
+                label="Select Slide Image"
                 width="w-full"
-                height="h-48"
+                height="h-[250px]"
                 className="rounded-md border-border/50"
               />
+              <p className="text-[11px] text-muted-foreground mt-1">
+                <strong>Recommended size: 1920x1080 pixels (16:9 ratio)</strong> to ensure it covers the entire desktop screen nicely.
+              </p>
             </div>
             
             <div className="w-full md:w-2/3 space-y-4">
