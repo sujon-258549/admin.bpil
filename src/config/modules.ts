@@ -10,11 +10,14 @@ import {
   Users,
   Activity,
   MessageSquare,
+  AppWindow,
+  ShoppingBag,
   type LucideIcon,
 } from "lucide-react";
 
 export type ModuleKey =
   | "dashboard"
+  | "content"
   | "users"
   | "blog"
   | "media"
@@ -24,6 +27,7 @@ export type ModuleKey =
   | "workflow"
   | "logs"
   | "profile"
+  | "products"
   | "settings";
 
 export type ModuleGroup = "Overview" | "CRM" | "ERP" | "System";
@@ -53,6 +57,19 @@ export const MODULES: AppModule[] = [
     icon: LayoutDashboard,
   },
   {
+    key: "content",
+    label: "Content Management",
+    path: "/content",
+    icon: AppWindow, // using AppWindow for better distinction
+    children: [
+      { key: "content.home", label: "Home", path: "/content/home" },
+      { key: "content.about", label: "About Us", path: "/content/about" },
+      { key: "content.products", label: "Products", path: "/content/products" },
+      { key: "content.services", label: "Services", path: "/content/services" },
+      { key: "content.image", label: "Image / Gallery", path: "/content/gallery" },
+    ],
+  },
+  {
     key: "users",
     label: "Employee Management",
     path: "/employees",
@@ -77,6 +94,16 @@ export const MODULES: AppModule[] = [
     label: "Blog",
     path: "/blog",
     icon: Newspaper,
+  },
+  {
+    key: "products",
+    label: "Products",
+    path: "/products",
+    icon: ShoppingBag,
+    children: [
+      { key: "products.list", label: "Product List", path: "/products" },
+      { key: "products.create", label: "Create Product", path: "/products/create" },
+    ],
   },
   {
     key: "media",

@@ -39,6 +39,12 @@ const ACTION_OVERRIDES: Record<string, readonly string[]> = {
   // Logs — read-only audit trail pages.
   "logs.actions": ["read"],
   "logs.errors": ["read"],
+  // Content management — view + update.
+  "content.home": ["read", "update"],
+  "content.about": ["read", "update"],
+  "content.products": ["read", "update"],
+  "content.services": ["read", "update"],
+  "content.image": ["read", "update"],
 }
 
 export interface PermissionCatalogItem {

@@ -150,7 +150,7 @@ export default function DesignationListPage() {
           <Can module="designations" action="update">
             <Button
               size="icon-sm"
-              variant="soft"
+              variant="secondary"
               onClick={() => openEdit(d)}
               aria-label="Edit"
               className="border border-gray-300"
@@ -161,7 +161,7 @@ export default function DesignationListPage() {
           <Can module="designations" action="delete">
             <Button
               size="icon-sm"
-              variant="soft-destructive"
+              variant="destructive"
               onClick={() => setPendingDelete(d)}
               aria-label="Delete"
               className="border border-gray-300"

@@ -373,7 +373,7 @@ export default function EmployeeListPage() {
             <Can module="employees" action="delete">
               <Button
                 size="icon-sm"
-                variant="soft-warning"
+                variant="secondary"
                 onClick={() => setPendingSoftDelete(u)}
                 disabled={isSelf}
                 aria-label="Soft delete"
@@ -386,7 +386,7 @@ export default function EmployeeListPage() {
             <Can module="employees" action="delete">
               <Button
                 size="icon-sm"
-                variant="soft-destructive"
+                variant="destructive"
                 onClick={() => setPendingDelete(u)}
                 disabled={isSelf}
                 aria-label="Delete"

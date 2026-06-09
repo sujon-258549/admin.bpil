@@ -58,10 +58,21 @@ import ActionLogs from "@/pages/logs/ActionLogs"
 import ErrorLogs from "@/pages/logs/ErrorLogs"
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Content Management
+// ─────────────────────────────────────────────────────────────────────────────
+import ContentHome from "@/pages/content/ContentHome"
+import ContentAbout from "@/pages/content/ContentAbout"
+import ContentProducts from "@/pages/content/ContentProducts"
+import ContentServices from "@/pages/content/ContentServices"
+import ContentGallery from "@/pages/content/ContentGallery"
+
+// ─────────────────────────────────────────────────────────────────────────────
 // CRM / ERP module placeholders
 // ─────────────────────────────────────────────────────────────────────────────
 import CustomerList from "@/pages/customers/customer-list-page"
 import ProductList from "@/pages/products/product-list-page"
+import ProductCreate from "@/pages/products/ProductCreate"
+import ProductEdit from "@/pages/products/ProductEdit"
 import InventoryPage from "@/pages/inventory/inventory-page"
 import InvoiceList from "@/pages/invoices/invoice-list-page"
 import SettingsPage from "@/pages/settings/settings-page"
@@ -247,6 +258,22 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "products/create",
+        element: (
+          <RequirePermission moduleKey="products.create" action="create">
+            <ProductCreate />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "products/:id/edit",
+        element: (
+          <RequirePermission moduleKey="products.list" action="update">
+            <ProductEdit />
+          </RequirePermission>
+        ),
+      },
+      {
         path: "inventory",
         element: (
           <RequirePermission moduleKey="inventory">
@@ -283,6 +310,48 @@ export const router = createBrowserRouter([
         element: (
           <RequirePermission moduleKey="workflow">
             <WorkflowPage />
+          </RequirePermission>
+        ),
+      },
+
+      // Content Management
+      {
+        path: "content/home",
+        element: (
+          <RequirePermission moduleKey="content.home">
+            <ContentHome />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "content/about",
+        element: (
+          <RequirePermission moduleKey="content.about">
+            <ContentAbout />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "content/products",
+        element: (
+          <RequirePermission moduleKey="content.products">
+            <ContentProducts />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "content/services",
+        element: (
+          <RequirePermission moduleKey="content.services">
+            <ContentServices />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "content/gallery",
+        element: (
+          <RequirePermission moduleKey="content.image">
+            <ContentGallery />
           </RequirePermission>
         ),
       },

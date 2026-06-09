@@ -130,7 +130,7 @@ export default function RoleListPage() {
           <Can module="roles" action="permission">
             <Button
               size="icon-sm"
-              variant="soft"
+              variant="secondary"
               onClick={() => setPermRole(r)}
               aria-label="Manage permissions"
               title="Manage permissions"
@@ -153,7 +153,7 @@ export default function RoleListPage() {
           <Can module="roles" action="delete">
             <Button
               size="icon-sm"
-              variant="soft-destructive"
+              variant="destructive"
               onClick={() => setPendingDelete(r)}
               aria-label="Delete"
               className="border border-gray-300"

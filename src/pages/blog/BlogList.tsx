@@ -153,7 +153,7 @@ export default function BlogListPage() {
           <Can module="blog" action="update">
             <Button
               size="icon-sm"
-              variant="soft"
+              variant="secondary"
               onClick={() => openEdit(b)}
               aria-label="Edit"
               className="border border-gray-300"
@@ -164,7 +164,7 @@ export default function BlogListPage() {
           <Can module="blog" action="delete">
             <Button
               size="icon-sm"
-              variant="soft-destructive"
+              variant="destructive"
               onClick={() => setPendingDelete(b)}
               aria-label="Delete"
               className="border border-gray-300"
