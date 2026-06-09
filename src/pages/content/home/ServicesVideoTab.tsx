@@ -193,7 +193,7 @@ export function ServicesVideoTab() {
     <div className="rounded-lg border bg-card text-card-foreground p-6">
       
       {/* Intro Form */}
-      <div className="mb-10 max-w-3xl">
+      <div className="mb-10">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-lg font-medium">Services Video Section</h2>
