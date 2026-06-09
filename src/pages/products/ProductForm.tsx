@@ -69,7 +69,7 @@ export default function ProductForm({ initialData, onSubmit, isLoading }: Produc
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
-      <div className="space-y-6 rounded-xl border bg-card p-6 shadow-sm">
+      <div className="space-y-6 rounded-md border bg-card p-6">
         <h3 className="text-lg font-semibold">Basic Information</h3>
         
         <FormField label="Product Name" required htmlFor="product-name">
@@ -106,7 +106,7 @@ export default function ProductForm({ initialData, onSubmit, isLoading }: Produc
         </div>
       </div>
 
-      <div className="space-y-6 rounded-xl border bg-card p-6 shadow-sm">
+      <div className="space-y-6 rounded-md border bg-card p-6">
         <h3 className="text-lg font-semibold">Media</h3>
         <div className="flex flex-col sm:flex-row gap-8">
           <div>
@@ -117,7 +117,7 @@ export default function ProductForm({ initialData, onSubmit, isLoading }: Produc
               label="Upload Thumbnail"
               width="w-48"
               height="h-48"
-              className="rounded-xl shadow-sm border-border/50"
+              className="rounded-md border-border/50"
             />
           </div>
           <div className="flex-1">
@@ -129,13 +129,13 @@ export default function ProductForm({ initialData, onSubmit, isLoading }: Produc
               label="Add Gallery Images"
               width="w-full"
               height="h-48"
-              className="rounded-xl shadow-sm border-border/50 min-h-48"
+              className="rounded-md border-border/50 min-h-48"
             />
           </div>
         </div>
       </div>
 
-      <div className="space-y-6 rounded-xl border bg-card p-6 shadow-sm">
+      <div className="space-y-6 rounded-md border bg-card p-6">
         <h3 className="text-lg font-semibold">Descriptions</h3>
         
         <FormField label="Short Description" htmlFor="product-short-desc">
@@ -150,7 +150,7 @@ export default function ProductForm({ initialData, onSubmit, isLoading }: Produc
 
         <div className="pt-2">
           <Label className="mb-2 block text-sm font-medium">Detailed Description</Label>
-          <div className="rounded-lg shadow-sm border overflow-hidden">
+          <div className="rounded-md border overflow-hidden">
             <RichTextEditor
               id="product-details"
               name="detailsDesc"
@@ -163,7 +163,7 @@ export default function ProductForm({ initialData, onSubmit, isLoading }: Produc
         </div>
       </div>
 
-      <div className="space-y-6 rounded-xl border bg-card p-6 shadow-sm">
+      <div className="space-y-6 rounded-md border bg-card p-6">
         <h3 className="text-lg font-semibold">Settings</h3>
         <div className="flex items-center justify-between rounded-md border bg-gradient-to-r from-muted/30 to-muted/10 px-5 py-4">
           <div>

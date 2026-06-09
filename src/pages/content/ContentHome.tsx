@@ -1,6 +1,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useRef } from "react"
+import { HeroSliderTab } from "./home/HeroSliderTab"
+import { AboutTab } from "./home/AboutTab"
+import { ProductsTab } from "./home/ProductsTab"
+import { IndustriesTab } from "./home/IndustriesTab"
+import { WhyChooseTab } from "./home/WhyChooseTab"
+import { ComprehensiveTab } from "./home/ComprehensiveTab"
+import { ServicesVideoTab } from "./home/ServicesVideoTab"
+// Force re-evaluation of imports
 
 export default function ContentHome() {
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -16,7 +24,7 @@ export default function ContentHome() {
   }
   const sections = [
     { id: "hero-slider", label: "Hero Slider" },
-    { id: "maintenance", label: "Maintenance" },
+    { id: "about", label: "About Section" },
     { id: "products", label: "Products" },
     { id: "industries", label: "Industries" },
     { id: "why-choose", label: "Why Choose Us" },
@@ -66,12 +74,28 @@ export default function ContentHome() {
 
         {sections.map((section) => (
           <TabsContent key={section.id} value={section.id} className="mt-4 outline-none">
-            <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-              <h2 className="text-lg font-medium mb-4">{section.label}</h2>
-              <p className="text-sm text-muted-foreground">
-                Configuration and content fields for the {section.label} section will go here.
-              </p>
-            </div>
+            {section.id === "hero-slider" ? (
+              <HeroSliderTab />
+            ) : section.id === "about" ? (
+              <AboutTab />
+            ) : section.id === "products" ? (
+              <ProductsTab />
+            ) : section.id === "industries" ? (
+              <IndustriesTab />
+            ) : section.id === "why-choose" ? (
+              <WhyChooseTab />
+            ) : section.id === "comprehensive" ? (
+              <ComprehensiveTab />
+            ) : section.id === "services-video" ? (
+              <ServicesVideoTab />
+            ) : (
+              <div className="rounded-lg border bg-card text-card-foreground p-6">
+                <h2 className="text-lg font-medium mb-4">{section.label}</h2>
+                <p className="text-sm text-muted-foreground">
+                  Configuration and content fields for the {section.label} section will go here.
+                </p>
+              </div>
+            )}
           </TabsContent>
         ))}
       </Tabs>

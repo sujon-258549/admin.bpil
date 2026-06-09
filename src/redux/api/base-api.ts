@@ -137,6 +137,7 @@ export const baseApi = createApi({
     "ErrorLog",
     "Notifications",
     "Contacts",
+    "DynamicContent",
   ],
   endpoints: () => ({}),
 })

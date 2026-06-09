@@ -73,6 +73,7 @@ import CustomerList from "@/pages/customers/customer-list-page"
 import ProductList from "@/pages/products/product-list-page"
 import ProductCreate from "@/pages/products/ProductCreate"
 import ProductEdit from "@/pages/products/ProductEdit"
+import ProductDetails from "@/pages/products/ProductDetails"
 import InventoryPage from "@/pages/inventory/inventory-page"
 import InvoiceList from "@/pages/invoices/invoice-list-page"
 import SettingsPage from "@/pages/settings/settings-page"
@@ -270,6 +271,14 @@ export const router = createBrowserRouter([
         element: (
           <RequirePermission moduleKey="products.list" action="update">
             <ProductEdit />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "products/:id",
+        element: (
+          <RequirePermission moduleKey="products.list">
+            <ProductDetails />
           </RequirePermission>
         ),
       },

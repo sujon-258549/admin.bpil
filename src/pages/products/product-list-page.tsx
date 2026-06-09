@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Plus, Trash2, Package } from "lucide-react"
+import { Plus, Trash2, Package, Eye } from "lucide-react"
 import { FiEdit } from "react-icons/fi"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -124,6 +124,17 @@ export default function ProductListPage() {
       fixed: "right",
       cell: (p) => (
         <div className="flex justify-end gap-1">
+          <Can module="products" action="read">
+            <Button
+              size="icon-sm"
+              variant="secondary"
+              onClick={() => navigate(`/products/${p.id}`)}
+              aria-label="View Details"
+              className="border border-gray-300"
+            >
+              <Eye className="size-4" />
+            </Button>
+          </Can>
           <Can module="products" action="update">
             <Button
               size="icon-sm"
