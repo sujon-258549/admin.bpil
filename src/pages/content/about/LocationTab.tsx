@@ -9,6 +9,9 @@ import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { DataTable, type Column, EmptyState, ConfirmDialog } from "@/components/shared"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface LocationCardData {
   id: string
@@ -66,6 +69,9 @@ const defaultContent: LocationSectionContent = {
 }
 
 export function LocationTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.about.location", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("about")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -264,23 +270,27 @@ export function LocationTab() {
           <div>
             <h3 className="font-semibold text-md">Contact Cards</h3>
           </div>
+          {canUpdate && (
           <Button onClick={handleAddItem}>
             <Plus className="h-4 w-4 mr-2" /> Add Card
           </Button>
+        )}
         </div>
         
         <DataTable<LocationCardData>
           data={form.items}
-          columns={columns}
+          columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={LayoutGrid}
               title="No cards added yet."
               action={
-                <Button size="sm" onClick={handleAddItem}>
+                canUpdate && (
+          <Button size="sm" onClick={handleAddItem}>
                   <Plus className="size-4 mr-2" /> Add your first card
                 </Button>
+        )
               }
             />
           }

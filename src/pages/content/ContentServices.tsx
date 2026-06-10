@@ -11,22 +11,30 @@ import { ServicesHighlightsTab } from "./services/ServicesHighlightsTab";
 import { ServicesConsultLineTab } from "./services/ServicesConsultLineTab";
 import { ServicesCtaTab } from "./services/ServicesCtaTab";
 
-const sections = [
-  { id: "banner", label: "Page Banner", component: ServicesBannerTab },
-  { id: "intro", label: "Intro Section", component: ServicesIntroTab },
-  { id: "maintenance", label: "Maintenance", component: ServicesMaintenanceTab },
-  { id: "smart", label: "Smart Solutions", component: ServicesSmartTab },
-  { id: "process", label: "Our Process", component: ServicesProcessTab },
-  { id: "highlights", label: "Highlights", component: ServicesHighlightsTab },
-  { id: "consult", label: "Consultation Line", component: ServicesConsultLineTab },
-  { id: "cta", label: "Call To Action", component: ServicesCtaTab },
+import { useCurrentUser } from "@/hooks/use-permission";
+import { hasAction, isSuperAdmin } from "@/lib/permissions";
+
+const allSections = [
+  { id: "banner", key: "content.services.banner", label: "Page Banner", component: ServicesBannerTab },
+  { id: "intro", key: "content.services.intro", label: "Intro Section", component: ServicesIntroTab },
+  { id: "maintenance", key: "content.services.maintenance", label: "Maintenance", component: ServicesMaintenanceTab },
+  { id: "smart", key: "content.services.smart", label: "Smart Solutions", component: ServicesSmartTab },
+  { id: "process", key: "content.services.process", label: "Our Process", component: ServicesProcessTab },
+  { id: "highlights", key: "content.services.highlights", label: "Highlights", component: ServicesHighlightsTab },
+  { id: "consult", key: "content.services.consult", label: "Consultation Line", component: ServicesConsultLineTab },
+  { id: "cta", key: "content.services.cta", label: "Call To Action", component: ServicesCtaTab },
 ];
 
 export default function ContentServices() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const user = useCurrentUser();
   
-  const activeTab = searchParams.get("tab") || sections[0].id;
+  const sections = allSections.filter(
+    (s) => isSuperAdmin(user) || hasAction(user, s.key, "read")
+  );
+
+  const activeTab = searchParams.get("tab") || sections[0]?.id;
 
   const handleTabChange = (value: string) => {
     setSearchParams({ tab: value });

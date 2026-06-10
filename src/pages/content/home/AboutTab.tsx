@@ -8,6 +8,8 @@ import { MediaPicker } from "@/components/shared"
 import { Plus, Trash2, Save, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
 
 interface StatItem {
   value: string
@@ -97,6 +99,9 @@ export function AboutTab() {
     }))
   }
 
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.home.about", "update")
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -115,10 +120,12 @@ export function AboutTab() {
             Manage the content, stats, and imagery for the About Us section.
           </p>
         </div>
-        <Button onClick={handleSave} disabled={isSaving}>
-          {isSaving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
-          Save Changes
-        </Button>
+        {canUpdate && (
+          <Button onClick={handleSave} disabled={isSaving}>
+            {isSaving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+            Save Changes
+          </Button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">

@@ -9,6 +9,9 @@ import { Image, DataTable, type Column, EmptyState, Text, ConfirmDialog } from "
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ServicesVideoFormModal, type VideoServiceData } from "@/components/modal/home/ServicesVideoFormModal"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface ServicesVideoSectionContent {
   intro: {
@@ -35,6 +38,9 @@ const defaultContent: ServicesVideoSectionContent = {
 }
 
 export function ServicesVideoTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.home.services-video", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("home")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -273,23 +279,27 @@ export function ServicesVideoTab() {
             <h3 className="font-semibold text-md">Video Reels</h3>
             <p className="text-xs text-muted-foreground mt-1">The first video will be displayed large on the left, followed by the others.</p>
           </div>
+          {canUpdate && (
           <Button onClick={handleAddCard}>
             <Plus className="h-4 w-4 mr-2" /> Add Video
           </Button>
+        )}
         </div>
         
         <DataTable<VideoServiceData>
           data={form.items}
-          columns={columns}
+          columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={PlaySquare}
               title="No videos added yet."
               action={
-                <Button size="sm" onClick={handleAddCard}>
+                canUpdate && (
+          <Button size="sm" onClick={handleAddCard}>
                   <Plus className="size-4 mr-2" /> Add your first video
                 </Button>
+        )
               }
             />
           }

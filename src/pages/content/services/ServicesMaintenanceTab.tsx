@@ -9,6 +9,9 @@ import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { DataTable, type Column, EmptyState, ConfirmDialog, MediaPicker, Image } from "@/components/shared"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface MaintenanceItemData {
   id: string
@@ -101,6 +104,9 @@ const defaultContent: ServicesMaintenanceContent = {
 }
 
 export function ServicesMaintenanceTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.services.maintenance", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("services")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -298,23 +304,27 @@ export function ServicesMaintenanceTab() {
           <div>
             <h3 className="font-semibold text-md">Maintenance Cards</h3>
           </div>
+          {canUpdate && (
           <Button onClick={handleAddItem}>
             <Plus className="h-4 w-4 mr-2" /> Add Card
           </Button>
+        )}
         </div>
         
         <DataTable<MaintenanceItemData>
           data={form.items}
-          columns={columns}
+          columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={LayoutGrid}
               title="No cards added yet."
               action={
-                <Button size="sm" onClick={handleAddItem}>
+                canUpdate && (
+          <Button size="sm" onClick={handleAddItem}>
                   <Plus className="size-4 mr-2" /> Add your first card
                 </Button>
+        )
               }
             />
           }

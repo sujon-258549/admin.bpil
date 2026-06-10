@@ -9,6 +9,9 @@ import { Image, DataTable, type Column, EmptyState, Text, ConfirmDialog } from "
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { GalleryFormModal, type GalleryItemData } from "@/components/modal/home/GalleryFormModal"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface GallerySectionContent {
   intro: {
@@ -35,6 +38,9 @@ const defaultContent: GallerySectionContent = {
 }
 
 export function GalleryTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.home.gallery", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("home")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -263,23 +269,27 @@ export function GalleryTab() {
             <h3 className="font-semibold text-md">Gallery Images</h3>
             <p className="text-xs text-muted-foreground mt-1">These will appear in a grid format on the website.</p>
           </div>
+          {canUpdate && (
           <Button onClick={handleAddCard}>
             <Plus className="h-4 w-4 mr-2" /> Add Image
           </Button>
+        )}
         </div>
         
         <DataTable<GalleryItemData>
           data={form.items}
-          columns={columns}
+          columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={ImageIcon}
               title="No images added yet."
               action={
-                <Button size="sm" onClick={handleAddCard}>
+                canUpdate && (
+          <Button size="sm" onClick={handleAddCard}>
                   <Plus className="size-4 mr-2" /> Add your first image
                 </Button>
+        )
               }
             />
           }

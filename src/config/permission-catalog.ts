@@ -41,10 +41,58 @@ const ACTION_OVERRIDES: Record<string, readonly string[]> = {
   "logs.errors": ["read"],
   // Content management — view + update.
   "content.home": ["read", "update"],
+  "content.home.hero-slider": ["read", "update"],
+  "content.home.about": ["read", "update"],
+  "content.home.products": ["read", "update"],
+  "content.home.industries": ["read", "update"],
+  "content.home.why-choose": ["read", "update"],
+  "content.home.comprehensive": ["read", "update"],
+  "content.home.services-video": ["read", "update"],
+  "content.home.gallery": ["read", "update"],
+  "content.home.contact": ["read", "update"],
+  "content.home.faq": ["read", "update"],
+  "content.home.cta": ["read", "update"],
+
   "content.about": ["read", "update"],
-  "content.products": ["read", "update"],
+  "content.about.banner": ["read", "update"],
+  "content.about.intro": ["read", "update"],
+  "content.about.mission-vision": ["read", "update"],
+  "content.about.values": ["read", "update"],
+  "content.about.pillars": ["read", "update"],
+  "content.about.stats": ["read", "update"],
+  "content.about.md-speech": ["read", "update"],
+  "content.about.office": ["read", "update"],
+  "content.about.faq": ["read", "update"],
+  "content.about.location": ["read", "update"],
+  "content.about.cta": ["read", "update"],
+
   "content.services": ["read", "update"],
+  "content.services.banner": ["read", "update"],
+  "content.services.intro": ["read", "update"],
+  "content.services.maintenance": ["read", "update"],
+  "content.services.smart": ["read", "update"],
+  "content.services.process": ["read", "update"],
+  "content.services.highlights": ["read", "update"],
+  "content.services.consult": ["read", "update"],
+  "content.services.cta": ["read", "update"],
+
+  "content.projects": ["read", "update"],
+  "content.projects.banner": ["read", "update"],
+
   "content.image": ["read", "update"],
+  "content.image.banner": ["read", "update"],
+  "content.image.images": ["read", "update"],
+  "content.image.videos": ["read", "update"],
+  "content.image.categories": ["read", "update"],
+  "content.image.cta": ["read", "update"],
+
+  "content.blog": ["read", "update"],
+  "content.blog.banner": ["read", "update"],
+
+  "content.contact": ["read", "update"],
+  "content.contact.banner": ["read", "update"],
+  "content.contact.info": ["read", "update"],
+  "content.contact.faq": ["read", "update"],
 }
 
 export interface PermissionCatalogItem {
@@ -52,29 +100,58 @@ export interface PermissionCatalogItem {
   label: string
   icon: LucideIcon
   parentLabel?: string
+  group: string
   actions: readonly string[]
 }
 
 const resolveActions = (key: string): readonly string[] =>
   ACTION_OVERRIDES[key] ?? CRUD
 
+// Format a key like "hero-slider" to "Hero Slider"
+const formatLabel = (str: string) => {
+  return str.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+}
+
 // Parent with children → one item per child (parent dropped).
 // Parent without children → one item using the parent's own key.
-export const PERMISSION_CATALOG: PermissionCatalogItem[] = MODULES.flatMap(
+export const PERMISSION_CATALOG: PermissionCatalogItem[] = MODULES.filter((mod) => mod.key !== "profile").flatMap(
   (mod): PermissionCatalogItem[] =>
     mod.children && mod.children.length > 0
-      ? mod.children.map((child) => ({
-          key: child.key,
-          label: child.label,
-          icon: mod.icon,
-          parentLabel: mod.label,
-          actions: resolveActions(child.key),
-        }))
+      ? mod.children.flatMap((child) => {
+          const items: PermissionCatalogItem[] = [
+            {
+              key: child.key,
+              label: child.label,
+              icon: mod.icon,
+              parentLabel: mod.label,
+              group: mod.label,
+              actions: resolveActions(child.key),
+            }
+          ];
+          
+          // Inject tabs from ACTION_OVERRIDES dynamically based on the child key (e.g. "content.home")
+          Object.keys(ACTION_OVERRIDES).forEach(overrideKey => {
+            if (overrideKey.startsWith(`${child.key}.`)) {
+              const tabId = overrideKey.replace(`${child.key}.`, "");
+              items.push({
+                key: overrideKey,
+                label: `↳ ${formatLabel(tabId)}`,
+                icon: mod.icon,
+                parentLabel: `${mod.label} / ${child.label}`,
+                group: mod.label,
+                actions: resolveActions(overrideKey),
+              });
+            }
+          });
+
+          return items;
+        })
       : [
           {
             key: mod.key,
             label: mod.label,
             icon: mod.icon,
+            group: mod.label,
             actions: resolveActions(mod.key),
           },
         ],

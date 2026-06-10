@@ -1,23 +1,19 @@
 import { useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GalleryBannerTab } from "./gallery/GalleryBannerTab";
-import { GalleryImagesTab } from "./gallery/GalleryImagesTab";
-import { GalleryVideosTab } from "./gallery/GalleryVideosTab";
-import { GalleryCategoriesTab } from "./gallery/GalleryCategoriesTab";
-import { GalleryCtaTab } from "./gallery/GalleryCtaTab";
+import { ContactBannerTab } from "./contact/ContactBannerTab";
+import { ContactInfoTab } from "./contact/ContactInfoTab";
+import { ContactFaqTab } from "./contact/ContactFaqTab";
 
 import { useCurrentUser } from "@/hooks/use-permission";
 import { hasAction, isSuperAdmin } from "@/lib/permissions";
 
 const allSections = [
-  { id: "banner", key: "content.image.banner", label: "Page Banner", component: GalleryBannerTab },
-  { id: "images", key: "content.image.images", label: "Gallery Images", component: GalleryImagesTab },
-  { id: "videos", key: "content.image.videos", label: "Video Reels", component: GalleryVideosTab },
-  { id: "categories", key: "content.image.categories", label: "Categories", component: GalleryCategoriesTab },
-  { id: "cta", key: "content.image.cta", label: "CTA Section", component: GalleryCtaTab },
+  { id: "banner", key: "content.contact.banner", label: "Page Banner", component: ContactBannerTab },
+  { id: "info", key: "content.contact.info", label: "Contact Info & Map", component: ContactInfoTab },
+  { id: "faq", key: "content.contact.faq", label: "FAQ Section", component: ContactFaqTab },
 ];
 
-export default function ContentGallery() {
+export default function ContentContact() {
   const [searchParams, setSearchParams] = useSearchParams();
   const user = useCurrentUser();
   
@@ -33,8 +29,8 @@ export default function ContentGallery() {
 
   return (
     <div className="">
-      <h1 className="text-2xl font-semibold mb-4">Gallery Content Management</h1>
-      <p className="text-muted-foreground mb-6">Manage dynamic content for the Image / Gallery page.</p>
+      <h1 className="text-2xl font-semibold mb-4">Contact Content Management</h1>
+      <p className="text-muted-foreground mb-6">Manage dynamic content for the Contact page.</p>
 
       <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
         <TabsList className="mb-4 flex flex-wrap h-auto justify-start gap-1 p-1">

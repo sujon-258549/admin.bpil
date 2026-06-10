@@ -7,6 +7,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Save, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface ContactSectionContent {
   intro: {
@@ -37,6 +40,9 @@ const defaultContent: ContactSectionContent = {
 }
 
 export function ContactTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.home.contact", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("home")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -89,10 +95,12 @@ export function ContactTab() {
               Manage the introductory text shown on the left side of the contact section.
             </p>
           </div>
-          <Button onClick={handleSaveIntro} disabled={isSaving}>
+          {canUpdate && (
+            <Button onClick={handleSaveIntro} disabled={isSaving}>
             {isSaving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
             Save Changes
-          </Button>
+            </Button>
+          )}
         </div>
 
         <div className="space-y-4 bg-muted/20 p-4 rounded-lg border">

@@ -9,6 +9,9 @@ import { DataTable, type Column, EmptyState, Text, ConfirmDialog } from "@/compo
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { FaqFormModal, type FaqItemData } from "@/components/modal/home/FaqFormModal"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface FaqSectionContent {
   intro: {
@@ -31,6 +34,9 @@ const defaultContent: FaqSectionContent = {
 }
 
 export function FaqTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.home.faq", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("home")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -228,23 +234,27 @@ export function FaqTab() {
           <div>
             <h3 className="font-semibold text-md">FAQ List</h3>
           </div>
+          {canUpdate && (
           <Button onClick={handleAddCard}>
             <Plus className="h-4 w-4 mr-2" /> Add FAQ
           </Button>
+        )}
         </div>
         
         <DataTable<FaqItemData>
           data={form.items}
-          columns={columns}
+          columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={HelpCircle}
               title="No FAQs added yet."
               action={
-                <Button size="sm" onClick={handleAddCard}>
+                canUpdate && (
+          <Button size="sm" onClick={handleAddCard}>
                   <Plus className="size-4 mr-2" /> Add your first FAQ
                 </Button>
+        )
               }
             />
           }

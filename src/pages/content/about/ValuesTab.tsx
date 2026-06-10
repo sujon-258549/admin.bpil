@@ -10,6 +10,9 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { DataTable, type Column, EmptyState, ConfirmDialog } from "@/components/shared"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { CustomSelect } from "@/components/ui/custom-select"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface ValueCardData {
   id: string
@@ -48,6 +51,9 @@ const defaultContent: ValuesSectionContent = {
 }
 
 export function ValuesTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.about.values", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("about")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -256,23 +262,27 @@ export function ValuesTab() {
           <div>
             <h3 className="font-semibold text-md">Value Cards</h3>
           </div>
+          {canUpdate && (
           <Button onClick={handleAddItem}>
             <Plus className="h-4 w-4 mr-2" /> Add Value Card
           </Button>
+        )}
         </div>
         
         <DataTable<ValueCardData>
           data={form.items}
-          columns={columns}
+          columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={LayoutGrid}
               title="No values added yet."
               action={
-                <Button size="sm" onClick={handleAddItem}>
+                canUpdate && (
+          <Button size="sm" onClick={handleAddItem}>
                   <Plus className="size-4 mr-2" /> Add your first value
                 </Button>
+        )
               }
             />
           }

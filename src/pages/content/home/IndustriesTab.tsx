@@ -9,6 +9,9 @@ import { Image, DataTable, type Column, EmptyState, Text, ConfirmDialog } from "
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { IndustryFormModal, type IndustryCardData } from "@/components/modal/home/IndustryFormModal"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 interface StatItem {
   value: string
@@ -48,6 +51,9 @@ const defaultContent: IndustriesSectionContent = {
 }
 
 export function IndustriesTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.home.industries", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("home")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -345,23 +351,27 @@ export function IndustriesTab() {
       <div className="border-t pt-8 mt-8">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold text-md">Industry Cards</h3>
+          {canUpdate && (
           <Button onClick={handleAddCard}>
             <Plus className="h-4 w-4 mr-2" /> Add Industry
           </Button>
+        )}
         </div>
         
         <DataTable<IndustryCardData>
           data={form.items}
-          columns={columns}
+          columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={ImageIcon}
               title="No industries added yet."
               action={
-                <Button size="sm" onClick={handleAddCard}>
+                canUpdate && (
+          <Button size="sm" onClick={handleAddCard}>
                   <Plus className="size-4 mr-2" /> Add your first industry
                 </Button>
+        )
               }
             />
           }

@@ -9,6 +9,9 @@ import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { MediaPicker } from "@/components/shared"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface HighlightItemData {
   id: string
@@ -55,6 +58,9 @@ const defaultContent: ServicesHighlightsContent = {
 }
 
 export function ServicesHighlightsTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.services.highlights", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("services")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -130,9 +136,11 @@ export function ServicesHighlightsTab() {
               Manage the 4 feature highlight boxes (Note: This section strictly requires exactly 4 items for the layout).
             </p>
           </div>
-          <Button onClick={() => saveFullState(form)} disabled={isSaving}>
+          {canUpdate && (
+            <Button onClick={() => saveFullState(form)} disabled={isSaving}>
             <Save className="h-4 w-4 mr-2" /> Save Image
-          </Button>
+            </Button>
+          )}
         </div>
       </div>
 

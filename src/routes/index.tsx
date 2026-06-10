@@ -65,8 +65,10 @@ import ContentHome from "@/pages/content/ContentHome";
 import ContentAbout from "@/pages/content/ContentAbout";
 import ContentProducts from "@/pages/content/ContentProducts";
 import ContentServices from "@/pages/content/ContentServices";
-import ContentGallery from "@/pages/content/ContentGallery";
+import ContentGallery from "@/pages/content/ContentGallery"
 import ContentProjects from "@/pages/content/ContentProjects";
+import ContentBlog from "@/pages/content/ContentBlog";
+import ContentContact from "@/pages/content/ContentContact";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CRM / ERP module placeholders
@@ -365,7 +367,7 @@ export const router = createBrowserRouter([
           </RequirePermission>
         ),
       },
-
+      
       // Projects Content Management
       {
         path: "content/projects",
@@ -376,6 +378,23 @@ export const router = createBrowserRouter([
         ),
       },
 
+
+      {
+        path: "content/blog",
+        element: (
+          <RequirePermission moduleKey="content.blog">
+            <ContentBlog />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "content/contact",
+        element: (
+          <RequirePermission moduleKey="content.contact">
+            <ContentContact />
+          </RequirePermission>
+        ),
+      },
       // Categories
       {
         path: "categories",

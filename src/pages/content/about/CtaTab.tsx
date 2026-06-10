@@ -7,6 +7,9 @@ import { Save, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { MediaPicker } from "@/components/shared"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface CtaSectionContent {
   eyebrow: string
@@ -29,6 +32,9 @@ const defaultContent: CtaSectionContent = {
 }
 
 export function CtaTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.about.cta", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("about")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -80,10 +86,12 @@ export function CtaTab() {
               Manage the bottom CTA banner text and background image.
             </p>
           </div>
-          <Button onClick={handleSaveIntro} disabled={isSaving}>
+          {canUpdate && (
+            <Button onClick={handleSaveIntro} disabled={isSaving}>
             {isSaving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
             Save Changes
-          </Button>
+            </Button>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

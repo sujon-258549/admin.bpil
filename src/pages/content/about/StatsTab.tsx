@@ -8,6 +8,9 @@ import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { DataTable, type Column, EmptyState, ConfirmDialog, MediaPicker } from "@/components/shared"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface StatItemData {
   id: string
@@ -36,6 +39,9 @@ const defaultContent: StatsSectionContent = {
 }
 
 export function StatsTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.about.stats", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("about")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -211,23 +217,27 @@ export function StatsTab() {
           <div>
             <h3 className="font-semibold text-md">Stat Counters</h3>
           </div>
+          {canUpdate && (
           <Button onClick={handleAddItem}>
             <Plus className="h-4 w-4 mr-2" /> Add Stat
           </Button>
+        )}
         </div>
         
         <DataTable<StatItemData>
           data={form.items}
-          columns={columns}
+          columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={LayoutGrid}
               title="No stats added yet."
               action={
-                <Button size="sm" onClick={handleAddItem}>
+                canUpdate && (
+          <Button size="sm" onClick={handleAddItem}>
                   <Plus className="size-4 mr-2" /> Add your first stat
                 </Button>
+        )
               }
             />
           }

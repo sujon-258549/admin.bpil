@@ -9,6 +9,9 @@ import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { DataTable, type Column, EmptyState, ConfirmDialog, MediaPicker } from "@/components/shared"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface OfficeShotData {
   id: string
@@ -75,6 +78,9 @@ const defaultContent: OfficeSectionContent = {
 }
 
 export function OfficeTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.about.office", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("about")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -263,23 +269,27 @@ export function OfficeTab() {
           <div>
             <h3 className="font-semibold text-md">Gallery Shots</h3>
           </div>
+          {canUpdate && (
           <Button onClick={handleAddItem}>
             <Plus className="h-4 w-4 mr-2" /> Add Shot
           </Button>
+        )}
         </div>
         
         <DataTable<OfficeShotData>
           data={form.items}
-          columns={columns}
+          columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={LayoutGrid}
               title="No shots added yet."
               action={
-                <Button size="sm" onClick={handleAddItem}>
+                canUpdate && (
+          <Button size="sm" onClick={handleAddItem}>
                   <Plus className="size-4 mr-2" /> Add your first shot
                 </Button>
+        )
               }
             />
           }

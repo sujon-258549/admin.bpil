@@ -9,6 +9,9 @@ import { DataTable, type Column, EmptyState, ConfirmDialog, MediaPicker } from "
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface IntroListItem {
   id: string
@@ -53,6 +56,9 @@ const defaultContent: AboutIntroContent = {
 }
 
 export function IntroTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.about.intro", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("about")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -291,23 +297,27 @@ export function IntroTab() {
             <h3 className="font-semibold text-md">Bullet Points</h3>
             <p className="text-sm text-muted-foreground">Manage the list of items shown between the paragraphs.</p>
           </div>
+          {canUpdate && (
           <Button onClick={handleAddItem}>
             <Plus className="h-4 w-4 mr-2" /> Add Item
           </Button>
+        )}
         </div>
         
         <DataTable<IntroListItem>
           data={form.items}
-          columns={columns}
+          columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={ListChecks}
               title="No items added yet."
               action={
-                <Button size="sm" onClick={handleAddItem}>
+                canUpdate && (
+          <Button size="sm" onClick={handleAddItem}>
                   <Plus className="size-4 mr-2" /> Add your first item
                 </Button>
+        )
               }
             />
           }

@@ -6,11 +6,16 @@ import { HeroSliderFormModal, type HeroSlide } from "@/components/modal/home/Her
 import { Image, DataTable, type Column, EmptyState, Text, ConfirmDialog } from "@/components/shared"
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
 
 export function HeroSliderTab() {
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("home")
   const [upsert] = useUpsertDynamicContentMutation()
   
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.home.hero-slider", "update")
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingSlide, setEditingSlide] = useState<HeroSlide | null>(null)
 
@@ -107,7 +112,10 @@ export function HeroSliderTab() {
         </div>
       ),
     },
-    {
+  ]
+
+  if (canUpdate) {
+    columns.push({
       key: "actions",
       header: "Actions",
       align: "right",
@@ -122,8 +130,8 @@ export function HeroSliderTab() {
           </Button>
         </div>
       ),
-    },
-  ]
+    })
+  }
 
   if (isLoading) {
     return (
@@ -143,9 +151,11 @@ export function HeroSliderTab() {
             Manage the slides shown at the top of the home page.
           </p>
         </div>
-        <Button onClick={handleAddSlide}>
-          <Plus className="h-4 w-4 mr-2" /> Add Slide
-        </Button>
+        {canUpdate && (
+          <Button onClick={handleAddSlide}>
+            <Plus className="h-4 w-4 mr-2" /> Add Slide
+          </Button>
+        )}
       </div>
 
       <DataTable<HeroSlide>
@@ -157,9 +167,11 @@ export function HeroSliderTab() {
             icon={ImageIcon}
             title="No slides added yet."
             action={
-              <Button size="sm" onClick={handleAddSlide}>
-                <Plus className="size-4 mr-2" /> Add your first slide
-              </Button>
+              canUpdate ? (
+                <Button size="sm" onClick={handleAddSlide}>
+                  <Plus className="size-4 mr-2" /> Add your first slide
+                </Button>
+              ) : undefined
             }
           />
         }

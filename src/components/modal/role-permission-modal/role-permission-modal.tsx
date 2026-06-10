@@ -170,12 +170,20 @@ function RolePermissionEditor({
 
   const visibleItems = useMemo(() => {
     const query = searchTerm.trim().toLowerCase()
-    if (!query) return PERMISSION_CATALOG
-    return PERMISSION_CATALOG.filter(
-      (item) =>
-        item.label.toLowerCase().includes(query) ||
-        item.parentLabel?.toLowerCase().includes(query),
-    )
+    let items = PERMISSION_CATALOG
+    if (query) {
+      items = PERMISSION_CATALOG.filter(
+        (item) =>
+          item.label.toLowerCase().includes(query) ||
+          item.parentLabel?.toLowerCase().includes(query),
+      )
+    }
+    return items.reduce((acc, item) => {
+      const g = item.group || "Other"
+      if (!acc[g]) acc[g] = []
+      acc[g].push(item)
+      return acc
+    }, {} as Record<string, typeof PERMISSION_CATALOG>)
   }, [searchTerm])
 
   const showLoadingState =
@@ -234,20 +242,29 @@ function RolePermissionEditor({
           <div className="flex justify-center py-12 text-muted-foreground">
             <Loader2 className="size-5 animate-spin" />
           </div>
-        ) : visibleItems.length === 0 ? (
+        ) : Object.keys(visibleItems).length === 0 ? (
           <div className="py-12 text-center text-sm text-muted-foreground">
             No modules match “{searchTerm}”.
           </div>
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {visibleItems.map((item) => (
-              <PermissionCard
-                key={item.key}
-                item={item}
-                actions={effectiveGrid[item.key] ?? new Set()}
-                onToggleAction={(action) => toggleAction(item.key, action)}
-                onToggleAll={() => toggleAllForModule(item.key)}
-              />
+          <div className="space-y-8">
+            {Object.entries(visibleItems).map(([group, items]) => (
+              <div key={group} className="space-y-3">
+                <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase border-b pb-2">
+                  {group}
+                </h3>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {items.map((item) => (
+                    <PermissionCard
+                      key={item.key}
+                      item={item}
+                      actions={effectiveGrid[item.key] ?? new Set()}
+                      onToggleAction={(action) => toggleAction(item.key, action)}
+                      onToggleAll={() => toggleAllForModule(item.key)}
+                    />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         )}

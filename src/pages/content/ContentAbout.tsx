@@ -1,38 +1,38 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { useRef } from "react"
-import { useSearchParams } from "react-router-dom"
-import { BannerTab } from "./about/BannerTab"
-import { IntroTab } from "./about/IntroTab"
-import { MissionVisionTab } from "./about/MissionVisionTab"
-import { ValuesTab } from "./about/ValuesTab"
-import { PillarsTab } from "./about/PillarsTab"
-import { StatsTab } from "./about/StatsTab"
-import { MdSpeechTab } from "./about/MdSpeechTab"
-import { OfficeTab } from "./about/OfficeTab"
-import { FaqTab } from "./about/FaqTab"
-import { LocationTab } from "./about/LocationTab"
-import { CtaTab } from "./about/CtaTab"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef } from "react";
+import { useSearchParams } from "react-router-dom";
+import { BannerTab } from "./about/BannerTab";
+import { IntroTab } from "./about/IntroTab";
+import { MissionVisionTab } from "./about/MissionVisionTab";
+import { ValuesTab } from "./about/ValuesTab";
+import { PillarsTab } from "./about/PillarsTab";
+import { StatsTab } from "./about/StatsTab";
+import { MdSpeechTab } from "./about/MdSpeechTab";
+import { OfficeTab } from "./about/OfficeTab";
+import { FaqTab } from "./about/FaqTab";
+import { LocationTab } from "./about/LocationTab";
+import { CtaTab } from "./about/CtaTab";
 
 export default function ContentAbout() {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [searchParams, setSearchParams] = useSearchParams()
-  
-  const activeTab = searchParams.get("tab") || "banner"
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const activeTab = searchParams.get("tab") || "banner";
 
   const handleTabChange = (value: string) => {
-    setSearchParams({ tab: value })
-  }
+    setSearchParams({ tab: value });
+  };
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      const scrollAmount = 200
+      const scrollAmount = 200;
       scrollRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
-      })
+      });
     }
-  }
+  };
 
   const sections = [
     { id: "banner", label: "Page Banner" },
@@ -46,14 +46,22 @@ export default function ContentAbout() {
     { id: "faq", label: "FAQ" },
     { id: "location", label: "Location & Branches" },
     { id: "cta", label: "Call to Action" },
-  ]
+  ];
 
   return (
     <div className="">
-      <h1 className="text-2xl font-semibold mb-4">About Page Content Management</h1>
-      <p className="text-muted-foreground mb-6">Manage all dynamic sections for the About Us page.</p>
+      <h1 className="text-2xl font-semibold mb-4">
+        About Page Content Management
+      </h1>
+      <p className="text-muted-foreground mb-6">
+        Manage all dynamic sections for the About Us page.
+      </p>
 
-      <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+      <Tabs
+        value={activeTab}
+        onValueChange={handleTabChange}
+        className="w-full"
+      >
         <div className="relative flex items-center w-full mb-2">
           <button
             onClick={() => scroll("left")}
@@ -62,13 +70,17 @@ export default function ContentAbout() {
             <ChevronLeft className="h-4 w-4" />
           </button>
 
-          <div 
+          <div
             ref={scrollRef}
             className="w-full overflow-x-auto mx-10 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
           >
             <TabsList className="inline-flex h-10 w-max min-w-full items-center justify-start gap-1 rounded-md bg-muted p-1 text-muted-foreground">
               {sections.map((section) => (
-                <TabsTrigger key={section.id} value={section.id} className="whitespace-nowrap px-3 py-1.5 text-sm font-medium">
+                <TabsTrigger
+                  key={section.id}
+                  value={section.id}
+                  className="whitespace-nowrap px-3 py-1.5 text-sm font-medium"
+                >
                   {section.label}
                 </TabsTrigger>
               ))}
@@ -84,7 +96,11 @@ export default function ContentAbout() {
         </div>
 
         {sections.map((section) => (
-          <TabsContent key={section.id} value={section.id} className="mt-4 outline-none">
+          <TabsContent
+            key={section.id}
+            value={section.id}
+            className="mt-4 outline-none"
+          >
             {section.id === "banner" ? (
               <BannerTab />
             ) : section.id === "intro" ? (
@@ -111,7 +127,8 @@ export default function ContentAbout() {
               <div className="rounded-lg border bg-card text-card-foreground p-6">
                 <h2 className="text-lg font-medium mb-4">{section.label}</h2>
                 <p className="text-sm text-muted-foreground">
-                  Configuration and content fields for the {section.label} section will go here.
+                  Configuration and content fields for the {section.label}{" "}
+                  section will go here.
                 </p>
               </div>
             )}
@@ -119,5 +136,5 @@ export default function ContentAbout() {
         ))}
       </Tabs>
     </div>
-  )
+  );
 }

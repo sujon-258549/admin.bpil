@@ -7,6 +7,9 @@ import { Save, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Input } from "@/components/ui/input"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface ServicesConsultLineContent {
   textPart1: string
@@ -21,6 +24,9 @@ const defaultContent: ServicesConsultLineContent = {
 }
 
 export function ServicesConsultLineTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.services.consult-line", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("services")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -70,10 +76,12 @@ export function ServicesConsultLineTab() {
             Manage the small consultation text snippet banner in the middle of the page.
           </p>
         </div>
-        <Button onClick={handleSave} disabled={isSaving}>
+        {canUpdate && (
+          <Button onClick={handleSave} disabled={isSaving}>
           {isSaving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
           Save Changes
         </Button>
+        )}
       </div>
 
       <div className="space-y-4">

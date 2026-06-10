@@ -9,6 +9,9 @@ import { DataTable, type Column, EmptyState, Text, ConfirmDialog } from "@/compo
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { WhyChooseFormModal, type WhyChooseCardData } from "@/components/modal/home/WhyChooseFormModal"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface WhyChooseSectionContent {
   intro: {
@@ -33,6 +36,9 @@ const defaultContent: WhyChooseSectionContent = {
 }
 
 export function WhyChooseTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.home.why-choose", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("home")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -251,23 +257,27 @@ export function WhyChooseTab() {
       <div className="border-t pt-8 mt-8">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold text-md">Reason Cards</h3>
+          {canUpdate && (
           <Button onClick={handleAddCard}>
             <Plus className="h-4 w-4 mr-2" /> Add Reason
           </Button>
+        )}
         </div>
         
         <DataTable<WhyChooseCardData>
           data={form.items}
-          columns={columns}
+          columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={ListChecks}
               title="No reasons added yet."
               action={
-                <Button size="sm" onClick={handleAddCard}>
+                canUpdate && (
+          <Button size="sm" onClick={handleAddCard}>
                   <Plus className="size-4 mr-2" /> Add your first reason
                 </Button>
+        )
               }
             />
           }

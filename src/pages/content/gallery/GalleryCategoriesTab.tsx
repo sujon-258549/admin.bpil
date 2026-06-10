@@ -13,17 +13,18 @@ import { useCurrentUser } from "@/hooks/use-permission"
 import { hasAction, isSuperAdmin } from "@/lib/permissions"
 
 
-export interface PillarCardData {
+export interface GalleryCategoryData {
   id: string
-  title: string
-  tag: string
+  name: string
+  count: string
   description: string
   imageId: string
   imageAlt: string
   icon: string
+  href: string
 }
 
-export interface PillarsSectionContent {
+export interface GalleryCategoriesContent {
   intro: {
     eyebrow: string
     titlePart1: string
@@ -31,76 +32,78 @@ export interface PillarsSectionContent {
     titlePart2: string
     description: string
   }
-  items: PillarCardData[]
+  items: GalleryCategoryData[]
 }
 
-const defaultContent: PillarsSectionContent = {
+const defaultContent: GalleryCategoriesContent = {
   intro: {
-    eyebrow: "What Sets Us Apart",
-    titlePart1: "The",
-    titleHighlight: "four pillars",
-    titlePart2: "of how we engineer.",
-    description: "Process, people, certifications and after-sales — four disciplines we've refined over a decade of building critical electrical infrastructure across Bangladesh.",
+    eyebrow: "What You're Seeing",
+    titlePart1: "Categories in this",
+    titleHighlight: "portfolio",
+    titlePart2: "",
+    description: "Every photo and reel above belongs to one of these disciplines — the cumulative footprint of BPIL projects across Bangladesh.",
   },
   items: [
     {
       id: "1",
-      title: "In-House Engineering Team",
-      tag: "Talent",
-      description: "60+ certified electrical engineers — no subcontractors. Design, drafting, panel build and commissioning all happen under our roof.",
+      name: "Transformers",
+      count: "120+",
+      description: "Distribution and step-up units commissioned across utility and industrial sites.",
       imageId: "",
-      imageAlt: "BPIL engineer working on a panel in-house",
-      icon: "faPeopleGroup",
+      imageAlt: "Distribution transformer at a substation",
+      icon: "faBolt",
+      href: "/products/transformer",
     },
   ]
 }
 
-export function PillarsTab() {
+export function GalleryCategoriesTab() {
   const user = useCurrentUser()
-  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.about.pillars", "update")
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.image.categories", "update")
 
-  const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("about")
+  const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("gallery")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
-  const [form, setForm] = useState<PillarsSectionContent>(defaultContent)
+  const [form, setForm] = useState<GalleryCategoriesContent>(defaultContent)
   
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editingItem, setEditingItem] = useState<PillarCardData | null>(null)
+  const [editingItem, setEditingItem] = useState<GalleryCategoryData | null>(null)
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
   
-  const [itemForm, setItemForm] = useState<PillarCardData>({
+  const [itemForm, setItemForm] = useState<GalleryCategoryData>({
     id: "",
-    title: "",
-    tag: "",
+    name: "",
+    count: "",
     description: "",
     imageId: "",
     imageAlt: "",
-    icon: "faStar",
+    icon: "faBolt",
+    href: "",
   })
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (contentMap?.["about-pillars"]?.value) {
-        setForm({ ...defaultContent, ...contentMap["about-pillars"].value })
+      if (contentMap?.["gallery-categories"]?.value) {
+        setForm({ ...defaultContent, ...contentMap["gallery-categories"].value })
       }
     }, 0)
     return () => clearTimeout(timer)
   }, [contentMap])
 
-  const saveFullState = async (newState: PillarsSectionContent) => {
+  const saveFullState = async (newState: GalleryCategoriesContent) => {
     try {
       await upsert({
-        key: "about-pillars",
-        group: "about",
+        key: "gallery-categories",
+        group: "gallery",
         type: "json",
-        name: "About Pillars",
-        description: "The pillars grid section on the about page",
+        name: "Gallery Categories",
+        description: "The categories grid on the gallery page",
         value: newState,
         isActive: true,
       }).unwrap()
-      toast.success("Pillars section updated successfully")
+      toast.success("Gallery categories updated successfully")
     } catch {
-      toast.error("Failed to update Pillars section")
+      toast.error("Failed to update Gallery categories")
     }
   }
 
@@ -112,17 +115,18 @@ export function PillarsTab() {
     setEditingItem(null)
     setItemForm({
       id: "",
-      title: "",
-      tag: "",
+      name: "",
+      count: "",
       description: "",
       imageId: "",
       imageAlt: "",
-      icon: "faStar",
+      icon: "faBolt",
+      href: "",
     })
     setIsModalOpen(true)
   }
 
-  const handleEditItem = (item: PillarCardData) => {
+  const handleEditItem = (item: GalleryCategoryData) => {
     setEditingItem(item)
     setItemForm({ ...item })
     setIsModalOpen(true)
@@ -156,21 +160,21 @@ export function PillarsTab() {
     setIsModalOpen(false)
   }
 
-  const columns: Column<PillarCardData>[] = [
+  const columns: Column<GalleryCategoryData>[] = [
     {
-      key: "title",
-      header: "Title",
-      cell: (d) => <div className="font-medium max-w-[200px] truncate">{d.title}</div>,
+      key: "name",
+      header: "Category Name",
+      cell: (d) => <div className="font-medium max-w-[150px] truncate">{d.name}</div>,
     },
     {
-      key: "tag",
-      header: "Tag",
-      cell: (d) => <div className="text-xs">{d.tag}</div>,
+      key: "count",
+      header: "Count",
+      cell: (d) => <div className="text-xs">{d.count}</div>,
     },
     {
       key: "description",
       header: "Description",
-      cell: (d) => <div className="text-muted-foreground text-xs truncate max-w-[250px]">{d.description}</div>,
+      cell: (d) => <div className="text-muted-foreground text-xs truncate max-w-[200px]">{d.description}</div>,
     },
     {
       key: "icon",
@@ -215,9 +219,9 @@ export function PillarsTab() {
       <div className="mb-10 w-full">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-lg font-medium">Our Pillars</h2>
+            <h2 className="text-lg font-medium">Gallery Categories</h2>
             <p className="text-sm text-muted-foreground">
-              Manage the "What Sets Us Apart" text and the pillar cards.
+              Manage the "Categories in this portfolio" section and category cards.
             </p>
           </div>
           <Button onClick={handleSaveIntro} disabled={isSaving}>
@@ -277,28 +281,28 @@ export function PillarsTab() {
       <div className="border-t pt-8">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="font-semibold text-md">Pillar Cards</h3>
-            <p className="text-sm text-muted-foreground">The first card is large, the 2nd and 3rd are medium, and the 4th is wide.</p>
+            <h3 className="font-semibold text-md">Category Cards</h3>
+            <p className="text-sm text-muted-foreground">Manage the cards that link to specific services/products.</p>
           </div>
           {canUpdate && (
           <Button onClick={handleAddItem}>
-            <Plus className="h-4 w-4 mr-2" /> Add Pillar
+            <Plus className="h-4 w-4 mr-2" /> Add Category
           </Button>
         )}
         </div>
         
-        <DataTable<PillarCardData>
+        <DataTable<GalleryCategoryData>
           data={form.items}
           columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={LayoutGrid}
-              title="No pillars added yet."
+              title="No categories added yet."
               action={
                 canUpdate && (
           <Button size="sm" onClick={handleAddItem}>
-                  <Plus className="size-4 mr-2" /> Add your first pillar
+                  <Plus className="size-4 mr-2" /> Add your first category
                 </Button>
         )
               }
@@ -310,24 +314,26 @@ export function PillarsTab() {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="!max-w-2xl">
           <DialogHeader>
-            <DialogTitle>{editingItem ? "Edit Pillar Card" : "Add Pillar Card"}</DialogTitle>
+            <DialogTitle>{editingItem ? "Edit Category Card" : "Add Category Card"}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleItemSubmit} className="space-y-6 mt-4">
             
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Title</Label>
+                <Label>Category Name</Label>
                 <Input
-                  value={itemForm.title}
-                  onChange={(e) => setItemForm({ ...itemForm, title: e.target.value })}
+                  value={itemForm.name}
+                  onChange={(e) => setItemForm({ ...itemForm, name: e.target.value })}
+                  placeholder="e.g. Transformers"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label>Tag (e.g. Talent)</Label>
+                <Label>Count (e.g. 120+)</Label>
                 <Input
-                  value={itemForm.tag}
-                  onChange={(e) => setItemForm({ ...itemForm, tag: e.target.value })}
+                  value={itemForm.count}
+                  onChange={(e) => setItemForm({ ...itemForm, count: e.target.value })}
+                  placeholder="e.g. 120+"
                   required
                 />
               </div>
@@ -343,27 +349,36 @@ export function PillarsTab() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-5">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label>FontAwesome Icon ID</Label>
-                  <Input
-                    value={itemForm.icon}
-                    onChange={(e) => setItemForm({ ...itemForm, icon: e.target.value })}
-                    placeholder="e.g. faPeopleGroup, faAward"
-                    required
-                  />
-                  <p className="text-[11px] text-muted-foreground leading-tight mt-1">
-                    Use camelCase (e.g. <code className="bg-muted px-1 rounded">faPeopleGroup</code>). Find free solid icons at{" "}
-                    <a href="https://fontawesome.com/search?s=solid&f=classic&o=r" target="_blank" rel="noreferrer" className="text-primary hover:underline font-medium">
-                      FontAwesome
-                    </a>.
-                    <br />
-                    <span className="text-amber-500/80 mt-1 inline-block"><em>*Note: The icon must be pre-configured in the frontend code to render properly.</em></span>
-                  </p>
-                </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Link URL (href)</Label>
+                <Input
+                  value={itemForm.href}
+                  onChange={(e) => setItemForm({ ...itemForm, href: e.target.value })}
+                  placeholder="e.g. /products/transformer"
+                  required
+                />
               </div>
+              <div className="space-y-2">
+                <Label>FontAwesome Icon ID</Label>
+                <Input
+                  value={itemForm.icon}
+                  onChange={(e) => setItemForm({ ...itemForm, icon: e.target.value })}
+                  placeholder="e.g. faBolt"
+                  required
+                />
+                <p className="text-[11px] text-muted-foreground leading-tight mt-1">
+                  Use camelCase (e.g. <code className="bg-muted px-1 rounded">faBolt</code>). Find free solid icons at{" "}
+                  <a href="https://fontawesome.com/search?s=solid&f=classic&o=r" target="_blank" rel="noreferrer" className="text-primary hover:underline font-medium">
+                    FontAwesome
+                  </a>.
+                  <br />
+                  <span className="text-amber-500/80 mt-1 inline-block"><em>*Note: The icon must be pre-configured in the frontend code to render properly.</em></span>
+                </p>
+              </div>
+            </div>
 
+            <div className="grid grid-cols-2 gap-5">
               <div className="space-y-2">
                 <Label>Card Image</Label>
                 <MediaPicker
@@ -374,6 +389,14 @@ export function PillarsTab() {
                   label="Select Image"
                 />
               </div>
+              <div className="space-y-2">
+                <Label>Image Alt Text</Label>
+                <Input
+                  value={itemForm.imageAlt}
+                  onChange={(e) => setItemForm({ ...itemForm, imageAlt: e.target.value })}
+                  placeholder="e.g. Distribution transformer"
+                />
+              </div>
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t">
@@ -381,7 +404,7 @@ export function PillarsTab() {
                 Cancel
               </Button>
               <Button type="submit">
-                {editingItem ? "Save Changes" : "Add Pillar"}
+                {editingItem ? "Save Changes" : "Add Category"}
               </Button>
             </div>
           </form>
@@ -391,8 +414,8 @@ export function PillarsTab() {
       <ConfirmDialog
         open={Boolean(pendingDeleteId)}
         onOpenChange={(v) => !v && setPendingDeleteId(null)}
-        title="Delete Pillar?"
-        description="This will remove the pillar card from the page."
+        title="Delete Category?"
+        description="This will remove the category card from the page."
         confirmLabel="Delete"
         destructive
         onConfirm={confirmDelete}

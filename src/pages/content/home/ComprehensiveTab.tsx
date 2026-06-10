@@ -9,6 +9,9 @@ import { DataTable, type Column, EmptyState, Text, ConfirmDialog, MediaPicker } 
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ComprehensiveFormModal, type ComprehensiveServiceData } from "@/components/modal/home/ComprehensiveFormModal"
+import { useCurrentUser } from "@/hooks/use-permission"
+import { hasAction, isSuperAdmin } from "@/lib/permissions"
+
 
 export interface ComprehensiveSectionContent {
   intro: {
@@ -41,6 +44,9 @@ const defaultContent: ComprehensiveSectionContent = {
 }
 
 export function ComprehensiveTab() {
+  const user = useCurrentUser()
+  const canUpdate = isSuperAdmin(user) || hasAction(user, "content.home.comprehensive", "update")
+
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("home")
   const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
@@ -300,23 +306,27 @@ export function ComprehensiveTab() {
             <h3 className="font-semibold text-md">Services List</h3>
             <p className="text-xs text-muted-foreground mt-1">All services in this list automatically get the CheckCircle icon.</p>
           </div>
+          {canUpdate && (
           <Button onClick={handleAddCard}>
             <Plus className="h-4 w-4 mr-2" /> Add Service
           </Button>
+        )}
         </div>
         
         <DataTable<ComprehensiveServiceData>
           data={form.items}
-          columns={columns}
+          columns={canUpdate ? columns : columns.filter(c => c.key !== "actions")}
           isLoading={false}
           empty={
             <EmptyState
               icon={ImageIcon}
               title="No services added yet."
               action={
-                <Button size="sm" onClick={handleAddCard}>
+                canUpdate && (
+          <Button size="sm" onClick={handleAddCard}>
                   <Plus className="size-4 mr-2" /> Add your first service
                 </Button>
+        )
               }
             />
           }
