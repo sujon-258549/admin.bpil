@@ -64,7 +64,6 @@ export const MODULES: AppModule[] = [
     children: [
       { key: "content.home", label: "Home", path: "/content/home" },
       { key: "content.about", label: "About Us", path: "/content/about" },
-      { key: "content.products", label: "Products", path: "/content/products" },
       { key: "content.services", label: "Services", path: "/content/services" },
       { key: "content.image", label: "Image / Gallery", path: "/content/gallery" },
     ],

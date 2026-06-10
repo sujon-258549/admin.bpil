@@ -4,6 +4,15 @@ import { useRef } from "react"
 import { useSearchParams } from "react-router-dom"
 import { BannerTab } from "./about/BannerTab"
 import { IntroTab } from "./about/IntroTab"
+import { MissionVisionTab } from "./about/MissionVisionTab"
+import { ValuesTab } from "./about/ValuesTab"
+import { PillarsTab } from "./about/PillarsTab"
+import { StatsTab } from "./about/StatsTab"
+import { MdSpeechTab } from "./about/MdSpeechTab"
+import { OfficeTab } from "./about/OfficeTab"
+import { FaqTab } from "./about/FaqTab"
+import { LocationTab } from "./about/LocationTab"
+import { CtaTab } from "./about/CtaTab"
 
 export default function ContentAbout() {
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -80,6 +89,24 @@ export default function ContentAbout() {
               <BannerTab />
             ) : section.id === "intro" ? (
               <IntroTab />
+            ) : section.id === "mission-vision" ? (
+              <MissionVisionTab />
+            ) : section.id === "values" ? (
+              <ValuesTab />
+            ) : section.id === "pillars" ? (
+              <PillarsTab />
+            ) : section.id === "stats" ? (
+              <StatsTab />
+            ) : section.id === "md-speech" ? (
+              <MdSpeechTab />
+            ) : section.id === "office" ? (
+              <OfficeTab />
+            ) : section.id === "faq" ? (
+              <FaqTab />
+            ) : section.id === "location" ? (
+              <LocationTab />
+            ) : section.id === "cta" ? (
+              <CtaTab />
             ) : (
               <div className="rounded-lg border bg-card text-card-foreground p-6">
                 <h2 className="text-lg font-medium mb-4">{section.label}</h2>

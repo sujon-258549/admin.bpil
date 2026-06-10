@@ -239,7 +239,7 @@ export function IndustriesTab() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div className="space-y-4 bg-muted/20 p-4 rounded-lg border">
             <h3 className="font-semibold text-sm border-b pb-2">Typography & Content</h3>
             <div className="space-y-2">

@@ -190,7 +190,7 @@ export function ComprehensiveTab() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           
           {/* Typography */}
           <div className="space-y-4 bg-muted/20 p-4 rounded-lg border">

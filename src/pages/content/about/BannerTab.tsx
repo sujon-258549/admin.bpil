@@ -73,7 +73,7 @@ export function BannerTab() {
   return (
     <div className="rounded-lg border bg-card text-card-foreground p-6">
       
-      <div className="max-w-3xl">
+      <div className="w-full">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-lg font-medium">Page Banner</h2>
@@ -87,7 +87,7 @@ export function BannerTab() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="space-y-4 bg-muted/20 p-4 rounded-lg border">
             <h3 className="font-semibold text-sm border-b pb-2">Typography</h3>
             

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, ChevronRight } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Image } from "@/components/shared"
+import { PreviewRichText } from "@/components/ui/preview-richtext"
 
 export default function ProductDetails() {
   const { id } = useParams()
@@ -49,7 +50,7 @@ export default function ProductDetails() {
           </Button>
         }
       />
-      <div className="rounded-md border bg-card p-6  space-y-6">
+      <div className="  space-y-6">
         <div className="flex flex-col md:flex-row gap-6">
           <div className="w-full md:w-1/3">
             {product.thumbnail ? (
@@ -79,7 +80,7 @@ export default function ProductDetails() {
             {product.shortDesc && (
               <div>
                 <h4 className="font-semibold mt-4 mb-2">Short Description</h4>
-                <div className="text-muted-foreground prose dark:prose-invert" dangerouslySetInnerHTML={{ __html: product.shortDesc }} />
+                <p className="text-muted-foreground whitespace-pre-wrap">{product.shortDesc}</p>
               </div>
             )}
           </div>
@@ -98,8 +99,8 @@ export default function ProductDetails() {
 
         {product.detailsDesc && (
           <div className="mt-8">
-            <h4 className="font-semibold mb-4 text-lg border-b pb-2">Detailed Description</h4>
-            <div className="prose dark:prose-invert max-w-none pt-2" dangerouslySetInnerHTML={{ __html: product.detailsDesc }} />
+            <h4 className="font-semibold pb-4 text-lg border-b -mb-5">Detailed Description</h4>
+            <PreviewRichText className="max-w-none" content={product.detailsDesc} />
           </div>
         )}
       </div>

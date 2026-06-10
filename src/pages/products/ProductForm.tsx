@@ -4,12 +4,12 @@ import { Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { FormField, Text } from "@/components/shared"
 import { MediaPicker } from "@/components/shared/media-picker"
 import RichTextEditor from "@/components/ui/rich-text-editor"
+import { Textarea } from "@/components/ui/textarea"
 
 export interface ProductFormState {
   name: string
