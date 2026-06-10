@@ -65,6 +65,7 @@ import ContentAbout from "@/pages/content/ContentAbout"
 import ContentProducts from "@/pages/content/ContentProducts"
 import ContentServices from "@/pages/content/ContentServices"
 import ContentGallery from "@/pages/content/ContentGallery"
+import ContentProjects from "@/pages/content/ContentProjects"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CRM / ERP module placeholders
@@ -361,6 +362,16 @@ export const router = createBrowserRouter([
         element: (
           <RequirePermission moduleKey="content.image">
             <ContentGallery />
+          </RequirePermission>
+        ),
+      },
+      
+      // Projects Content Management
+      {
+        path: "content/projects",
+        element: (
+          <RequirePermission moduleKey="content.projects">
+            <ContentProjects />
           </RequirePermission>
         ),
       },

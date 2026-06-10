@@ -9,14 +9,13 @@ import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { DataTable, type Column, EmptyState, ConfirmDialog } from "@/components/shared"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { CustomSelect } from "@/components/ui/custom-select"
 
 export interface ProcessStepData {
   id: string
   title: string
   description: string
   icon: string
-  accent: "primary" | "secondary"
+  accent: string
 }
 
 export interface ServicesProcessContent {
@@ -40,7 +39,7 @@ const defaultContent: ServicesProcessContent = {
       title: "Site Survey",
       description: "Our engineers visit your site, audit existing assets and document load profile.",
       icon: "faMagnifyingGlass",
-      accent: "primary"
+      accent: "#0f71bc"
     }
   ]
 }
@@ -56,7 +55,7 @@ export function ServicesProcessTab() {
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
   
   const [itemForm, setItemForm] = useState<ProcessStepData>({
-    id: "", title: "", description: "", icon: "faMagnifyingGlass", accent: "primary"
+    id: "", title: "", description: "", icon: "faMagnifyingGlass", accent: "#0f71bc"
   })
 
   useEffect(() => {
@@ -91,7 +90,7 @@ export function ServicesProcessTab() {
 
   const handleAddItem = () => {
     setEditingItem(null)
-    setItemForm({ id: "", title: "", description: "", icon: "faMagnifyingGlass", accent: "primary" })
+    setItemForm({ id: "", title: "", description: "", icon: "faMagnifyingGlass", accent: "#0f71bc" })
     setIsModalOpen(true)
   }
 
@@ -298,14 +297,21 @@ export function ServicesProcessTab() {
 
               <div className="space-y-2">
                 <Label>Accent Color</Label>
-                <CustomSelect
-                  value={itemForm.accent}
-                  onChange={(v) => setItemForm({ ...itemForm, accent: v as "primary" | "secondary" })}
-                  placeholder="Select Accent Color"
-                >
-                  <option value="primary">Primary (Brand Color)</option>
-                  <option value="secondary">Secondary (Accent Color)</option>
-                </CustomSelect>
+                <div className="flex items-center gap-3">
+                  <Input
+                    type="color"
+                    value={itemForm.accent.startsWith('#') ? itemForm.accent : '#0f71bc'}
+                    onChange={(e) => setItemForm({ ...itemForm, accent: e.target.value })}
+                    className="w-16 h-10 p-1 cursor-pointer"
+                  />
+                  <Input
+                    type="text"
+                    value={itemForm.accent}
+                    onChange={(e) => setItemForm({ ...itemForm, accent: e.target.value })}
+                    placeholder="e.g. #0f71bc"
+                    className="flex-1"
+                  />
+                </div>
               </div>
             </div>
 

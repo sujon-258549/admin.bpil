@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import {  Pencil } from "lucide-react"
+import { Pencil, Save } from "lucide-react"
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { MediaPicker } from "@/components/shared"
 
 export interface HighlightItemData {
   id: string
@@ -17,10 +18,14 @@ export interface HighlightItemData {
 }
 
 export interface ServicesHighlightsContent {
+  imageId?: string
+  imageAlt?: string
   items: HighlightItemData[]
 }
 
 const defaultContent: ServicesHighlightsContent = {
+  imageId: "",
+  imageAlt: "BPIL field engineer inspecting a substation",
   items: [
     {
       id: "1",
@@ -51,7 +56,7 @@ const defaultContent: ServicesHighlightsContent = {
 
 export function ServicesHighlightsTab() {
   const { data: contentMap, isLoading } = useGetDynamicContentsMapQuery("services")
-  const [upsert] = useUpsertDynamicContentMutation()
+  const [upsert, { isLoading: isSaving }] = useUpsertDynamicContentMutation()
   
   const [form, setForm] = useState<ServicesHighlightsContent>(defaultContent)
   
@@ -118,11 +123,38 @@ export function ServicesHighlightsTab() {
     <div className="rounded-lg border bg-card text-card-foreground p-6">
       
       <div className="mb-6 w-full">
-        <div>
-          <h2 className="text-lg font-medium">Highlights</h2>
-          <p className="text-sm text-muted-foreground">
-            Manage the 4 feature highlight boxes (Note: This section strictly requires exactly 4 items for the layout).
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-medium">Highlights</h2>
+            <p className="text-sm text-muted-foreground">
+              Manage the 4 feature highlight boxes (Note: This section strictly requires exactly 4 items for the layout).
+            </p>
+          </div>
+          <Button onClick={() => saveFullState(form)} disabled={isSaving}>
+            <Save className="h-4 w-4 mr-2" /> Save Image
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 mb-8 border-b pb-8">
+        <div className="space-y-2">
+          <Label>Highlight Center Image</Label>
+          <MediaPicker
+            value={form.imageId || ""}
+            onChange={(url) => setForm({ ...form, imageId: url })}
+          />
+          <p className="text-xs text-muted-foreground mt-2">
+            This image is displayed in the center of the highlights grid. <br />
+            <strong>Recommended Size:</strong> 4:5 aspect ratio (e.g. 800x1000px).
           </p>
+        </div>
+        <div className="space-y-2">
+          <Label>Image Alt Text</Label>
+          <Input
+            value={form.imageAlt || ""}
+            onChange={(e) => setForm({ ...form, imageAlt: e.target.value })}
+            placeholder="e.g. Engineer inspecting a substation"
+          />
         </div>
       </div>
 

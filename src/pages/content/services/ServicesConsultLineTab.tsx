@@ -76,7 +76,7 @@ export function ServicesConsultLineTab() {
         </Button>
       </div>
 
-      <div className="space-y-4 max-w-3xl">
+      <div className="space-y-4">
         <div className="space-y-2">
           <Label>Text Part 1 (Before Highlight)</Label>
           <Textarea 
