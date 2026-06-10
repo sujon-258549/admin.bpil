@@ -1,96 +1,96 @@
-import { createBrowserRouter, Navigate } from "react-router-dom"
-import { useCurrentUser } from "@/hooks/use-permission"
-import { firstAccessiblePath, isSuperAdmin } from "@/lib/permissions"
-import { ROUTES } from "@/config/paths"
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import { useCurrentUser } from "@/hooks/use-permission";
+import { firstAccessiblePath, isSuperAdmin } from "@/lib/permissions";
+import { ROUTES } from "@/config/paths";
 
 // "/" entry: redirect to the first module the signed-in user can read.
 // Super-admin lands on /dashboard; users with no grants go to /access-denied.
 function SmartIndex() {
-  const user = useCurrentUser()
-  if (isSuperAdmin(user)) return <Navigate to={ROUTES.MODULES.DASHBOARD} replace />
-  const target = firstAccessiblePath(user)
-  return <Navigate to={target ?? "/access-denied"} replace />
+  const user = useCurrentUser();
+  if (isSuperAdmin(user))
+    return <Navigate to={ROUTES.MODULES.DASHBOARD} replace />;
+  const target = firstAccessiblePath(user);
+  return <Navigate to={target ?? "/access-denied"} replace />;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Route guards — only-here-for-routing helpers.
 // ─────────────────────────────────────────────────────────────────────────────
-import ProtectedRoute from "./ProtectedRoute"
-import PublicRoute from "./PublicRoute"
-import RequirePermission from "./RequirePermission"
+import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoute";
+import RequirePermission from "./RequirePermission";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Layouts
 // ─────────────────────────────────────────────────────────────────────────────
-import AuthLayout from "@/layouts/auth-layout"
-import DashboardLayout from "@/layouts/dashboard-layout"
+import AuthLayout from "@/layouts/auth-layout";
+import DashboardLayout from "@/layouts/dashboard-layout";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Auth pages
 // ─────────────────────────────────────────────────────────────────────────────
-import Login from "@/pages/auth/login-page"
-import ForgotPassword from "@/pages/auth/forgot-password-page"
+import Login from "@/pages/auth/login-page";
+import ForgotPassword from "@/pages/auth/forgot-password-page";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Common pages (404, error, loading)
 // ─────────────────────────────────────────────────────────────────────────────
-import NotFound from "@/pages/common/NotFound"
-import ErrorPage from "@/pages/common/ErrorPage"
-import AccessDenied from "@/pages/common/AccessDenied"
+import NotFound from "@/pages/common/NotFound";
+import ErrorPage from "@/pages/common/ErrorPage";
+import AccessDenied from "@/pages/common/AccessDenied";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Dashboard
 // ─────────────────────────────────────────────────────────────────────────────
-import Dashboard from "@/pages/dashboard/dashboard-page"
+import Dashboard from "@/pages/dashboard/dashboard-page";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Employee Management — every page used by the Employee Management mega menu.
 // ─────────────────────────────────────────────────────────────────────────────
-import EmployeeList from "@/pages/employee/EmployeeList"
-import EmployeeCreate from "@/pages/employee/EmployeeCreate"
-import EmployeeEdit from "@/pages/employee/EmployeeEdit"
-import EmployeeDetails from "@/pages/employee/EmployeeDetails"
-import EmployeeSecurity from "@/pages/employee/EmployeeSecurity"
-import DepartmentList from "@/pages/department/DepartmentList"
-import RoleList from "@/pages/role/RoleList"
-import DesignationList from "@/pages/designation/DesignationList"
-import ActionLogs from "@/pages/logs/ActionLogs"
-import ErrorLogs from "@/pages/logs/ErrorLogs"
+import EmployeeList from "@/pages/employee/EmployeeList";
+import EmployeeCreate from "@/pages/employee/EmployeeCreate";
+import EmployeeEdit from "@/pages/employee/EmployeeEdit";
+import EmployeeDetails from "@/pages/employee/EmployeeDetails";
+import EmployeeSecurity from "@/pages/employee/EmployeeSecurity";
+import DepartmentList from "@/pages/department/DepartmentList";
+import RoleList from "@/pages/role/RoleList";
+import DesignationList from "@/pages/designation/DesignationList";
+import ActionLogs from "@/pages/logs/ActionLogs";
+import ErrorLogs from "@/pages/logs/ErrorLogs";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Content Management
 // ─────────────────────────────────────────────────────────────────────────────
-import ContentHome from "@/pages/content/ContentHome"
-import ContentAbout from "@/pages/content/ContentAbout"
-import ContentProducts from "@/pages/content/ContentProducts"
-import ContentServices from "@/pages/content/ContentServices"
-import ContentGallery from "@/pages/content/ContentGallery"
-import ContentProjects from "@/pages/content/ContentProjects"
+import ContentHome from "@/pages/content/ContentHome";
+import ContentAbout from "@/pages/content/ContentAbout";
+import ContentProducts from "@/pages/content/ContentProducts";
+import ContentServices from "@/pages/content/ContentServices";
+import ContentGallery from "@/pages/content/ContentGallery";
+import ContentProjects from "@/pages/content/ContentProjects";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CRM / ERP module placeholders
 // ─────────────────────────────────────────────────────────────────────────────
-import CustomerList from "@/pages/customers/customer-list-page"
-import ProductList from "@/pages/products/product-list-page"
-import ProductCreate from "@/pages/products/ProductCreate"
-import ProductEdit from "@/pages/products/ProductEdit"
-import ProductDetails from "@/pages/products/ProductDetails"
-import InventoryPage from "@/pages/inventory/inventory-page"
-import InvoiceList from "@/pages/invoices/invoice-list-page"
-import SettingsPage from "@/pages/settings/settings-page"
-import NotificationSettingsPage from "@/pages/settings/NotificationSettingsPage"
-import WorkflowPage from "@/pages/workflow/WorkflowPage"
-import CategoryList from "@/pages/categories/CategoryList"
-import SubCategoryList from "@/pages/categories/SubCategoryList"
-import BlogList from "@/pages/blog/BlogList"
-import MediaLibrary from "@/pages/media/MediaLibrary"
-import NotificationsPage from "@/pages/notifications/NotificationsPage"
-import SendNotificationPage from "@/pages/notifications/SendNotificationPage"
-import ContactList from "@/pages/contacts/ContactList"
-import YourProfile from "@/pages/profile/YourProfile"
-import UpdateProfile from "@/pages/profile/UpdateProfile"
-import ChangePassword from "@/pages/profile/ChangePassword"
-
+import CustomerList from "@/pages/customers/customer-list-page";
+import ProductList from "@/pages/products/product-list-page";
+import ProductCreate from "@/pages/products/ProductCreate";
+import ProductEdit from "@/pages/products/ProductEdit";
+import ProductDetails from "@/pages/products/ProductDetails";
+import InventoryPage from "@/pages/inventory/inventory-page";
+import InvoiceList from "@/pages/invoices/invoice-list-page";
+import SettingsPage from "@/pages/settings/settings-page";
+import NotificationSettingsPage from "@/pages/settings/NotificationSettingsPage";
+import WorkflowPage from "@/pages/workflow/WorkflowPage";
+import CategoryList from "@/pages/categories/CategoryList";
+import SubCategoryList from "@/pages/categories/SubCategoryList";
+import BlogList from "@/pages/blog/BlogList";
+import MediaLibrary from "@/pages/media/MediaLibrary";
+import NotificationsPage from "@/pages/notifications/NotificationsPage";
+import SendNotificationPage from "@/pages/notifications/SendNotificationPage";
+import ContactList from "@/pages/contacts/ContactList";
+import YourProfile from "@/pages/profile/YourProfile";
+import UpdateProfile from "@/pages/profile/UpdateProfile";
+import ChangePassword from "@/pages/profile/ChangePassword";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Router
@@ -148,7 +148,7 @@ export const router = createBrowserRouter([
           </RequirePermission>
         ),
       },
-      
+
       // Logs
       {
         path: "logs/actions",
@@ -365,7 +365,7 @@ export const router = createBrowserRouter([
           </RequirePermission>
         ),
       },
-      
+
       // Projects Content Management
       {
         path: "content/projects",
@@ -431,7 +431,7 @@ export const router = createBrowserRouter([
           </RequirePermission>
         ),
       },
-      
+
       // Inquiries (Contacts)
       {
         path: "inquiries/contacts",
@@ -464,4 +464,4 @@ export const router = createBrowserRouter([
       { path: "*", element: <NotFound /> },
     ],
   },
-])
+]);
