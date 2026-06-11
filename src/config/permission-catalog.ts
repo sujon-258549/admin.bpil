@@ -86,6 +86,9 @@ const ACTION_OVERRIDES: Record<string, readonly string[]> = {
   "content.image.categories": ["read", "update"],
   "content.image.cta": ["read", "update"],
 
+  "gallery_video.gallery": ["read", "create", "update", "delete"],
+  "gallery_video.video": ["read", "create", "update", "delete"],
+
   "content.blog": ["read", "update"],
   "content.blog.banner": ["read", "update"],
 

@@ -19,14 +19,13 @@ import {
   PageMeta,
 } from "@/components/shared"
 import { useGetProductsQuery, useDeleteProductMutation, useUpdateProductMutation } from "@/redux/features/products/products-api"
-import { DataTablePagination } from "@/components/shared/data-table/data-table-pagination"
 
 export default function ProductListPage() {
   const navigate = useNavigate()
   const [search, setSearch] = useState("")
 
   const [page, setPage] = useState(1)
-  const [limit] = useState(10)
+  const [limit, setLimit] = useState(10)
 
   // Assuming getProducts handles pagination implicitly or via props passed
   const { data, isLoading, isFetching } = useGetProductsQuery({ page, limit })
@@ -211,18 +210,12 @@ export default function ProductListPage() {
             }
           />
         }
-        footer={
-          meta && (
-            <DataTablePagination
-              page={page}
-              pageSize={limit}
-              total={meta.total ?? 0}
-              showing={products.length}
-              totalPages={Math.ceil((meta.total ?? 0) / limit)}
-              onPageChange={setPage}
-            />
-          )
-        }
+        meta={meta}
+        onPageChange={setPage}
+        onPageSizeChange={(newSize) => {
+          setLimit(newSize)
+          setPage(1)
+        }}
       />
 
       <ConfirmDialog

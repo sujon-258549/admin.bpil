@@ -15,12 +15,11 @@ import {
 } from "@/components/shared"
 import { Button } from "@/components/ui/button"
 import { Check, Bell, MessageSquare, ShieldAlert, Settings } from "lucide-react"
-import { DataTablePagination } from "@/components/shared/data-table/data-table-pagination"
 import { Badge } from "@/components/ui/badge"
 
 export default function NotificationsPage() {
   const [page, setPage] = useState(1)
-  const [limit] = useState(20)
+  const [limit, setLimit] = useState(20)
   
   // Date filter state
   const [startDate, setStartDate] = useState<string | undefined>()
@@ -159,16 +158,12 @@ export default function NotificationsPage() {
             description={startDate || endDate ? "No notifications found for the selected date range." : "No new notifications right now."}
           />
         }
-        footer={
-          <DataTablePagination
-            page={meta?.page ?? 1}
-            pageSize={meta?.perPage ?? limit}
-            total={meta?.total ?? 0}
-            showing={notifications.length}
-            totalPages={meta?.totalPages ?? Math.ceil((meta?.total ?? 0) / limit)}
-            onPageChange={setPage}
-          />
-        }
+        meta={meta}
+        onPageChange={setPage}
+        onPageSizeChange={(newSize) => {
+          setLimit(newSize)
+          setPage(1)
+        }}
       />
     </div>
   )

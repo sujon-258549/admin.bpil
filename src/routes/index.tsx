@@ -93,6 +93,8 @@ import ContactList from "@/pages/contacts/ContactList";
 import YourProfile from "@/pages/profile/YourProfile";
 import UpdateProfile from "@/pages/profile/UpdateProfile";
 import ChangePassword from "@/pages/profile/ChangePassword";
+import VideoPage from "@/pages/gallery-video/VideoPage";
+import GalleryPage from "@/pages/gallery-video/GalleryPage";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Router
@@ -429,6 +431,24 @@ export const router = createBrowserRouter([
         element: (
           <RequirePermission moduleKey="media">
             <MediaLibrary />
+          </RequirePermission>
+        ),
+      },
+
+      // Gallery & Video
+      {
+        path: "gallery-video/gallery",
+        element: (
+          <RequirePermission moduleKey="gallery_video.gallery">
+            <GalleryPage />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "gallery-video/video",
+        element: (
+          <RequirePermission moduleKey="gallery_video.video">
+            <VideoPage />
           </RequirePermission>
         ),
       },

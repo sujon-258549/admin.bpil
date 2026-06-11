@@ -2,6 +2,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { TableSkeleton } from "@/components/skeleton"
+import { DataTablePagination } from "./data-table-pagination"
 
 export interface Column<T> {
   key: string
@@ -40,6 +41,16 @@ interface DataTableProps<T> {
   // Minimum width of the table itself. The outer wrapper keeps `overflow-x-auto`
   // so on small screens the table scrolls horizontally instead of squishing.
   minWidth?: string
+  // Built-in pagination state — if provided alongside `onPageChange`, the table
+  // automatically renders a standard pagination footer.
+  meta?: {
+    page: number
+    perPage: number
+    total: number
+    totalPages: number
+  } | null
+  onPageChange?: (page: number) => void
+  onPageSizeChange?: (size: number) => void
 }
 
 // Helpers below take only the primitive fields they need so they don't have
@@ -75,6 +86,9 @@ export function DataTable<T extends Record<string, any>>({
   className,
   caption,
   minWidth = "640px",
+  meta,
+  onPageChange,
+  onPageSizeChange,
 }: DataTableProps<T>) {
   const keyFor = (row: T, index: number) =>
     rowKey ? rowKey(row, index) : ((row.id as string) ?? String(index))
@@ -95,69 +109,83 @@ export function DataTable<T extends Record<string, any>>({
   return (
     <div
       className={cn(
-        "overflow-x-auto rounded-md border bg-card text-card-foreground shadow-xs",
+        "flex flex-col rounded-md border bg-card text-card-foreground shadow-xs",
+        "[&>div:first-child]:rounded-t-md [&>div:last-child]:rounded-b-md",
         isFetching && "ring-1 ring-primary/10",
         className,
       )}
     >
-      <table className="w-full text-sm" style={{ minWidth }}>
-        {caption && (
-          <caption className="px-4 py-2 text-left text-xs text-muted-foreground">
-            {caption}
-          </caption>
-        )}
-        <thead className="border-b border-border/70 text-[11px] uppercase tracking-wider text-muted-foreground">
-          <tr className="bg-muted/50">
-            {columns.map((col) => (
-              <th
-                key={col.key}
-                style={col.width ? { width: col.width } : undefined}
-                className={cn(
-                  "px-4 py-3 font-semibold",
-                  alignClass(col.align),
-                  responsiveClass(col.hideOnMobile),
-                  col.fixed === "right" &&
-                    "sticky right-0 z-20 bg-muted shadow-[-4px_0_6px_-4px_rgba(0,0,0,0.08)]",
-                  col.headerClassName,
-                )}
-              >
-                {col.header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-border/60">
-          {data.map((row, index) => (
-            <tr
-              key={keyFor(row, index)}
-              className={cn(
-                "bg-card transition-colors hover:bg-muted",
-                onRowClick && "cursor-pointer",
-              )}
-              onClick={onRowClick ? () => onRowClick(row) : undefined}
-            >
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm" style={{ minWidth }}>
+          {caption && (
+            <caption className="px-4 py-2 text-left text-xs text-muted-foreground">
+              {caption}
+            </caption>
+          )}
+          <thead className="border-b border-border/70 text-[11px] uppercase tracking-wider text-muted-foreground">
+            <tr className="bg-muted/50">
               {columns.map((col) => (
-                <td
+                <th
                   key={col.key}
+                  style={col.width ? { width: col.width } : undefined}
                   className={cn(
-                    "px-4 py-3 align-middle",
+                    "px-4 py-3 font-semibold",
                     alignClass(col.align),
                     responsiveClass(col.hideOnMobile),
                     col.fixed === "right" &&
-                      "sticky right-0 z-10 bg-inherit shadow-[-4px_0_6px_-4px_rgba(0,0,0,0.08)]",
-                    col.className,
+                      "sticky right-0 z-20 bg-muted shadow-[-4px_0_6px_-4px_rgba(0,0,0,0.08)]",
+                    col.headerClassName,
                   )}
                 >
-                  {col.cell
-                    ? col.cell(row, index)
-                    : (row[col.key as keyof T] as React.ReactNode)}
-                </td>
+                  {col.header}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-border/60">
+            {data.map((row, index) => (
+              <tr
+                key={keyFor(row, index)}
+                className={cn(
+                  "bg-card transition-colors hover:bg-muted",
+                  onRowClick && "cursor-pointer",
+                )}
+                onClick={onRowClick ? () => onRowClick(row) : undefined}
+              >
+                {columns.map((col) => (
+                  <td
+                    key={col.key}
+                    className={cn(
+                      "px-4 py-3 align-middle",
+                      alignClass(col.align),
+                      responsiveClass(col.hideOnMobile),
+                      col.fixed === "right" &&
+                        "sticky right-0 z-10 bg-inherit shadow-[-4px_0_6px_-4px_rgba(0,0,0,0.08)]",
+                      col.className,
+                    )}
+                  >
+                    {col.cell
+                      ? col.cell(row, index)
+                      : (row[col.key as keyof T] as React.ReactNode)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {footer}
+      {meta && onPageChange && (
+        <DataTablePagination
+          page={meta.page ?? 1}
+          pageSize={meta.perPage ?? 10}
+          total={meta.total ?? 0}
+          totalPages={meta.totalPages ?? Math.max(1, Math.ceil((meta.total ?? 0) / (meta.perPage ?? 10)))}
+          showing={data.length}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
+      )}
     </div>
   )
 }

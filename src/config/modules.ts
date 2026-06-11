@@ -28,6 +28,7 @@ export type ModuleKey =
   | "logs"
   | "profile"
   | "products"
+  | "gallery_video"
   | "settings";
 
 export type ModuleGroup = "Overview" | "CRM" | "ERP" | "System";
@@ -112,6 +113,16 @@ export const MODULES: AppModule[] = [
     label: "Media Library",
     path: "/media",
     icon: Image,
+  },
+  {
+    key: "gallery_video",
+    label: "Gallery & Video",
+    path: "/gallery-video",
+    icon: Image,
+    children: [
+      { key: "gallery_video.video", label: "Video", path: "/gallery-video/video" },
+      { key: "gallery_video.gallery", label: "Gallery", path: "/gallery-video/gallery" },
+    ],
   },
   {
     key: "inquiries",
