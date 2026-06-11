@@ -30,6 +30,50 @@ export function MediaPicker({
   const isArray = Array.isArray(value)
   const hasValue = isMulti ? isArray && value.length > 0 : !!value
 
+  if (isMulti) {
+    return (
+      <>
+        <div className={`flex flex-wrap gap-4 ${className}`}>
+          {isArray && value.map((id, index) => (
+            <div key={id} className={`relative group ${width} ${height}`}>
+              <SelectedMediaItem imageId={id} className="w-full h-full" showDetails />
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onChange(value.filter((_: any, i: number) => i !== index))
+                }}
+                className="absolute -top-2 -right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-destructive text-destructive-foreground opacity-0 transition-opacity group-hover:opacity-100 shadow-md hover:bg-destructive/90"
+                title="Remove image"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ))}
+          <div 
+            onClick={() => setIsOpen(true)}
+            className={`${width} ${height} flex flex-col items-center justify-center rounded-md border-2 border-dashed border-border bg-muted/20 hover:bg-muted/50 transition-colors cursor-pointer overflow-hidden relative`}
+          >
+            <div className="flex flex-col items-center gap-2 text-muted-foreground">
+              <Upload className="h-8 w-8 opacity-50" />
+              <span className="text-sm font-medium">{isArray && value.length > 0 ? "Add More" : label}</span>
+            </div>
+          </div>
+        </div>
+
+        <MediaUploadsModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          category={category}
+          initialSelectedIds={isArray ? (value as string[]) : []}
+          onSelect={(imageIds) => {
+            onChange(imageIds)
+          }}
+        />
+      </>
+    )
+  }
+
   return (
     <>
       <div className={`relative group ${width} ${height} ${className}`}>
@@ -38,15 +82,7 @@ export function MediaPicker({
           className="w-full h-full flex flex-col items-center justify-center rounded-md border-2 border-dashed border-border bg-muted/20 hover:bg-muted/50 transition-colors cursor-pointer overflow-hidden relative"
         >
           {hasValue ? (
-            isMulti && isArray ? (
-              <div className="flex w-full h-full p-2 flex-wrap gap-2 overflow-y-auto">
-                {value.map((id) => (
-                  <SelectedMediaItem key={id} imageId={id} className="w-16 h-16" />
-                ))}
-              </div>
-            ) : (
-              <SelectedMediaItem imageId={value as string} className="w-full h-full" showDetails />
-            )
+            <SelectedMediaItem imageId={value as string} className="w-full h-full" showDetails />
           ) : (
             <div className="flex flex-col items-center gap-2 text-muted-foreground">
               <Upload className="h-8 w-8 opacity-50" />
@@ -57,9 +93,10 @@ export function MediaPicker({
 
         {hasValue && (
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation()
-              onChange(isMulti ? [] : "")
+              onChange("")
             }}
             className="absolute -top-2 -right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-destructive text-destructive-foreground opacity-0 transition-opacity group-hover:opacity-100 shadow-md hover:bg-destructive/90"
             title="Clear selection"
@@ -69,21 +106,19 @@ export function MediaPicker({
         )}
       </div>
 
-      <MediaUploadsModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        category={category}
-        initialSelectedIds={hasValue ? (isMulti && isArray ? (value as string[]) : [value as string]) : []}
-        onSelect={(imageIds) => {
-          if (isMulti) {
-            onChange(imageIds)
-          } else if (imageIds.length > 0) {
-            onChange(imageIds[0])
-          }
-        }}
-      />
-    </>
-  )
+        <MediaUploadsModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          category={category}
+          initialSelectedIds={hasValue ? [value as string] : []}
+          onSelect={(imageIds) => {
+            if (imageIds.length > 0) {
+              onChange(imageIds[0])
+            }
+          }}
+        />
+      </>
+    )
 }
 
 function SelectedMediaItem({ imageId, className = "", showDetails = false }: { imageId: string; className?: string; showDetails?: boolean }) {

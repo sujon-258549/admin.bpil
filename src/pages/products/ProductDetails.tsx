@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, ChevronRight } from "lucide-react"
 import { Link } from "react-router-dom"
-import { Image } from "@/components/shared"
+import { Image, YoutubeEmbed } from "@/components/shared"
 import { PreviewRichText } from "@/components/ui/preview-richtext"
 
 export default function ProductDetails() {
@@ -92,6 +92,17 @@ export default function ProductDetails() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {product.gallery.map((g: any, i: number) => (
                 <Image preview key={i} imageId={g.id} alt={`${product.name} gallery ${i+1}`} className="w-full aspect-square object-cover rounded-md border" />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {product.youtubeVideoIds && product.youtubeVideoIds.length > 0 && (
+          <div className="mt-8">
+            <h4 className="font-semibold mb-4 text-lg border-b pb-2">Videos</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {product.youtubeVideoIds.map((youtubeId: string, i: number) => (
+                <YoutubeEmbed key={i} youtubeId={youtubeId} />
               ))}
             </div>
           </div>

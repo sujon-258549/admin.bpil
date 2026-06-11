@@ -28,6 +28,7 @@ export type ModuleKey =
   | "logs"
   | "profile"
   | "products"
+  | "projects"
   | "gallery_video"
   | "settings";
 
@@ -106,6 +107,16 @@ export const MODULES: AppModule[] = [
     children: [
       { key: "products.list", label: "Product List", path: "/products" },
       { key: "products.create", label: "Create Product", path: "/products/create" },
+    ],
+  },
+  {
+    key: "projects",
+    label: "Project Management",
+    path: "/projects",
+    icon: ShoppingBag, // can be changed to a better icon later
+    children: [
+      { key: "projects.project", label: "Project List", path: "/projects" },
+      { key: "projects.create", label: "Create Project", path: "/projects/create" },
     ],
   },
   {

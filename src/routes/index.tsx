@@ -78,6 +78,10 @@ import ProductList from "@/pages/products/product-list-page";
 import ProductCreate from "@/pages/products/ProductCreate";
 import ProductEdit from "@/pages/products/ProductEdit";
 import ProductDetails from "@/pages/products/ProductDetails";
+import ProjectList from "@/pages/projects/project-list-page";
+import ProjectCreate from "@/pages/projects/ProjectCreate";
+import ProjectEdit from "@/pages/projects/ProjectEdit";
+import ProjectDetails from "@/pages/projects/ProjectDetails";
 import InventoryPage from "@/pages/inventory/inventory-page";
 import InvoiceList from "@/pages/invoices/invoice-list-page";
 import SettingsPage from "@/pages/settings/settings-page";
@@ -284,6 +288,38 @@ export const router = createBrowserRouter([
         element: (
           <RequirePermission moduleKey="products.list">
             <ProductDetails />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "projects",
+        element: (
+          <RequirePermission moduleKey="projects.project">
+            <ProjectList />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "projects/create",
+        element: (
+          <RequirePermission moduleKey="projects.project" action="create">
+            <ProjectCreate />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "projects/:id/edit",
+        element: (
+          <RequirePermission moduleKey="projects.project" action="update">
+            <ProjectEdit />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "projects/:id",
+        element: (
+          <RequirePermission moduleKey="projects.project">
+            <ProjectDetails />
           </RequirePermission>
         ),
       },

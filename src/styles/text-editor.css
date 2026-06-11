@@ -749,3 +749,119 @@
     page-break-before: always;
   }
 }
+
+/* ---------------------------
+   Dark Mode Support
+--------------------------- */
+.dark .text-editor {
+  color: var(--foreground);
+}
+
+.dark .text-editor h1,
+.dark .text-editor h2,
+.dark .text-editor h3,
+.dark .text-editor h4,
+.dark .text-editor h5,
+.dark .text-editor h6 {
+  color: var(--foreground);
+}
+
+.dark .text-editor strong,
+.dark .text-editor b {
+  color: var(--foreground);
+}
+
+.dark .text-editor em,
+.dark .text-editor i {
+  color: var(--muted-foreground);
+}
+
+.dark .text-editor s,
+.dark .text-editor strike,
+.dark .text-editor del {
+  color: var(--muted-foreground);
+}
+
+.dark .text-editor blockquote {
+  background-color: var(--muted);
+  color: var(--foreground);
+  border-left-color: var(--primary);
+}
+
+.dark .text-editor blockquote:before {
+  color: var(--muted-foreground);
+}
+
+.dark .text-editor blockquote cite {
+  color: var(--muted-foreground);
+}
+
+.dark .text-editor pre,
+.dark .text-editor code {
+  background-color: var(--muted);
+  color: var(--foreground);
+  border-color: var(--border);
+}
+
+.dark .text-editor mark {
+  background-color: rgba(214, 158, 46, 0.2);
+  color: #fbd38d;
+}
+
+.dark .text-editor table,
+.dark .text-editor th,
+.dark .text-editor td {
+  border-color: var(--border);
+}
+
+.dark .text-editor thead {
+  background-color: var(--muted);
+  color: var(--foreground);
+}
+
+.dark .text-editor thead th {
+  border-bottom-color: var(--border);
+}
+
+.dark .text-editor tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.dark .text-editor tbody tr:hover {
+  background-color: var(--muted);
+}
+
+.dark .text-editor tfoot {
+  background-color: var(--muted);
+}
+
+.dark .text-editor tfoot td {
+  border-top-color: var(--border);
+}
+
+.dark .text-editor a {
+  color: var(--primary);
+}
+
+.dark .text-editor a:hover {
+  color: hsl(var(--primary) / 0.8);
+}
+
+.dark .text-editor a:visited {
+  color: #b794f4;
+}
+
+.dark .text-editor hr {
+  border-top-color: var(--border);
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+}
+
+.dark .text-editor .mce-pagebreak {
+  border-top-color: var(--border);
+}
+
+.dark .text-editor .mce-pagebreak:before {
+  background: var(--background);
+  color: var(--muted-foreground);
+  border-color: var(--border);
+}
