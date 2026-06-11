@@ -3,7 +3,7 @@ import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog"
-import { X, Eye } from "lucide-react"
+import { Eye } from "lucide-react"
 import { env } from "@/config/env"
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -53,21 +53,13 @@ export function Image({ preview = false, imageId, className, onClick, ...props }
 
       {preview && (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className="max-w-4xl w-[90vw] h-[90vh] p-0 overflow-hidden bg-transparent border-none shadow-none flex items-center justify-center">
-            <div className="relative w-full h-full flex items-center justify-center">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="absolute top-2 right-2 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-              >
-                <X className="h-6 w-6" />
-              </button>
-              <img
-                {...props}
-                src={finalSrc}
-                alt={props.alt || "Preview"}
-                className="max-w-full max-h-full object-contain rounded-md"
-              />
-            </div>
+          <DialogContent className="max-w-6xl w-[95vw] max-h-[95vh] p-6 bg-zinc-950/90 backdrop-blur-md border border-white/10 shadow-2xl flex items-center justify-center rounded-xl">
+            <img
+              {...props}
+              src={finalSrc}
+              alt={props.alt || "Preview"}
+              className="max-w-full max-h-[85vh] object-contain rounded-md shadow-lg"
+            />
           </DialogContent>
         </Dialog>
       )}

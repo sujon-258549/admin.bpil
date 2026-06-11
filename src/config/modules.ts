@@ -156,16 +156,7 @@ export const MODULES: AppModule[] = [
       { key: "notifications", label: "All Notifications", path: "/notifications" },
     ],
   },
-  {
-    key: "logs",
-    label: "Logs",
-    path: "/logs",
-    icon: Activity,
-    children: [
-      { key: "logs.actions", label: "Action Logs", path: "/logs/actions" },
-      { key: "logs.errors", label: "Error Logs", path: "/logs/errors" },
-    ],
-  },
+
   {
     key: "profile",
     label: "Profile Management",
@@ -175,6 +166,16 @@ export const MODULES: AppModule[] = [
       { key: "profile.overview", label: "Your Profile", path: "/profile" },
       { key: "profile.update", label: "Update Profile", path: "/profile/edit" },
       { key: "profile.password", label: "Change Password", path: "/profile/password" },
+    ],
+  },
+    {
+    key: "logs",
+    label: "Logs",
+    path: "/logs",
+    icon: Activity,
+    children: [
+      { key: "logs.actions", label: "Action Logs", path: "/logs/actions" },
+      { key: "logs.errors", label: "Error Logs", path: "/logs/errors" },
     ],
   },
   {

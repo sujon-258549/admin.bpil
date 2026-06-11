@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge"
 
 export default function NotificationsPage() {
   const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(20)
+  const [limit, setLimit] = useState(10)
   
   // Date filter state
   const [startDate, setStartDate] = useState<string | undefined>()
@@ -38,7 +38,12 @@ export default function NotificationsPage() {
   const [markAsRead] = useMarkAsReadMutation()
 
   const notifications = data?.data || []
-  const meta = data?.meta
+  const meta = data?.meta ? {
+    page: data.meta.page,
+    perPage: data.meta.limit,
+    total: data.meta.total,
+    totalPages: Math.ceil(data.meta.total / data.meta.limit),
+  } : undefined
 
   const getIcon = (type: string) => {
     switch (type) {

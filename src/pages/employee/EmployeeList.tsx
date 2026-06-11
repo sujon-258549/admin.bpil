@@ -39,7 +39,6 @@ import { getErrorMessage } from "@/lib/errors";
 import type { EmployeeRow } from "@/redux/features/users";
 import { MonitorSmartphone } from "lucide-react";
 
-const PAGE_SIZE = 10;
 
 type SummaryFilter = "all" | "page" | "active" | "blocked";
 
@@ -68,6 +67,7 @@ const SUMMARY_META: Record<
 export default function EmployeeListPage() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const debounced = useDebounce(search, 350);
   const currentUser = useCurrentUser();
   const currentUserId = currentUser?.id;
@@ -91,7 +91,7 @@ export default function EmployeeListPage() {
   } = useEmployee({
     searchTerm: debounced || undefined,
     page,
-    limit: PAGE_SIZE,
+    limit: pageSize,
     startDate,
     endDate,
   });
@@ -521,9 +521,13 @@ export default function EmployeeListPage() {
               page={page}
               totalPages={totalPages}
               total={total}
-              pageSize={PAGE_SIZE}
+              pageSize={pageSize}
               showing={employees.length}
               onPageChange={setPage}
+              onPageSizeChange={(size) => {
+                setPageSize(size);
+                setPage(1);
+              }}
             />
           ) : null
         }

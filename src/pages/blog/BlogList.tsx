@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Newspaper, Plus, Trash2 } from "lucide-react"
+import { Newspaper, Plus, Trash2, Eye } from "lucide-react"
 import { FiEdit } from "react-icons/fi"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -24,13 +24,15 @@ import type { Blog } from "@/redux/features/blogs"
 import { getErrorMessage } from "@/lib/errors"
 import { BlogFormModal } from "@/components/modal"
 import { DataTablePagination } from "@/components/shared/data-table/data-table-pagination"
+import { BlogViewModal } from "@/components/modal/blog-view-modal"
 
 export default function BlogListPage() {
   const [search, setSearch] = useState("")
+  const [viewingBlog, setViewingBlog] = useState<Blog | null>(null)
   const debounced = useDebounce(search, 350)
 
   const [page, setPage] = useState(1)
-  const [limit] = useState(10)
+  const [limit, setLimit] = useState(10)
 
   const {
     blogs,
@@ -150,6 +152,15 @@ export default function BlogListPage() {
       fixed: "right",
       cell: (b) => (
         <div className="flex justify-end gap-1">
+          <Button
+            size="icon-sm"
+            variant="default"
+            onClick={() => setViewingBlog(b)}
+            aria-label="View Details"
+            className="border border-gray-300"
+          >
+            <Eye className="size-4" />
+          </Button>
           <Can module="blog" action="update">
             <Button
               size="icon-sm"
@@ -234,6 +245,10 @@ export default function BlogListPage() {
             showing={blogs.length}
             totalPages={meta?.totalPages ?? Math.ceil((meta?.total ?? 0) / (meta?.perPage ?? 10))}
             onPageChange={setPage}
+            onPageSizeChange={(size) => {
+              setLimit(size)
+              setPage(1)
+            }}
           />
         }
       />
@@ -252,6 +267,12 @@ export default function BlogListPage() {
         confirmLabel="Delete"
         destructive
         onConfirm={confirmDelete}
+      />
+
+      <BlogViewModal
+        open={Boolean(viewingBlog)}
+        onOpenChange={(v) => !v && setViewingBlog(null)}
+        blog={viewingBlog}
       />
     </div>
   )

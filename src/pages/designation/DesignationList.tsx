@@ -27,13 +27,11 @@ import { getErrorMessage } from "@/lib/errors"
 import { shortId } from "@/lib/format"
 import { DesignationFormModal } from "@/components/modal"
 
-// Page-size kept on the page itself so the API call signature stays
-// declarative: useDesignation({ page, limit, searchTerm }).
-const PAGE_SIZE = 10
 
 export default function DesignationListPage() {
   const [search, setSearch] = useState("")
   const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
   // Debounced search keeps the API quiet while the user is typing — the
   // actual filtering then happens server-side via the `searchTerm` query.
   const debounced = useDebounce(search, 350)
@@ -48,7 +46,7 @@ export default function DesignationListPage() {
   } = useDesignation({
     searchTerm: debounced || undefined,
     page,
-    limit: PAGE_SIZE,
+    limit: pageSize,
   })
 
   const [formOpen, setFormOpen] = useState(false)
@@ -237,9 +235,13 @@ export default function DesignationListPage() {
               page={page}
               totalPages={totalPages}
               total={total}
-              pageSize={PAGE_SIZE}
+              pageSize={pageSize}
               showing={designations.length}
               onPageChange={setPage}
+              onPageSizeChange={(size) => {
+                setPageSize(size)
+                setPage(1)
+              }}
             />
           ) : null
         }
