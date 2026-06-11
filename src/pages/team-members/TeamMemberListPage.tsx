@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Plus, Trash2, Package, Eye } from "lucide-react"
+import { Plus, Trash2, Users, Eye } from "lucide-react"
 import { FiEdit } from "react-icons/fi"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -18,101 +18,94 @@ import {
   type Column,
   PageMeta,
 } from "@/components/shared"
-import { useGetProductsQuery, useDeleteProductMutation, useUpdateProductMutation } from "@/redux/features/products/products-api"
+import { useGetTeamMembersQuery, useDeleteTeamMemberMutation, useUpdateTeamMemberMutation } from "@/redux/features/team-members/team-members-api"
+import { TeamMemberViewModal } from "@/components/modal/team-member-view-modal/team-member-view-modal"
 
-export default function ProductListPage() {
+export default function TeamMemberListPage() {
   const navigate = useNavigate()
   const [search, setSearch] = useState("")
+  const [viewingMember, setViewingMember] = useState<any>(null)
 
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(10)
+  // Assuming your API handles pagination (page, limit, searchTerm)
+  // If not, it will just return all and we can ignore pagination state for now
+  const { data, isLoading, isFetching } = useGetTeamMembersQuery()
+  const teamMembers = data?.data || []
+  // const meta = data?.meta // If API supports pagination
 
-  // Assuming getProducts handles pagination implicitly or via props passed
-  const { data, isLoading, isFetching } = useGetProductsQuery({ page, limit })
-  const products = data?.data || []
-  const meta = data?.meta
-
-  const [deleteProduct] = useDeleteProductMutation()
-  const [updateProduct] = useUpdateProductMutation()
+  const [deleteTeamMember] = useDeleteTeamMemberMutation()
+  const [updateTeamMember] = useUpdateTeamMemberMutation()
   const [pendingDelete, setPendingDelete] = useState<any>(null)
 
   const confirmDelete = async () => {
     if (!pendingDelete) return
     try {
-      const res = await deleteProduct(pendingDelete.id).unwrap()
-      if (res?.success) {
-        toast.success(res.message || "Product deleted")
-      }
+      await deleteTeamMember(pendingDelete.id).unwrap()
+      toast.success("Team member deleted successfully")
       setPendingDelete(null)
-    } catch (err: any) {
-      toast.error("Failed to delete product", {
-        description: err?.data?.message || "Something went wrong",
-      })
+    } catch {
+      toast.error("Failed to delete team member")
     }
   }
 
   const columns: Column<any>[] = [
     {
       key: "name",
-      header: "Product Name",
+      header: "Team Member",
       cell: (p) => (
         <div className="flex items-center gap-3">
-          {p.thumbnail ? (
+          {p.imageId ? (
             <Image
-              imageId={p.thumbnail.id}
-              alt={p.name || "Thumbnail"}
+              imageId={p.imageId}
+              alt={p.name || "Photo"}
               className="h-10 w-10 shrink-0 rounded-md object-cover border border-border/50"
               preview
             />
           ) : (
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground border border-border/50">
-              <Package className="size-5" />
+              <Users className="size-5" />
             </div>
           )}
           <div className="min-w-0">
-            <div className="truncate font-medium">{p.name || "Untitled"}</div>
+            <div className="truncate font-medium">{p.name || "Unnamed"}</div>
           </div>
         </div>
       ),
     },
     {
-      key: "category",
-      header: "Category",
+      key: "role",
+      header: "Role",
       cell: (p) => (
         <Text size="sm" tone="muted">
-          {p.category || "—"}
+          {p.role || "—"}
         </Text>
       ),
     },
     {
-      key: "price",
-      header: "Price",
+      key: "serial",
+      header: "Serial/Order",
       cell: (p) => (
         <Text size="sm" tone="muted">
-          {p.price || "—"}
+          {p.serial ?? 0}
         </Text>
       ),
     },
     {
       key: "isActive",
-      header: "Status",
+      header: "Active",
       cell: (p) => (
         <div className="flex items-center">
           <Switch
             checked={p.isActive}
             onCheckedChange={async (val) => {
               try {
-                const res = await updateProduct({ id: p.id, data: { isActive: val } }).unwrap()
-                if (res?.success) toast.success(res.message || "Status updated")
-              } catch (err: any) {
-                toast.error("Failed to update status", { description: err?.data?.message })
+                await updateTeamMember({ id: p.id, data: { isActive: val } }).unwrap()
+                toast.success("Active status updated")
+              } catch {
+                toast.error("Failed to update status")
               }
             }}
             className="data-[state=checked]:bg-primary"
           />
-          <Text size="sm" tone="muted" className="ml-2">
-            {p.isActive ? "Active" : "Inactive"}
-          </Text>
         </div>
       ),
     },
@@ -123,29 +116,27 @@ export default function ProductListPage() {
       fixed: "right",
       cell: (p) => (
         <div className="flex justify-end gap-1">
-          <Can module="products" action="read">
+          <Button
+            size="icon-sm"
+            variant="default"
+            onClick={() => setViewingMember(p)}
+            aria-label="View Details"
+            className="border border-gray-300"
+          >
+            <Eye className="size-4" />
+          </Button>
+          <Can module="team_members.list" action="update">
             <Button
               size="icon-sm"
               variant="default"
-              onClick={() => navigate(`/products/${p.id}`)}
-              aria-label="View Details"
-              className="border border-gray-300"
-            >
-              <Eye className="size-4" />
-            </Button>
-          </Can>
-          <Can module="products" action="update">
-            <Button
-              size="icon-sm"
-              variant="default"
-              onClick={() => navigate(`/products/${p.id}/edit`)}
+              onClick={() => navigate(`/team-members/edit/${p.id}`)}
               aria-label="Edit"
               className="border border-gray-300"
             >
               <FiEdit />
             </Button>
           </Can>
-          <Can module="products" action="delete">
+          <Can module="team_members.list" action="delete">
             <Button
               size="icon-sm"
               variant="destructive"
@@ -163,16 +154,19 @@ export default function ProductListPage() {
 
   const [visibleColumns, setVisibleColumns] = useState<Column<any>[]>(columns)
 
+  // Simple client-side search since we fetch all
+  const filteredData = teamMembers.filter(m => m.name.toLowerCase().includes(search.toLowerCase()))
+
   return (
     <div className="space-y-6">
-      <PageMeta title="Product List" description="Manage Product List" />
+      <PageMeta title="Team Members" description="Manage Team Members" />
       <PageHeader
-        title="Products"
-        description="Manage your product catalog."
+        title="Team Members"
+        description="Manage your team members and tech talent."
         actions={
-          <Can module="products" action="create">
-            <Button onClick={() => navigate("/products/create")}>
-              <Plus className="mr-2 h-4 w-4" /> Add Product
+          <Can module="team_members.create" action="create">
+            <Button onClick={() => navigate("/team-members/create")}>
+              <Plus className="mr-2 h-4 w-4" /> Add Team Member
             </Button>
           </Can>
         }
@@ -181,11 +175,11 @@ export default function ProductListPage() {
       <DataTableToolbar
         value={search}
         onChange={setSearch}
-        placeholder="Search products..."
+        placeholder="Search team members..."
         fetching={isFetching}
         right={
           <DataTableColumnsButton
-            tableName="products"
+            tableName="team_members"
             columns={columns}
             onVisibleColumnsChange={setVisibleColumns}
           />
@@ -193,39 +187,39 @@ export default function ProductListPage() {
       />
 
       <DataTable<any>
-        data={products}
+        data={filteredData}
         columns={visibleColumns}
-        isLoading={isLoading && products.length === 0}
+        isLoading={isLoading && filteredData.length === 0}
         isFetching={isFetching}
         empty={
           <EmptyState
-            icon={Package}
-            title="No products yet."
+            icon={Users}
+            title="No team members yet."
             action={
-              <Can module="products" action="create">
-                <Button size="sm" onClick={() => navigate("/products/create")}>
-                  <Plus className="mr-2 h-4 w-4" /> Add Product
+              <Can module="team_members.create" action="create">
+                <Button size="sm" onClick={() => navigate("/team-members/create")}>
+                  <Plus className="mr-2 h-4 w-4" /> Add Team Member
                 </Button>
               </Can>
             }
           />
         }
-        meta={meta}
-        onPageChange={setPage}
-        onPageSizeChange={(newSize) => {
-          setLimit(newSize)
-          setPage(1)
-        }}
       />
 
       <ConfirmDialog
         open={Boolean(pendingDelete)}
         onOpenChange={(v) => !v && setPendingDelete(null)}
-        title="Delete product?"
+        title="Delete Team Member?"
         description={`This will permanently remove "${pendingDelete?.name ?? ""}".`}
         confirmLabel="Delete"
         destructive
         onConfirm={confirmDelete}
+      />
+
+      <TeamMemberViewModal
+        open={Boolean(viewingMember)}
+        onOpenChange={(v) => !v && setViewingMember(null)}
+        member={viewingMember}
       />
     </div>
   )

@@ -30,6 +30,7 @@ export type ModuleKey =
   | "products"
   | "projects"
   | "gallery_video"
+  | "team_members"
   | "settings";
 
 export type ModuleGroup = "Overview" | "CRM" | "ERP" | "System";
@@ -133,6 +134,16 @@ export const MODULES: AppModule[] = [
     children: [
       { key: "gallery_video.video", label: "Video", path: "/gallery-video/video" },
       { key: "gallery_video.gallery", label: "Gallery", path: "/gallery-video/gallery" },
+    ],
+  },
+  {
+    key: "team_members",
+    label: "Team Members",
+    path: "/team-members",
+    icon: Users,
+    children: [
+      { key: "team_members.list", label: "Team List", path: "/team-members" },
+      { key: "team_members.create", label: "Create Team Member", path: "/team-members/create" },
     ],
   },
   {

@@ -318,7 +318,7 @@ export default function EmployeeListPage() {
             <Can module="employees" action="read">
               <Button
                 size="icon-sm"
-                variant="ghost"
+                variant="default"
                 asChild
                 aria-label="View employee details"
                 title="View employee details"
@@ -346,7 +346,7 @@ export default function EmployeeListPage() {
             <Can module="employees" action="update">
               <Button
                 size="icon-sm"
-                variant="ghost"
+                variant="default"
                 asChild
                 aria-label="Update employee"
                 title="Update employee"

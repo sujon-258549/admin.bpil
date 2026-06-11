@@ -141,6 +141,7 @@ export const baseApi = createApi({
     "Video",
     "Gallery",
     "Project",
+    "teamMembers",
   ],
   endpoints: () => ({}),
 })

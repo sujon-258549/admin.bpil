@@ -121,7 +121,7 @@ export default function DepartmentListPage() {
           <Can module="departments" action="update">
             <Button
               size="icon-sm"
-              variant="secondary"
+              variant="default"
               onClick={() => openEdit(d)}
               aria-label="Edit"
               className="border border-gray-300"

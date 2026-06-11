@@ -99,6 +99,8 @@ import UpdateProfile from "@/pages/profile/UpdateProfile";
 import ChangePassword from "@/pages/profile/ChangePassword";
 import VideoPage from "@/pages/gallery-video/VideoPage";
 import GalleryPage from "@/pages/gallery-video/GalleryPage";
+import TeamMemberListPage from "@/pages/team-members/TeamMemberListPage";
+import TeamMemberForm from "@/pages/team-members/TeamMemberForm";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Router
@@ -320,6 +322,30 @@ export const router = createBrowserRouter([
         element: (
           <RequirePermission moduleKey="projects.project">
             <ProjectDetails />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "team-members",
+        element: (
+          <RequirePermission moduleKey="team_members.list">
+            <TeamMemberListPage />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "team-members/create",
+        element: (
+          <RequirePermission moduleKey="team_members.create" action="create">
+            <TeamMemberForm />
+          </RequirePermission>
+        ),
+      },
+      {
+        path: "team-members/edit/:id",
+        element: (
+          <RequirePermission moduleKey="team_members.list" action="update">
+            <TeamMemberForm />
           </RequirePermission>
         ),
       },

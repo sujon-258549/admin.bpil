@@ -150,7 +150,7 @@ export default function DesignationListPage() {
           <Can module="designations" action="update">
             <Button
               size="icon-sm"
-              variant="secondary"
+              variant="default"
               onClick={() => openEdit(d)}
               aria-label="Edit"
               className="border border-gray-300"

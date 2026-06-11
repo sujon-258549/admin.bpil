@@ -95,6 +95,9 @@ const ACTION_OVERRIDES: Record<string, readonly string[]> = {
   "projects.project": ["read", "create", "update", "delete"],
   "projects.create": ["read", "create"],
 
+  "team_members.list": ["read", "create", "update", "delete"],
+  "team_members.create": ["read", "create"],
+
   "content.blog": ["read", "update"],
   "content.blog.banner": ["read", "update"],
 

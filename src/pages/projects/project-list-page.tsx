@@ -126,7 +126,7 @@ export default function ProjectListPage() {
           <Can module="projects.project" action="read">
             <Button
               size="icon-sm"
-              variant="secondary"
+              variant="default"
               onClick={() => navigate(`/projects/${p.id}`)}
               aria-label="View Details"
               className="border border-gray-300"
@@ -137,7 +137,7 @@ export default function ProjectListPage() {
           <Can module="projects.project" action="update">
             <Button
               size="icon-sm"
-              variant="secondary"
+              variant="default"
               onClick={() => navigate(`/projects/${p.id}/edit`)}
               aria-label="Edit"
               className="border border-gray-300"

@@ -117,7 +117,7 @@ export default function GalleryPage() {
           <Can module="gallery_video.gallery" action="update">
             <Button
               size="icon-sm"
-              variant="ghost"
+              variant="default"
               onClick={() => openEdit(v)}
               title="Edit Gallery Item"
             >

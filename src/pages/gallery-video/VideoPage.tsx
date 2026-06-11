@@ -142,7 +142,7 @@ export default function VideoPage() {
         <div className="flex justify-end gap-1">
           <Button
             size="icon-sm"
-            variant="secondary"
+            variant="default"
             onClick={() => setPreviewing(v)}
             aria-label="Preview"
             className="border border-gray-300"
@@ -152,7 +152,7 @@ export default function VideoPage() {
           <Can module="gallery_video.video" action="update">
             <Button
               size="icon-sm"
-              variant="secondary"
+              variant="default"
               onClick={() => openEdit(v)}
               aria-label="Edit"
               className="border border-gray-300"

@@ -142,7 +142,7 @@ export default function RoleListPage() {
           <Can module="roles" action="update">
             <Button
               size="icon-sm"
-              variant="ghost"
+              variant="default"
               onClick={() => openEdit(r)}
               aria-label="Edit"
               className="border border-gray-300"

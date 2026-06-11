@@ -1,5 +1,5 @@
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom"
-import { ShieldCheck, ChevronRight, LogOut } from "lucide-react"
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { ShieldCheck, ChevronRight, LogOut } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -15,25 +15,25 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
   SidebarSeparator,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import { useAppDispatch } from "@/redux/hooks"
-import { performLogout } from "@/redux/features/auth/auth-slice"
-import { useCurrentUser } from "@/hooks/use-permission"
-import { hasAction, isSuperAdmin } from "@/lib/permissions"
-import { MODULES, type AppModule, type AppModuleChild } from "@/config/modules"
-import { ROUTES } from "@/config/paths"
-import { siteConfig } from "@/config/site"
+} from "@/components/ui/collapsible";
+import { useAppDispatch } from "@/redux/hooks";
+import { performLogout } from "@/redux/features/auth/auth-slice";
+import { useCurrentUser } from "@/hooks/use-permission";
+import { hasAction, isSuperAdmin } from "@/lib/permissions";
+import { MODULES, type AppModule, type AppModuleChild } from "@/config/modules";
+import { ROUTES } from "@/config/paths";
+import { siteConfig } from "@/config/site";
 
 export default function AppSidebar() {
-  const location = useLocation()
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const user = useCurrentUser()
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useCurrentUser();
 
   // Sidebar visibility — a module appears only if the user has the `read`
   // action on it. Super-admin sees everything.
@@ -41,37 +41,37 @@ export default function AppSidebar() {
   //     drop the whole parent if no child has read.
   //   - Top-level (no children) → check `read` on the parent's own key.
   const accessibleModules: AppModule[] = (() => {
-    if (!user) return []
-    if (isSuperAdmin(user)) return MODULES
+    if (!user) return [];
+    if (isSuperAdmin(user)) return MODULES;
 
-    const result: AppModule[] = []
+    const result: AppModule[] = [];
     for (const mod of MODULES) {
       if (mod.key === "profile") {
-        result.push(mod)
-        continue
+        result.push(mod);
+        continue;
       }
       if (mod.children && mod.children.length > 0) {
         const visibleChildren: AppModuleChild[] = mod.children.filter((c) =>
           hasAction(user, c.key, "read"),
-        )
+        );
         if (visibleChildren.length > 0) {
-          result.push({ ...mod, children: visibleChildren })
+          result.push({ ...mod, children: visibleChildren });
         }
       } else if (hasAction(user, mod.key, "read")) {
-        result.push(mod)
+        result.push(mod);
       }
     }
-    return result
-  })()
+    return result;
+  })();
 
   const isChildActive = (children?: AppModule["children"]) =>
     children?.some((c) => location.pathname.startsWith(c.path.split("?")[0])) ??
-    false
+    false;
 
   const handleLogout = () => {
-    dispatch(performLogout())
-    navigate(ROUTES.AUTH.LOGIN, { replace: true, state: { from: location } })
-  }
+    dispatch(performLogout());
+    navigate(ROUTES.AUTH.LOGIN, { replace: true, state: { from: location } });
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -80,11 +80,21 @@ export default function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton asChild size="lg">
               <Link to={ROUTES.MODULES.DASHBOARD}>
-                <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
-                  <ShieldCheck className="size-4" />
+                <div className="flex aspect-square size-8 items-center justify-center rounded-md overflow-hidden bg-background border border-border">
+                  {siteConfig.logo ? (
+                    <img
+                      src={siteConfig.logo}
+                      alt="Logo"
+                      className="size-6 object-contain"
+                    />
+                  ) : (
+                    <ShieldCheck className="size-4 text-primary" />
+                  )}
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{siteConfig.name}</span>
+                  <span className="truncate font-semibold">
+                    {siteConfig.name}
+                  </span>
                   <span className="truncate text-xs text-muted-foreground">
                     Admin Portal
                   </span>
@@ -110,7 +120,10 @@ export default function AppSidebar() {
                     >
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
-                          <SidebarMenuButton tooltip={mod.label} className="font-medium">
+                          <SidebarMenuButton
+                            tooltip={mod.label}
+                            className="font-medium"
+                          >
                             <mod.icon />
                             <span>{mod.label}</span>
                             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -138,12 +151,16 @@ export default function AppSidebar() {
                         </CollapsibleContent>
                       </SidebarMenuItem>
                     </Collapsible>
-                  )
+                  );
                 }
 
                 return (
                   <SidebarMenuItem key={mod.key}>
-                    <SidebarMenuButton asChild tooltip={mod.label} className="font-medium">
+                    <SidebarMenuButton
+                      asChild
+                      tooltip={mod.label}
+                      className="font-medium"
+                    >
                       <NavLink
                         to={mod.path}
                         end={mod.path === ROUTES.MODULES.DASHBOARD}
@@ -158,7 +175,7 @@ export default function AppSidebar() {
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                )
+                );
               })}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -182,5 +199,5 @@ export default function AppSidebar() {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

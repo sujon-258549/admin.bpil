@@ -153,7 +153,7 @@ export default function BlogListPage() {
           <Can module="blog" action="update">
             <Button
               size="icon-sm"
-              variant="secondary"
+              variant="default"
               onClick={() => openEdit(b)}
               aria-label="Edit"
               className="border border-gray-300"
