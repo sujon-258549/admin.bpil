@@ -1,42 +1,47 @@
-import React, { useState } from "react"
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog"
-import { Eye } from "lucide-react"
-import { env } from "@/config/env"
+import React, { useState } from "react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Eye } from "lucide-react";
+import { env } from "@/config/env";
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-  preview?: boolean
-  imageId?: string
+  preview?: boolean;
+  imageId?: string;
 }
 
-export function Image({ preview = false, imageId, className, onClick, ...props }: ImageProps) {
-  const [isOpen, setIsOpen] = useState(false)
+export function Image({
+  preview = false,
+  imageId,
+  className,
+  onClick,
+  ...props
+}: ImageProps) {
+  const [isOpen, setIsOpen] = useState(false);
 
-  const finalSrc = imageId ? `${env.API_URL}/folder/image/${imageId}` : props.src
+  const finalSrc = imageId
+    ? `${env.API_URL}/folder/image/${imageId}`
+    : props.src;
 
   const handleClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     if (preview) {
-      e.stopPropagation()
-      setIsOpen(true)
+      e.stopPropagation();
+      setIsOpen(true);
     }
     if (onClick) {
-      onClick(e)
+      onClick(e);
     }
-  }
+  };
 
   return (
     <>
       {preview ? (
-        <div 
-          onClick={handleClick} 
+        <div
+          onClick={handleClick}
           className={`relative group cursor-pointer overflow-hidden ${className || ""}`}
         >
           <img
             {...props}
             src={finalSrc}
-            className={`w-full h-full ${className?.includes('object-') ? '' : 'object-cover'} ${className || ""}`}
+            className={`w-full h-full ${className?.includes("object-") ? "" : "object-cover"} ${className || ""}`}
           />
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <Eye className="w-6 h-6 text-white/90 drop-shadow-md" />
@@ -64,5 +69,5 @@ export function Image({ preview = false, imageId, className, onClick, ...props }
         </Dialog>
       )}
     </>
-  )
+  );
 }
