@@ -89,6 +89,9 @@ const ACTION_OVERRIDES: Record<string, readonly string[]> = {
   "gallery_video.gallery": ["read", "create", "update", "delete"],
   "gallery_video.video": ["read", "create", "update", "delete"],
 
+  "projects.project": ["read", "create", "update", "delete"],
+  "projects.create": ["read", "create"],
+
   "content.blog": ["read", "update"],
   "content.blog.banner": ["read", "update"],
 

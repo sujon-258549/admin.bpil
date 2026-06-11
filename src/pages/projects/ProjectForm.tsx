@@ -168,7 +168,7 @@ export default function ProjectForm({
       <div className="space-y-6">
         <div className="rounded-md border bg-card p-6 space-y-4">
             <h3 className="text-lg font-semibold mb-2">Media</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-wrap gap-12 relative">
               <FormField label="Thumbnail Image">
                 <MediaPicker
                   category="single"
@@ -176,13 +176,18 @@ export default function ProjectForm({
                   onChange={(id) => setForm({ ...form, thumbnailId: id as string })}
                 />
               </FormField>
-              <FormField label="Gallery Images">
-                <MediaPicker
-                  category="multi"
-                  value={form.gallery}
-                  onChange={(ids) => setForm({ ...form, gallery: ids })}
-                />
-              </FormField>
+              
+              <div className="hidden md:block w-px bg-border -mx-6 self-stretch"></div>
+              
+              <div className="flex-1">
+                <FormField label="Gallery Images">
+                  <MediaPicker
+                    category="multi"
+                    value={form.gallery}
+                    onChange={(ids) => setForm({ ...form, gallery: ids })}
+                  />
+                </FormField>
+              </div>
             </div>
           </div>
       </div>
